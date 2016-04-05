@@ -1,0 +1,66 @@
+body {
+    font-family: sans-serif;
+}
+
+#tafel {
+    background-color: #AEA;
+    padding: 5px 20px;
+    border: 1px solid blue;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    position: absolute;
+}
+#tafel:hover {
+    background-color: #8fbc8f;
+}
+#lager {
+    background-color: #ec89ee;
+    padding: 5px 20px;
+    border: 1px solid blue;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    position: absolute;
+}
+#lager.markiert {
+    background-color: #ABCDEF;
+}
+#lager:hover {
+    background-color: #BBB;
+}
+
+.free {
+    text-align:center;
+    position: absolute;
+}
+
+.free:hover {
+    background-color: #CCC;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+
+.tisch {
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    text-align:center;
+    background-color: #EEE;
+    border: solid #e52fd4;
+    position: absolute;
+}
+
+.markiert {
+    background-color: #ABCDEF;
+}
+
+.tisch:hover {
+    background-color: #BBB;
+}
+
+.plan {
+    background-color: papayawhip;
+    position: relative;
+}
