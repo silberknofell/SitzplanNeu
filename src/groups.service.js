@@ -1,48 +1,32 @@
-System.register(['angular2/core', 'angular2/http', "./Pojo/gruppe"], function(exports_1, context_1) {
-    "use strict";
-    var __moduleName = context_1 && context_1.id;
-    var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-        var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-        else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-        return c > 3 && r && Object.defineProperty(target, key, r), r;
-    };
-    var __metadata = (this && this.__metadata) || function (k, v) {
-        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-    };
-    var core_1, http_1, gruppe_1;
-    var GroupsService;
-    return {
-        setters:[
-            function (core_1_1) {
-                core_1 = core_1_1;
-            },
-            function (http_1_1) {
-                http_1 = http_1_1;
-            },
-            function (gruppe_1_1) {
-                gruppe_1 = gruppe_1_1;
-            }],
-        execute: function() {
-            GroupsService = (function () {
-                function GroupsService(http) {
-                }
-                GroupsService.prototype.getGroups = function () {
-                    return [
-                        { "id": 1, "name": "8d", "sus": [] },
-                        { "id": 2, "name": "6e", "sus": [] },
-                        { "id": 3, "name": "5d", "sus": [] },
-                        { "id": 4, "name": "5b", "sus": [] }
-                    ].map(function (g) { return new gruppe_1.Gruppe(g); });
-                };
-                GroupsService = __decorate([
-                    core_1.Injectable(), 
-                    __metadata('design:paramtypes', [http_1.Http])
-                ], GroupsService);
-                return GroupsService;
-            }());
-            exports_1("GroupsService", GroupsService);
-        }
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var core_1 = require('angular2/core');
+var http_1 = require('angular2/http');
+var gruppe_1 = require("./Pojo/gruppe");
+var GroupsService = (function () {
+    function GroupsService(http) {
     }
-});
+    GroupsService.prototype.getGroups = function () {
+        return [
+            { "id": 1, "name": "8d", "sus": [] },
+            { "id": 2, "name": "6e", "sus": [] },
+            { "id": 3, "name": "5d", "sus": [] },
+            { "id": 4, "name": "5b", "sus": [] }
+        ].map(function (g) { return new gruppe_1.Gruppe(g); });
+    };
+    GroupsService = __decorate([
+        core_1.Injectable(), 
+        __metadata('design:paramtypes', [http_1.Http])
+    ], GroupsService);
+    return GroupsService;
+}());
+exports.GroupsService = GroupsService;
 //# sourceMappingURL=groups.service.js.map
