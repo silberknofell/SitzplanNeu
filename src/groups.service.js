@@ -11,16 +11,36 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('angular2/core');
 var http_1 = require('angular2/http');
 var gruppe_1 = require("./Pojo/gruppe");
+var Observable_1 = require("rxjs/Observable");
 var GroupsService = (function () {
     function GroupsService(http) {
+        this.baseUrl = 'http://geihe.net/sitzplan2/rest/';
+        this.http = http;
     }
     GroupsService.prototype.getGroups = function () {
         return [
-            { "id": 1, "name": "8d", "sus": [] },
-            { "id": 2, "name": "6e", "sus": [] },
-            { "id": 3, "name": "5d", "sus": [] },
-            { "id": 4, "name": "5b", "sus": [] }
+            { "id": 1, "bezeichnung": "8d", "sus": [] },
+            { "id": 2, "bezeichnung": "6e", "sus": [] },
+            { "id": 3, "bezeichnung": "5d", "sus": [] },
+            { "id": 4, "bezeichnung": "5b", "sus": [] }
         ].map(function (g) { return new gruppe_1.Gruppe(g); });
+    };
+    GroupsService.prototype.getGroupsHTML = function () {
+        var url = this.baseUrl + 'gruppen';
+        return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+    };
+    GroupsService.prototype.extractData = function (res) {
+        if (res.status < 200 || res.status >= 300) {
+            throw new Error('Bad response status: ' + res.status);
+        }
+        return res.json() || {};
+    };
+    GroupsService.prototype.handleError = function (error) {
+        var errMsg = error.message || 'Server error';
+        console.error(errMsg);
+        return Observable_1.Observable.throw(errMsg);
     };
     GroupsService = __decorate([
         core_1.Injectable(), 

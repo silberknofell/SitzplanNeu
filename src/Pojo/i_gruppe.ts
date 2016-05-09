@@ -7,6 +7,6 @@ import {ISus} from "./i_sus";
  */
 export interface IGruppe {
     id:number;
-    name:string;
+    bezeichnung:string;
     sus: ISus[];
 }

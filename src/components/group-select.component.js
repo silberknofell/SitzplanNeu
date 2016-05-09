@@ -11,10 +11,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('angular2/core');
 var groups_service_1 = require("./../groups.service");
 var GroupSelectComponent = (function () {
-    function GroupSelectComponent(_groupsService) {
-        this._groupsService = _groupsService;
+    function GroupSelectComponent(groupsService) {
+        var _this = this;
+        this.groupsService = groupsService;
         this.title = 'Gruppenauswahl';
-        this.gruppen = _groupsService.getGroups();
+        groupsService.getGroupsHTML()
+            .subscribe(function (gruppen) { _this.gruppen = gruppen; });
     }
     GroupSelectComponent = __decorate([
         core_1.Component({

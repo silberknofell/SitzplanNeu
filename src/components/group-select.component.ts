@@ -25,8 +25,11 @@ export class GroupSelectComponent {
     public title = 'Gruppenauswahl';
     public gruppen:Gruppe[];
 
-    constructor(private _groupsService:GroupsService) {
-        this.gruppen = _groupsService.getGroups();
+    constructor(private groupsService:GroupsService) {
+        groupsService.getGroupsHTML()
+            .subscribe(
+                gruppen => {this.gruppen = gruppen;}
+            );
     }
 
 

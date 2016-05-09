@@ -8,4 +8,8 @@ export class Gruppe {
     constructor(data:IGruppe){
         this.data = data;   
     }
+
+    get  bezeichnung():string {
+        return this.data.bezeichnung
+    }
 }
