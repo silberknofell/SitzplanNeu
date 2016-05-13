@@ -3,6 +3,43 @@ var Sus = (function () {
     function Sus(data) {
         this.data = data;
     }
+    Object.defineProperty(Sus.prototype, "gruppe_id", {
+        set: function (value) {
+            this.data.gruppe_id = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Sus.prototype, "name", {
+        get: function () {
+            return this.data.name;
+        },
+        set: function (value) {
+            this.data.name = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Sus.prototype, "nachname", {
+        get: function () {
+            return this.data.nachname;
+        },
+        set: function (value) {
+            this.data.nachname = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Sus.prototype, "id", {
+        get: function () {
+            return this.data.id;
+        },
+        set: function (value) {
+            this.data.id = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(Sus.prototype, "susData", {
         get: function () {
             return this.data;

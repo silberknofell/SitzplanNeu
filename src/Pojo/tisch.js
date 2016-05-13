@@ -50,7 +50,7 @@ var Tisch = (function (_super) {
         },
         set: function (value) {
             this._sus = value;
-            this._tischData.sus_id = value.getId();
+            this._tischData.sus_id = value.id;
         },
         enumerable: true,
         configurable: true
@@ -81,7 +81,7 @@ var Tisch = (function (_super) {
         configurable: true
     });
     Tisch.prototype.istBelegt = function () {
-        return this.sus.getId() != 0;
+        return this.sus.id != 0;
     };
     Tisch.prototype.istFrei = function () {
         return this.istBelegt() == false;
@@ -102,7 +102,7 @@ var Tisch = (function (_super) {
             this.sus = sus;
         }
         else {
-            console.log("Tisch" + this.id + " soll unerlaubt belegt werden. Schüler id:" + sus.getId());
+            console.log("Tisch" + this.id + " soll unerlaubt belegt werden. Schüler id:" + sus.id);
         }
     };
     Tisch.prototype.toCell = function () {

@@ -10,6 +10,13 @@ var Gruppe = (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(Gruppe.prototype, "id", {
+        get: function () {
+            return this.data.id;
+        },
+        enumerable: true,
+        configurable: true
+    });
     return Gruppe;
 }());
 exports.Gruppe = Gruppe;

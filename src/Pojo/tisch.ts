@@ -23,7 +23,7 @@ export class Tisch extends Cell {
 
     set sus(value:Sus) {
         this._sus = value;
-        this._tischData.sus_id = value.getId();
+        this._tischData.sus_id = value.id;
     }
 
     get id():number {
@@ -57,7 +57,7 @@ export class Tisch extends Cell {
     }
 
     public istBelegt():boolean {
-        return this.sus.getId() != 0;
+        return this.sus.id != 0;
     }
 
     public istFrei():boolean {
@@ -83,7 +83,7 @@ export class Tisch extends Cell {
         if (this.belegbar || sus.istLeer()) {
             this.sus = sus;
         } else {
-            console.log("Tisch" + this.id + " soll unerlaubt belegt werden. Schüler id:" + sus.getId());
+            console.log("Tisch" + this.id + " soll unerlaubt belegt werden. Schüler id:" + sus.id);
         }
     }
 

@@ -25,7 +25,7 @@ var GroupsService = (function () {
             { "id": 4, "bezeichnung": "5b", "sus": [] }
         ].map(function (g) { return new gruppe_1.Gruppe(g); });
     };
-    GroupsService.prototype.getGroupsHTML = function () {
+    GroupsService.prototype.getGroupsHTTP = function () {
         var url = this.baseUrl + 'gruppen';
         return this.http.get(url)
             .map(this.extractData)

@@ -12,4 +12,8 @@ export class Gruppe {
     get  bezeichnung():string {
         return this.data.bezeichnung
     }
+    
+    get id():number {
+        return this.data.id;
+    }
 }
