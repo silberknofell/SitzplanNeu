@@ -10,7 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('angular2/core');
 var groups_service_1 = require("./../groups.service");
-var group_edit_1 = require("./group-edit");
+var group_edit_component_1 = require("./group-edit.component");
 var GroupSelectComponent = (function () {
     function GroupSelectComponent(groupsService) {
         var _this = this;
@@ -27,7 +27,7 @@ var GroupSelectComponent = (function () {
             selector: 'group-select',
             template: "\n    <h1>{{title}}</h1>\n        <ul>\n            <li *ngFor=\"#group of gruppen\"\n                   (click) = select(group)>\n                {{group.bezeichnung}}\n            </li>\n        </ul>\n        <group-edit \n            [gruppe]=\"selectedGroup\"\n        ></group-edit>\n  ",
             styles: ["\n\n  "],
-            directives: [group_edit_1.GroupEditComponent],
+            directives: [group_edit_component_1.GroupEditComponent],
             providers: [groups_service_1.GroupsService]
         }), 
         __metadata('design:paramtypes', [groups_service_1.GroupsService])

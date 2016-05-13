@@ -4,7 +4,7 @@
 import {Component} from 'angular2/core';
 import {GroupsService} from "./../groups.service";
 import {Gruppe} from "./../Pojo/gruppe";
-import {GroupEditComponent} from "./group-edit";
+import {GroupEditComponent} from "./group-edit.component";
 @Component({
     selector: 'group-select',
     template: `
