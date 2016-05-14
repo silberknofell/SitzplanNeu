@@ -85,7 +85,6 @@ export class PlanComponent {
 
     constructor(planService:PlanService) {
         this.planService = planService;
-        planService.setGruppeId(1);
         this.setPlan(planService.readPlan(1));
         PlanLayout.setIJ(this.plan);
         this.buildComponents();

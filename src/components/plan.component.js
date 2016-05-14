@@ -30,7 +30,6 @@ var PlanComponent = (function () {
         this.tafelTop = plan_layout_1.PlanLayout.getViewHeight;
         this.cells = [];
         this.planService = planService;
-        planService.setGruppeId(1);
         this.setPlan(planService.readPlan(1));
         plan_layout_1.PlanLayout.setIJ(this.plan);
         this.buildComponents();

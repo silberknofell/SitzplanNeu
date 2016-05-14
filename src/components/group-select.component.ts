@@ -5,6 +5,7 @@ import {Component} from 'angular2/core';
 import {GroupsService} from "./../groups.service";
 import {Gruppe} from "./../Pojo/gruppe";
 import {GroupEditComponent} from "./group-edit.component";
+import {PlanSelectComponent} from "./plan-select.component";
 @Component({
     selector: 'group-select',
     template: `
@@ -18,11 +19,14 @@ import {GroupEditComponent} from "./group-edit.component";
         <group-edit 
             [gruppe]="selectedGroup"
         ></group-edit>
+        <plan-select
+            [gruppe]="selectedGroup"    
+        ></plan-select>
   `,
     styles: [`
 
   `],
-    directives: [GroupEditComponent],
+    directives: [GroupEditComponent, PlanSelectComponent],
     providers: [GroupsService]
 })
 
