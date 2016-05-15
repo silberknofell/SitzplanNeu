@@ -39,18 +39,17 @@ export class PlanInout {
     }
 
     public copyClick() {
-        this.planComponent.setPlan(this.planService.getPlanCopy(this.plan));
+        // this.planComponent.plan=this.planService.getPlanCopy(this.plan);
     }
     public newClick() {
         let sus:Sus[] = this.plan.getSusList();
         let plan:Plan = this.planService.getNewPlan(sus);
-        this.planComponent.setPlan(plan);
+        // this.planComponent.plan=plan;
     }
 ;
     public importClick() {
         let planVorlage:IPlan = JSON.parse(this.austausch);
-        this.planComponent.setPlan(new Plan(planVorlage));
-
+        // this.planComponent.plan=new Plan(planVorlage);
     }
 
     public exportClick() {

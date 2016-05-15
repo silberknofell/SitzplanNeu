@@ -9,6 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require("angular2/core");
+var plan_1 = require("./../Pojo/plan");
 var plan_service_1 = require("../plan.service");
 var cell_component_1 = require("./cell.component");
 var tisch_1 = require("../Pojo/tisch");
@@ -19,10 +20,10 @@ var plan_manager_1 = require("../plan-manager");
 var element_1 = require("../Pojo/element");
 var lager_component_1 = require("./lager.component");
 var plan_anordnung_1 = require("../plan-anordnung");
-var plan_select_component_1 = require("./plan-select.component");
 var plan_inout_component_1 = require("./plan-inout.component");
 var PlanComponent = (function () {
     function PlanComponent(planService) {
+        var _this = this;
         this.readonly = false;
         this.viewWidth = plan_layout_1.PlanLayout.getViewWidth;
         this.viewHeight = plan_layout_1.PlanLayout.getViewHeight;
@@ -30,12 +31,12 @@ var PlanComponent = (function () {
         this.tafelTop = plan_layout_1.PlanLayout.getViewHeight;
         this.cells = [];
         this.planService = planService;
-        this.setPlan(planService.readPlan(1));
-        plan_layout_1.PlanLayout.setIJ(this.plan);
-        this.buildComponents();
+        this.setPlan(plan_1.Plan.createEmptyPlan());
+        planService.callbackNewPlan = (function (plan) { return _this.setPlan(plan); });
     }
     PlanComponent.prototype.setPlan = function (plan) {
         this.plan = plan;
+        alert(JSON.stringify(plan));
         plan_layout_1.PlanLayout.setIJ(this.plan);
         this.buildComponents();
     };
@@ -121,15 +122,8 @@ var PlanComponent = (function () {
     PlanComponent.prototype.neuerTischNachCheck = function (element) {
         if (element.typ == element_1.Elem.TYP_LEERERPLATZ) {
             var cell = element;
-            var newId = Math.min(this.plan.getMinTischId(), 0) - 1;
-            var tischVorlage = {
-                i: cell.getI(),
-                j: cell.getJ(),
-                belegbar: true,
-                sus_id: 0,
-                id: newId
-            };
-            var neuerTisch = new tisch_1.Tisch(tischVorlage, null);
+            var neuerTisch = tisch_1.Tisch.leererTisch();
+            neuerTisch.setIJ(cell.getI(), cell.getJ());
             this.plan.tische.push(neuerTisch);
             this.cells[plan_layout_1.PlanLayout.getIndex(cell)] = neuerTisch;
         }
@@ -175,9 +169,9 @@ var PlanComponent = (function () {
     PlanComponent = __decorate([
         core_1.Component({
             selector: 'plan',
-            template: "<button (click)=\"deltaI(1)\">i+1</button>\n<button (click)=\"deltaI(-1)\">i-1</button>\n<button (click)=\"deltaJ(1)\">j+1</button>\n<button (click)=\"deltaJ(-1)\">j-1</button>\n<button (click)=\"deltaX(50)\">x+50</button>\n<button (click)=\"deltaX(-50)\">x-50</button>\n<button (click)=\"deltaY(50)\">y+50</button>\n<button (click)=\"deltaY(-50)\">y-50</button>\n\n<h1>Sitzplan {{plan.gruppe}} {{plan.raum}}</h1>\n<div class=\"plan\"\n     [style.width.px]=\"viewWidth()\"\n     [style.height.px]=\"viewHeight()\"\n>\n\n    <cell *ngFor=\"#cell of cells\"\n          [cell]=\"cell\"\n          [planComponent]=\"getPlanComponent()\"\n    ></cell>\n\n    <div id=\"tafel\"\n         [style.top.px]=\"tafelTop()\"\n         [style.left.px]=\"tafelLeft()\"\n         (click)=\"tafelClick()\"\n    >Tafel\n    </div>\n</div>\n\n\n<button (click)=\"reihenClick()\">Reihen</button>\n<button (click)=\"uClick()\">U-Form</button>\n\n<plan-inout\n        [planComponent]=\"getPlanComponent()\"\n        [plan] = \"plan\"\n></plan-inout>\n<plan-select\n        [planComponent]=\"getPlanComponent()\"\n></plan-select>\n<lager\n        [planComponent]=\"getPlanComponent()\"\n></lager>\n  ",
-            inputs: ['readonly'],
-            directives: [cell_component_1.CellComponent, lager_component_1.LagerComponent, plan_select_component_1.PlanSelectComponent,
+            template: "<button (click)=\"deltaI(1)\">i+1</button>\n<button (click)=\"deltaI(-1)\">i-1</button>\n<button (click)=\"deltaJ(1)\">j+1</button>\n<button (click)=\"deltaJ(-1)\">j-1</button>\n<button (click)=\"deltaX(50)\">x+50</button>\n<button (click)=\"deltaX(-50)\">x-50</button>\n<button (click)=\"deltaY(50)\">y+50</button>\n<button (click)=\"deltaY(-50)\">y-50</button>\n<h1>Sitzplan</h1>\n<h1>Sitzplan {{plan.gruppe}} {{plan.raum}}</h1>\n<div class=\"plan\"\n     [style.width.px]=\"viewWidth()\"\n     [style.height.px]=\"viewHeight()\"\n>\n\n    <cell *ngFor=\"#cell of cells\"\n          [cell]=\"cell\"\n          [planComponent]=\"getPlanComponent()\"\n    ></cell>\n\n    <div id=\"tafel\"\n         [style.top.px]=\"tafelTop()\"\n         [style.left.px]=\"tafelLeft()\"\n         (click)=\"tafelClick()\"\n    >Tafel\n    </div>\n</div>\n\n\n<button (click)=\"reihenClick()\">Reihen</button>\n<button (click)=\"uClick()\">U-Form</button>\n\n<plan-inout\n        [planComponent]=\"getPlanComponent()\"\n        [plan] = \"plan\"\n></plan-inout>\n\n<lager\n        [planComponent]=\"getPlanComponent()\"\n></lager>\n  ",
+            inputs: [],
+            directives: [cell_component_1.CellComponent, lager_component_1.LagerComponent,
                 plan_inout_component_1.PlanInout],
             providers: [plan_service_1.PlanService],
         }), 

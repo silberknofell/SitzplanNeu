@@ -54,7 +54,7 @@ var GroupEditComponent = (function () {
         core_1.Input(), 
         __metadata('design:type', gruppe_1.Gruppe), 
         __metadata('design:paramtypes', [gruppe_1.Gruppe])
-    ], GroupEditComponent.prototype, "gruppe", null);
+    ], GroupEditComponent.prototype, "gruppeBezeichnung", null);
     GroupEditComponent = __decorate([
         core_1.Component({
             selector: 'group-edit',

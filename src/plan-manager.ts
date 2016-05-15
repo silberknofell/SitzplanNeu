@@ -11,7 +11,7 @@ export class PlanManager {
 
     constructor(plan:Plan) {
         this.sus = plan.getSusList();
-        this.tische = plan.getBelegteTischeList();
+        this.tische = plan.getBelegbareTischeList();
     }
 
     public losen() {

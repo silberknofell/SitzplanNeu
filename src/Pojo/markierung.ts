@@ -1,4 +1,3 @@
-import {Cell} from "./cell";
 import {Elem} from "./element";
 /**
  * Created by test on 10.01.2016.

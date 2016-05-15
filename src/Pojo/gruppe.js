@@ -17,7 +17,15 @@ var Gruppe = (function () {
         enumerable: true,
         configurable: true
     });
+    Gruppe.leereGruppe = function () {
+        return new Gruppe({
+            id: 0,
+            bezeichnung: "neu",
+            extras: {},
+            kennwort: "12345"
+        });
+    };
     return Gruppe;
 }());
 exports.Gruppe = Gruppe;
-//# sourceMappingURL=gruppe.js.map
+//# sourceMappingURL=gruppeBezeichnung.js.map

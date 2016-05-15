@@ -16,27 +16,15 @@ export class GroupsService {
         this.http = http;
     }
 
-    getGroups():Gruppe[] {
-        return [
-            {"id": 1, "bezeichnung": "8d", "sus":[]},
-            {"id": 2, "bezeichnung": "6e", "sus":[]},
-            {"id": 3, "bezeichnung": "5d", "sus":[]},
-            {"id": 4, "bezeichnung": "5b", "sus":[]}
-        ].map(g=> new Gruppe(g));
-    }
-
-    getGroupsHTTP():Observable<Gruppe[]> {
+    getGruppen():Observable<Gruppe[]> {
         let url=this.baseUrl + 'gruppen';
         return this.http.get(url)
-            .map(this.extractData)
+            .map(res => {
+                return res.json() || { }
+            })
             .catch(this.handleError);
     }
-    private extractData(res: Response) {
-        if (res.status < 200 || res.status >= 300) {
-            throw new Error('Bad response status: ' + res.status);
-        }
-        return res.json() || { };
-    }
+
     private handleError (error: any) {
         let errMsg = error.message || 'Server error';
         console.error(errMsg); // log to console instead

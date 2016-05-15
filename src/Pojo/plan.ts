@@ -1,7 +1,8 @@
 import {Tisch} from "./tisch";
 import {Sus} from "./sus";
-import {IPlan, IPlanMetadata} from "./i_plan";
+import {IPlan, IPlanMetadata, IPlanBeschreibung} from "./i_plan";
 import {ITisch} from "./i_cell_tisch";
+import {Gruppe} from "./gruppe";
 /**
  * Created by test on 29.12.2015.
  */
@@ -14,8 +15,13 @@ export class Plan {
         return this.data.id;
     }
 
-    get gruppe():string {
+    get gruppeBezeichnung():string {
         return this.data.gruppe;
+    }
+
+    set gruppe(gruppe:Gruppe) {
+        this.data.gruppe = gruppe.bezeichnung;
+        this.data.id = gruppe.id;
     }
 
     get nr():number {
@@ -26,90 +32,82 @@ export class Plan {
         return this.data.raum;
     }
 
+    set raum(raum:string) {
+        this.data.raum = raum;
+    }
+
     get start():string {
         return this.data.start;
+    }
+
+    set start(start:string) {
+        this.data.start = start;
     }
 
     get stop():string {
         return this.data.stop;
     }
 
+    set stop(stop:string) {
+        this.data.stop = stop;
+    }
+    
     private _tische:Tisch[];
-    private susHash:Sus[];
-
     private data:IPlanMetadata;
 
     constructor(data:IPlan) {
         this.data = data;
-        this.susHash = [];
-        for (var s of data.sus) {
-            this.susHash[s.id] = new Sus(s);
-        }
         this._tische =
-            data.tische.map(t => {
-                let sus:Sus = this.getSusFromTisch(t);
-                return new Tisch(t, sus);
-            });
-
+            data.tische.map(t =>  new Tisch(t));
     }
 
-    private getSusFromTisch(t:ITisch) {
-        var id:number = t.sus_id;
-        return id == 0 ? Sus.leererSus() : this.susHash[t.sus_id];
-    };
-
-    public getBelegteTischeList():Tisch[] {
+    public getBelegbareTischeList():Tisch[] {
         return this._tische.filter(t => t.belegbar);
     }
 
     public getSusList():Sus[] {
-        return Plan.filt(this.susHash);
-    }
-
-    public static filt(a:any[]):any[] { //entfernt "Löcher" aus den Hash
-        var b = [];
-        for (var i in a) {
-            b.push(a[i]);
-        }
-        return b;
+        return this.tische
+            .map(tisch => tisch.sus)
+            .filter(sus => sus.istLeer() == false);
     }
 
     public getJSON():string {
         return JSON.stringify(this.createVorlage());
     }
-    
-    public createVorlage():IPlan {        
+
+    public createVorlage():IPlan {
         return {
             id: this.data.id,
             gruppe: this.data.gruppe,
+            gruppe_id: this.data.gruppe_id,
             nr: this.data.nr,
             raum: this.data.raum,
             start: this.data.start,
             stop: this.data.stop,
-            tische: this.tische.map(t=>t.tischData),
-            sus: this.getSusList().map(s=>s.susData)
+            extras: this.data.extras,
+            tische: this.tische.map(t=>t.getTischVorlage())
         };
     }
 
-    getMinTischId() {
-        return Math.min.apply(Math, this.tische.map(t=>{return t.id}));
-    }
-    
-    public static createNewVorlage(anzahlTische:number) {
+    public static createNewVorlage(anzahlTische:number):IPlan {
         let vorlage:IPlan = {
-            id: -1,
-            gruppe: 'Gruppe',
-            nr: -1,
+            id: 0,
+            gruppe: 'neue Gruppe',
+            gruppe_id: 0,
+            nr: 0,
             raum: 'Raum',
             start: 'start',
             stop: 'stop',
-            tische:[],
-            sus: []
+            extras: {},
+            tische: []
         };
-        for (let i=0; i<=anzahlTische; i++) {
+        for (let i = 0; i < anzahlTische; i++) {
             vorlage.tische.push(Tisch.getLeereTischvorlage());
         }
         return vorlage;
-        
+    }
+
+    public static createEmptyPlan(anzahlTische:number=0):Plan {
+        return new Plan(this.createNewVorlage(anzahlTische));
     }
 }

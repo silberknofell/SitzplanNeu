@@ -8,49 +8,35 @@ import {Elem} from "./element";
  */
 @Injectable()
 export class Tisch extends Cell {
-    get tischData():ITisch {
-        return this._tischData;
-    }
-    private _sus;
+
     private _tischData:ITisch;
-    
-    get sus_id():number {
-        return this._tischData.sus_id  || 0;
-    }
+
     get sus():Sus {
-        return this._sus || Sus.leererSus();
+        return this._tischData.sus || Sus.leererSus();
     }
 
     set sus(value:Sus) {
-        this._sus = value;
-        this._tischData.sus_id = value.id;
+        this._tischData.sus = value;
     }
 
-    get id():number {
-        return this._tischData.id || 0;
-    }
-    
-    set id(value:number) {
-        this._tischData.id = value || 0;
-    }
     get belegbar():boolean {
-        return this._tischData.belegbar;
+        return this._tischData.typ == 0;
     }
 
     set belegbar(value:boolean) {
         if (this.istBelegt()) {
-            console.log("Tisch" + this._tischData.id + " kann Belegbarkeit nicht verlieren, da er bereits belegt ist. Schüler id:" + this._tischData.sus_id);
+            console.log("Tisch" + this._tischData.i + this._tischData.j + " kann Belegbarkeit nicht verlieren, da er bereits belegt ist. Schüler id:" + this._tischData.sus.id);
         } else {
-            this._tischData.belegbar = value;
+            this._tischData.typ = value ? 0 : 1;
         }
     }
 
-    constructor(data:ITisch, sus:Sus) {
+    constructor(data:ITisch) {
         super(data);
-        this._tischData=data;
+        this._tischData = data;
         this.typ = Elem.TYP_TISCH;
-        if (sus) {
-            this.sus = sus;
+        if (data.sus) {
+            this.sus = data.sus;
         } else {
             this.sus = Sus.leererSus();
         }
@@ -65,43 +51,53 @@ export class Tisch extends Cell {
     }
 
     public toggleBelegbar() {
-        this.belegbar = ! this.belegbar;
+        this.belegbar = !this.belegbar;
     }
 
     public getText():string {
-       if (this.belegbar)
-           return  this.sus.getShortName();
+        if (this.belegbar)
+            return this.sus.getShortName();
 
         return "- - -";
     }
 
     public removeSus():void {
-        this.sus =Sus.leererSus();
-        }
+        this.sus = Sus.leererSus();
+    }
 
     public setSus(sus:Sus):void {
         if (this.belegbar || sus.istLeer()) {
             this.sus = sus;
         } else {
-            console.log("Tisch" + this.id + " soll unerlaubt belegt werden. Schüler id:" + sus.id);
+            console.log("Tisch" + this.i + this.j + " soll unerlaubt belegt werden. Schüler id:" + sus.id);
         }
     }
 
 
     public toCell():Cell {
-        return new Cell({ i: this.i, j: this.j})
+        return new Cell({i: this.i, j: this.j})
     }
-    
-    public static getLeereTischvorlage() {
+
+    public static getLeereTischvorlage():ITisch {
         let vorlage = {
             i: 1,
             j: 1,
-            fest: false,
-            id: -1,
-            sus_id: 0,
-            belegbar: true,
+            sus: Sus.leererSus(),
             typ: Elem.TYP_TISCH
         };
         return vorlage;
+    }
+
+    public static leererTisch():Tisch {
+        return new Tisch(Tisch.getLeereTischvorlage());
+    }
+    
+    public getTischVorlage() {
+        return {
+            i: this.getI(),
+            j: this.getJ(),
+            typ: this.typ,
+            sus: JSON.stringify(this.sus.susData)
+        }
     }
 }

@@ -10,6 +10,7 @@ import {PlanComponent} from "./plan.component";
 import {IPlanBeschreibung} from "../Pojo/i_plan";
 import {PlanService} from "../plan.service";
 import {Gruppe} from "../Pojo/gruppe";
+import {Plan} from "../Pojo/plan";
 
 @Component({
     selector: 'plan-select',
@@ -23,9 +24,7 @@ import {Gruppe} from "../Pojo/gruppe";
     </li>
 </ul>
 </div>
-<plan
 
-></plan>
     `,
     directives: [],
     providers: [PlanService]
@@ -46,14 +45,14 @@ export class PlanSelectComponent {
 
     planService:PlanService;
     plaeneBeschreibungen:IPlanBeschreibung[] = [];
+    
     constructor(planService:PlanService) {
         this.planService = planService;
     }
 
     public beschreibungClick(description:IPlanBeschreibung) {
         let id:number = description.id;
-        
-        this.planComponent.setPlan(this.planService.readPlan(id));
+        this.planService.readPlan(id);           
     }
 
 

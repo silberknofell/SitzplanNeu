@@ -6,6 +6,8 @@ import {GroupsService} from "./../groups.service";
 import {Gruppe} from "./../Pojo/gruppe";
 import {GroupEditComponent} from "./group-edit.component";
 import {PlanSelectComponent} from "./plan-select.component";
+import {PlanComponent} from "./plan.component";
+import {PlanService} from "../plan.service";
 @Component({
     selector: 'group-select',
     template: `
@@ -20,14 +22,15 @@ import {PlanSelectComponent} from "./plan-select.component";
             [gruppe]="selectedGroup"
         ></group-edit>
         <plan-select
-            [gruppe]="selectedGroup"    
+             [gruppe]="selectedGroup"
         ></plan-select>
+        <plan></plan>
   `,
     styles: [`
 
   `],
-    directives: [GroupEditComponent, PlanSelectComponent],
-    providers: [GroupsService]
+    directives: [GroupEditComponent, PlanSelectComponent, PlanComponent],
+    providers: [GroupsService, PlanService]
 })
 
 export class GroupSelectComponent {
@@ -35,8 +38,8 @@ export class GroupSelectComponent {
     public gruppen:Gruppe[];
     public selectedGroup:Gruppe;
 
-    constructor(private groupsService:GroupsService) {
-        groupsService.getGroupsHTTP()
+    constructor(private groupsService:GroupsService, private planServie:PlanService) {
+        groupsService.getGruppen()
             .subscribe(
                 gruppen => {this.gruppen = gruppen;}
             );

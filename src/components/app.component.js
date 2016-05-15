@@ -24,7 +24,7 @@ var AppComponent = (function () {
             directives: [router_1.ROUTER_DIRECTIVES, plan_component_1.PlanComponent],
         }),
         router_1.RouteConfig([
-            { path: '/gruppe', name: 'Gruppe', component: group_select_component_1.GroupSelectComponent },
+            { path: '/gruppeBezeichnung', name: 'Gruppe', component: group_select_component_1.GroupSelectComponent },
             { path: '/plan', name: 'Plan', component: plan_component_1.PlanComponent },
         ]), 
         __metadata('design:paramtypes', [])

@@ -1,20 +1,10 @@
 "use strict";
 var tisch_1 = require("./tisch");
-var sus_1 = require("./sus");
 var Plan = (function () {
     function Plan(data) {
-        var _this = this;
         this.data = data;
-        this.susHash = [];
-        for (var _i = 0, _a = data.sus; _i < _a.length; _i++) {
-            var s = _a[_i];
-            this.susHash[s.id] = new sus_1.Sus(s);
-        }
         this._tische =
-            data.tische.map(function (t) {
-                var sus = _this.getSusFromTisch(t);
-                return new tisch_1.Tisch(t, sus);
-            });
+            data.tische.map(function (t) { return new tisch_1.Tisch(t); });
     }
     Object.defineProperty(Plan.prototype, "tische", {
         get: function () {
@@ -30,9 +20,17 @@ var Plan = (function () {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(Plan.prototype, "gruppe", {
+    Object.defineProperty(Plan.prototype, "gruppeBezeichnung", {
         get: function () {
             return this.data.gruppe;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Plan.prototype, "gruppe", {
+        set: function (gruppe) {
+            this.data.gruppe = gruppe.bezeichnung;
+            this.data.id = gruppe.id;
         },
         enumerable: true,
         configurable: true
@@ -48,12 +46,18 @@ var Plan = (function () {
         get: function () {
             return this.data.raum;
         },
+        set: function (raum) {
+            this.data.raum = raum;
+        },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(Plan.prototype, "start", {
         get: function () {
             return this.data.start;
+        },
+        set: function (start) {
+            this.data.start = start;
         },
         enumerable: true,
         configurable: true
@@ -62,26 +66,19 @@ var Plan = (function () {
         get: function () {
             return this.data.stop;
         },
+        set: function (stop) {
+            this.data.stop = stop;
+        },
         enumerable: true,
         configurable: true
     });
-    Plan.prototype.getSusFromTisch = function (t) {
-        var id = t.sus_id;
-        return id == 0 ? sus_1.Sus.leererSus() : this.susHash[t.sus_id];
-    };
-    ;
-    Plan.prototype.getBelegteTischeList = function () {
+    Plan.prototype.getBelegbareTischeList = function () {
         return this._tische.filter(function (t) { return t.belegbar; });
     };
     Plan.prototype.getSusList = function () {
-        return Plan.filt(this.susHash);
-    };
-    Plan.filt = function (a) {
-        var b = [];
-        for (var i in a) {
-            b.push(a[i]);
-        }
-        return b;
+        return this.tische
+            .map(function (tisch) { return tisch.sus; })
+            .filter(function (sus) { return sus.istLeer() == false; });
     };
     Plan.prototype.getJSON = function () {
         return JSON.stringify(this.createVorlage());
@@ -90,32 +87,35 @@ var Plan = (function () {
         return {
             id: this.data.id,
             gruppe: this.data.gruppe,
+            gruppe_id: this.data.gruppe_id,
             nr: this.data.nr,
             raum: this.data.raum,
             start: this.data.start,
             stop: this.data.stop,
-            tische: this.tische.map(function (t) { return t.tischData; }),
-            sus: this.getSusList().map(function (s) { return s.susData; })
+            extras: this.data.extras,
+            tische: this.tische.map(function (t) { return t.getTischVorlage(); })
         };
-    };
-    Plan.prototype.getMinTischId = function () {
-        return Math.min.apply(Math, this.tische.map(function (t) { return t.id; }));
     };
     Plan.createNewVorlage = function (anzahlTische) {
         var vorlage = {
-            id: -1,
-            gruppe: 'Gruppe',
-            nr: -1,
+            id: 0,
+            gruppe: 'neue Gruppe',
+            gruppe_id: 0,
+            nr: 0,
             raum: 'Raum',
             start: 'start',
             stop: 'stop',
-            tische: [],
-            sus: []
+            extras: {},
+            tische: []
         };
-        for (var i = 0; i <= anzahlTische; i++) {
+        for (var i = 0; i < anzahlTische; i++) {
             vorlage.tische.push(tisch_1.Tisch.getLeereTischvorlage());
         }
         return vorlage;
+    };
+    Plan.createEmptyPlan = function (anzahlTische) {
+        if (anzahlTische === void 0) { anzahlTische = 0; }
+        return new Plan(this.createNewVorlage(anzahlTische));
     };
     return Plan;
 }());

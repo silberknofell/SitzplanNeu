@@ -2,7 +2,7 @@
 var PlanManager = (function () {
     function PlanManager(plan) {
         this.sus = plan.getSusList();
-        this.tische = plan.getBelegteTischeList();
+        this.tische = plan.getBelegbareTischeList();
     }
     PlanManager.prototype.losen = function () {
         var anzSus = this.sus.length;

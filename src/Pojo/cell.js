@@ -19,6 +19,7 @@ var Cell = (function (_super) {
     __extends(Cell, _super);
     function Cell(data) {
         _super.call(this, element_1.Elem.TYP_LEERERPLATZ);
+        this.data = data;
         this.markierbar = true;
         this.data = data;
     }
@@ -38,16 +39,6 @@ var Cell = (function (_super) {
         },
         set: function (value) {
             this.data.i = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Cell.prototype, "fest", {
-        get: function () {
-            return this.data.fest;
-        },
-        set: function (value) {
-            this.data.fest = value;
         },
         enumerable: true,
         configurable: true

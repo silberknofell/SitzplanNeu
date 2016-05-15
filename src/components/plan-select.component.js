@@ -30,7 +30,7 @@ var PlanSelectComponent = (function () {
     });
     PlanSelectComponent.prototype.beschreibungClick = function (description) {
         var id = description.id;
-        this.planComponent.setPlan(this.planService.readPlan(id));
+        this.planService.readPlan(id);
     };
     PlanSelectComponent.prototype.getPlaeneBeschreibung = function () {
         var _this = this;
@@ -50,11 +50,11 @@ var PlanSelectComponent = (function () {
     __decorate([
         core_1.Input(), 
         __metadata('design:type', gruppe_1.Gruppe)
-    ], PlanSelectComponent.prototype, "gruppe", null);
+    ], PlanSelectComponent.prototype, "gruppeBezeichnung", null);
     PlanSelectComponent = __decorate([
         core_1.Component({
             selector: 'plan-select',
-            template: "<div id=\"plan-select\">\n<h1>PlanSelect</h1>\n<ul>\n    <li *ngFor=\"#description of plaeneBeschreibungen\"\n        [ngClass] = \"getCssClass()\"\n        (click)=\"beschreibungClick(description)\">\n        {{description.text}}\n    </li>\n</ul>\n</div>\n<plan\n\n></plan>\n    ",
+            template: "<div id=\"plan-select\">\n<h1>PlanSelect</h1>\n<ul>\n    <li *ngFor=\"#description of plaeneBeschreibungen\"\n        [ngClass] = \"getCssClass()\"\n        (click)=\"beschreibungClick(description)\">\n        {{description.text}}\n    </li>\n</ul>\n</div>\n\n    ",
             directives: [],
             providers: [plan_service_1.PlanService]
         }), 

@@ -1,5 +1,4 @@
 import {ICell} from "./i_cell_tisch";
-import {PlanLayout} from "../plan-layout";
 import {Injectable} from "angular2/core";
 import {Elem} from "./element";
 /**
@@ -21,16 +20,8 @@ export class Cell extends Elem implements ICell {
     set i(value:number) {
         this.data.i = value;
     }
-    set fest(value:boolean) {
-        this.data.fest = value;
-    }
-    get fest():boolean {
-        return this.data.fest;
-    }
     
-    private data:ICell;
-
-    constructor(data:ICell) {
+    constructor(private data:ICell) {
         super(Elem.TYP_LEERERPLATZ);
         this.markierbar = true;
         this.data = data;

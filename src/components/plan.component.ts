@@ -28,7 +28,7 @@ import {PlanInout} from "./plan-inout.component";
 <button (click)="deltaX(-50)">x-50</button>
 <button (click)="deltaY(50)">y+50</button>
 <button (click)="deltaY(-50)">y-50</button>
-
+<h1>Sitzplan</h1>
 <h1>Sitzplan {{plan.gruppe}} {{plan.raum}}</h1>
 <div class="plan"
      [style.width.px]="viewWidth()"
@@ -56,15 +56,13 @@ import {PlanInout} from "./plan-inout.component";
         [planComponent]="getPlanComponent()"
         [plan] = "plan"
 ></plan-inout>
-<plan-select
-        [planComponent]="getPlanComponent()"
-></plan-select>
+
 <lager
         [planComponent]="getPlanComponent()"
 ></lager>
   `,
-    inputs: ['readonly'],
-    directives: [CellComponent, LagerComponent, PlanSelectComponent, 
+    inputs: [],
+    directives: [CellComponent, LagerComponent,
                     PlanInout],
     providers: [PlanService],
 })
@@ -85,13 +83,13 @@ export class PlanComponent {
 
     constructor(planService:PlanService) {
         this.planService = planService;
-        this.setPlan(planService.readPlan(1));
-        PlanLayout.setIJ(this.plan);
-        this.buildComponents();
+        this.setPlan(Plan.createEmptyPlan());
+        planService.callbackNewPlan = ((plan)=>this.setPlan(plan));
     }
 
     public setPlan(plan:Plan) {
         this.plan = plan;
+        alert(JSON.stringify(plan));
         PlanLayout.setIJ(this.plan);
         this.buildComponents();
     }
@@ -191,16 +189,8 @@ export class PlanComponent {
     private neuerTischNachCheck(element:Elem):void {
         if (element.typ == Elem.TYP_LEERERPLATZ) {
             var cell:Cell = <Cell>element;
-            let newId:number = Math.min(this.plan.getMinTischId(), 0)-1;
-            var tischVorlage:ITisch = {
-                i: cell.getI(),
-                j: cell.getJ(),
-                belegbar: true,
-                sus_id: 0,
-                id: newId
-        }
-            ;
-            var neuerTisch = new Tisch(tischVorlage, null);
+            var neuerTisch:Tisch = Tisch.leererTisch();
+            neuerTisch.setIJ(cell.getI(), cell.getJ())
             this.plan.tische.push(neuerTisch);
             this.cells[PlanLayout.getIndex(cell)] = neuerTisch;
         }

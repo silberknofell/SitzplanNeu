@@ -10,32 +10,19 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('angular2/core');
 var http_1 = require('angular2/http');
-var gruppe_1 = require("./Pojo/gruppe");
 var Observable_1 = require("rxjs/Observable");
 var GroupsService = (function () {
     function GroupsService(http) {
         this.baseUrl = 'http://geihe.net/sitzplan2/rest/';
         this.http = http;
     }
-    GroupsService.prototype.getGroups = function () {
-        return [
-            { "id": 1, "bezeichnung": "8d", "sus": [] },
-            { "id": 2, "bezeichnung": "6e", "sus": [] },
-            { "id": 3, "bezeichnung": "5d", "sus": [] },
-            { "id": 4, "bezeichnung": "5b", "sus": [] }
-        ].map(function (g) { return new gruppe_1.Gruppe(g); });
-    };
-    GroupsService.prototype.getGroupsHTTP = function () {
+    GroupsService.prototype.getGruppen = function () {
         var url = this.baseUrl + 'gruppen';
         return this.http.get(url)
-            .map(this.extractData)
+            .map(function (res) {
+            return res.json() || {};
+        })
             .catch(this.handleError);
-    };
-    GroupsService.prototype.extractData = function (res) {
-        if (res.status < 200 || res.status >= 300) {
-            throw new Error('Bad response status: ' + res.status);
-        }
-        return res.json() || {};
     };
     GroupsService.prototype.handleError = function (error) {
         var errMsg = error.message || 'Server error';

@@ -21,7 +21,7 @@ import 'rxjs/Rx';
 })
 @RouteConfig([
     //{path: '/', redirectTo: ['GroupSelect'] },
-    {path: '/gruppe',   name: 'Gruppe', component: GroupSelectComponent},
+    {path: '/gruppeBezeichnung',   name: 'Gruppe', component: GroupSelectComponent},
     {path: '/plan',     name: 'Plan',   component: PlanComponent},
     //{path: '/detail/:id', bezeichnung: 'HeroDetail', component: HeroDetailComponent}
 ])

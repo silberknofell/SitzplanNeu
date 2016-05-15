@@ -19,62 +19,37 @@ var core_1 = require("angular2/core");
 var element_1 = require("./element");
 var Tisch = (function (_super) {
     __extends(Tisch, _super);
-    function Tisch(data, sus) {
+    function Tisch(data) {
         _super.call(this, data);
         this._tischData = data;
         this.typ = element_1.Elem.TYP_TISCH;
-        if (sus) {
-            this.sus = sus;
+        if (data.sus) {
+            this.sus = data.sus;
         }
         else {
             this.sus = sus_1.Sus.leererSus();
         }
     }
-    Object.defineProperty(Tisch.prototype, "tischData", {
-        get: function () {
-            return this._tischData;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Tisch.prototype, "sus_id", {
-        get: function () {
-            return this._tischData.sus_id || 0;
-        },
-        enumerable: true,
-        configurable: true
-    });
     Object.defineProperty(Tisch.prototype, "sus", {
         get: function () {
-            return this._sus || sus_1.Sus.leererSus();
+            return this._tischData.sus || sus_1.Sus.leererSus();
         },
         set: function (value) {
-            this._sus = value;
-            this._tischData.sus_id = value.id;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Tisch.prototype, "id", {
-        get: function () {
-            return this._tischData.id || 0;
-        },
-        set: function (value) {
-            this._tischData.id = value || 0;
+            this._tischData.sus = value;
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(Tisch.prototype, "belegbar", {
         get: function () {
-            return this._tischData.belegbar;
+            return this._tischData.typ == 0;
         },
         set: function (value) {
             if (this.istBelegt()) {
-                console.log("Tisch" + this._tischData.id + " kann Belegbarkeit nicht verlieren, da er bereits belegt ist. Schüler id:" + this._tischData.sus_id);
+                console.log("Tisch" + this._tischData.i + this._tischData.j + " kann Belegbarkeit nicht verlieren, da er bereits belegt ist. Schüler id:" + this._tischData.sus.id);
             }
             else {
-                this._tischData.belegbar = value;
+                this._tischData.typ = value ? 0 : 1;
             }
         },
         enumerable: true,
@@ -102,7 +77,7 @@ var Tisch = (function (_super) {
             this.sus = sus;
         }
         else {
-            console.log("Tisch" + this.id + " soll unerlaubt belegt werden. Schüler id:" + sus.id);
+            console.log("Tisch" + this.i + this.j + " soll unerlaubt belegt werden. Schüler id:" + sus.id);
         }
     };
     Tisch.prototype.toCell = function () {
@@ -112,17 +87,25 @@ var Tisch = (function (_super) {
         var vorlage = {
             i: 1,
             j: 1,
-            fest: false,
-            id: -1,
-            sus_id: 0,
-            belegbar: true,
+            sus: sus_1.Sus.leererSus(),
             typ: element_1.Elem.TYP_TISCH
         };
         return vorlage;
     };
+    Tisch.leererTisch = function () {
+        return new Tisch(Tisch.getLeereTischvorlage());
+    };
+    Tisch.prototype.getTischVorlage = function () {
+        return {
+            i: this.getI(),
+            j: this.getJ(),
+            typ: this.typ,
+            sus: JSON.stringify(this.sus.susData)
+        };
+    };
     Tisch = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [Object, sus_1.Sus])
+        __metadata('design:paramtypes', [Object])
     ], Tisch);
     return Tisch;
 }(cell_1.Cell));

@@ -5,8 +5,7 @@ export interface ISus {
     id:number;
     name:string;
     nachname:string;
-    gruppe_id?:number;
-    punkte?: number;
-    prefs?:string[];
-    archiv?:number;
-}
+    gruppe_id:number;
+    aktiv:number;
+    extras:any;
+    }

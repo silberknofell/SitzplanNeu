@@ -30,32 +30,31 @@ export class Sus {
     get susData():ISus {
         return this.data;
     }
-    private data:ISus;
 
-    constructor(data:ISus) {
+    constructor(private data:ISus) {
         this.data = data;
     }
 
     getShortName():string {
-        return this.data.name;
+        return this.name;
     }
 
     getLongName():string {
-        return this.data.nachname + ", " + this.data.name;
+        return this.nachname + ", " + this.name;
     }
 
     static
-    leererSus():Sus {
-        return new Sus({id: 0, name: "", nachname: ""});
+    leererSus(gruppeId=0):Sus {
+        return new Sus({
+            id: 0, 
+            name: "", 
+            nachname: "", 
+            gruppe_id: gruppeId, 
+            aktiv: 1,
+            extras:{}});
     }
 
     istLeer():boolean {
-        return this.data.id == 0;
+        return this.id == 0;
     }
-
-    getId():number {
-        return this.data.id;
-    }
-    
-    
 }

@@ -25,10 +25,8 @@ export class SusService {
     }
 
     private extractSus(res:Response) {
-        if (res.status < 200 || res.status >= 300) {
-            throw new Error('Bad response status: ' + res.status);
-        }
-        return res.json().map(s => new Sus(s)) || {};
+        return res.json()
+                .map(s => new Sus(s)) || {};
     }
 
     private handleError(error:any) {
@@ -45,7 +43,6 @@ export class SusService {
         let options = new RequestOptions({headers: headers});
 
         return this.http.post(url, body, options)
-            // .map(this.extractSus)
             .catch(this.handleError);
     }
 
