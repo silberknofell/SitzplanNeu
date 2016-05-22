@@ -8,9 +8,10 @@ import {Component, Input} from 'angular2/core';
 
 import {PlanComponent} from "./plan.component";
 import {IPlanBeschreibung} from "../Pojo/i_plan";
-import {PlanService} from "../plan.service";
+import {PlanService} from "../services/plan.service";
 import {Gruppe} from "../Pojo/gruppe";
 import {Plan} from "../Pojo/plan";
+import {Sus} from "../Pojo/sus";
 
 @Component({
     selector: 'plan-select',
@@ -24,10 +25,10 @@ import {Plan} from "../Pojo/plan";
     </li>
 </ul>
 </div>
-
+<button (click)="newClick()">Neuer Plan</button>
     `,
     directives: [],
-    providers: [PlanService]
+    providers: []
 })
 
 export class PlanSelectComponent {
@@ -54,7 +55,10 @@ export class PlanSelectComponent {
         let id:number = description.id;
         this.planService.readPlan(id);           
     }
-
+    public newClick() {
+        let sus:Sus[] ;
+        let plan:Plan = this.planService.getNewPlan(sus);
+    }
 
     public getPlaeneBeschreibung() {
         if (this._gruppe) {

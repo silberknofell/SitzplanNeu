@@ -12,7 +12,7 @@ export class Tisch extends Cell {
     private _tischData:ITisch;
 
     get sus():Sus {
-        return this._tischData.sus || Sus.leererSus();
+        return this._tischData.sus;
     }
 
     set sus(value:Sus) {
@@ -20,26 +20,21 @@ export class Tisch extends Cell {
     }
 
     get belegbar():boolean {
-        return this._tischData.typ == 0;
+        return this._tischData.typ == Tisch.TYP_TISCH_BELEGBAR;
     }
 
     set belegbar(value:boolean) {
         if (this.istBelegt()) {
             console.log("Tisch" + this._tischData.i + this._tischData.j + " kann Belegbarkeit nicht verlieren, da er bereits belegt ist. Schüler id:" + this._tischData.sus.id);
         } else {
-            this._tischData.typ = value ? 0 : 1;
+            this._tischData.typ = value ? Tisch.TYP_TISCH_BELEGBAR : Tisch.TYP_TISCH_IMMER_FREI;
         }
     }
 
     constructor(data:ITisch) {
         super(data);
         this._tischData = data;
-        this.typ = Elem.TYP_TISCH;
-        if (data.sus) {
-            this.sus = data.sus;
-        } else {
-            this.sus = Sus.leererSus();
-        }
+        this.typ = Elem.TYP_TISCH_BELEGBAR;
     }
 
     public istBelegt():boolean {
@@ -83,7 +78,7 @@ export class Tisch extends Cell {
             i: 1,
             j: 1,
             sus: Sus.leererSus(),
-            typ: Elem.TYP_TISCH
+            typ: Elem.TYP_TISCH_BELEGBAR
         };
         return vorlage;
     }
@@ -92,12 +87,12 @@ export class Tisch extends Cell {
         return new Tisch(Tisch.getLeereTischvorlage());
     }
     
-    public getTischVorlage() {
+    public getTischVorlage():ITisch {
         return {
             i: this.getI(),
             j: this.getJ(),
             typ: this.typ,
-            sus: JSON.stringify(this.sus.susData)
+            sus: this.sus
         }
     }
 }

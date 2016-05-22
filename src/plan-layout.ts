@@ -45,10 +45,10 @@ export class PlanLayout {
         this.maxJ = 1;
         for (var tisch of plan.tische) {
             if (tisch.i > this.maxI) {
-                this.maxI = tisch.i
+                this.maxI = 1*tisch.i
             };
             if (tisch.j > this.maxJ) {
-                this.maxJ = tisch.j
+                this.maxJ = 1*tisch.j
             }
         }
 

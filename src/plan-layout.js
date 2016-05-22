@@ -32,11 +32,11 @@ var PlanLayout = (function () {
         for (var _i = 0, _a = plan.tische; _i < _a.length; _i++) {
             var tisch = _a[_i];
             if (tisch.i > this.maxI) {
-                this.maxI = tisch.i;
+                this.maxI = 1 * tisch.i;
             }
             ;
             if (tisch.j > this.maxJ) {
-                this.maxJ = tisch.j;
+                this.maxJ = 1 * tisch.j;
             }
         }
     };

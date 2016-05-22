@@ -5,7 +5,7 @@
  * Created by test on 28.12.2015.
  */
 import {Component, Input} from 'angular2/core';
-import {SusService} from "../sus.service";
+import {SusService} from "../services/sus.service";
 import {Sus} from "../Pojo/sus";
 import {EditSusComponent} from "./sus-edit.component";
 

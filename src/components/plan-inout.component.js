@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require("angular2/core");
-var plan_service_1 = require("../plan.service");
+var plan_service_1 = require("../services/plan.service");
 var PlanInout = (function () {
     function PlanInout(planservice) {
         this.planService = planservice;
@@ -19,11 +19,6 @@ var PlanInout = (function () {
     };
     PlanInout.prototype.copyClick = function () {
     };
-    PlanInout.prototype.newClick = function () {
-        var sus = this.plan.getSusList();
-        var plan = this.planService.getNewPlan(sus);
-    };
-    ;
     PlanInout.prototype.importClick = function () {
         var planVorlage = JSON.parse(this.austausch);
     };
@@ -33,9 +28,9 @@ var PlanInout = (function () {
     PlanInout = __decorate([
         core_1.Component({
             selector: 'plan-inout',
-            template: "<div>\n            <textarea [(ngModel)]=\"austausch\"></textarea>\n            <button (click)=\"importClick()\">Import</button>\n            <button (click)=\"exportClick()\">Export</button>\n            <button (click)=\"saveClick()\">Speichern</button>\n            <button (click)=\"copyClick()\">PlanCopy</button>\n            <button (click)=\"newClick()\">Neuer Plan</button>\n        </div>\n    ",
+            template: "<div>\n            <textarea [(ngModel)]=\"austausch\"></textarea>\n            <button (click)=\"importClick()\">Import</button>\n            <button (click)=\"exportClick()\">Export</button>\n            <button (click)=\"saveClick()\">Speichern</button>\n            <button (click)=\"copyClick()\">PlanCopy</button>\n        </div>\n    ",
             directives: [],
-            providers: [plan_service_1.PlanService],
+            providers: [],
             inputs: ['planComponent', 'plan']
         }), 
         __metadata('design:paramtypes', [plan_service_1.PlanService])

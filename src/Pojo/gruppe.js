@@ -28,4 +28,4 @@ var Gruppe = (function () {
     return Gruppe;
 }());
 exports.Gruppe = Gruppe;
-//# sourceMappingURL=gruppeBezeichnung.js.map
+//# sourceMappingURL=gruppe.js.map

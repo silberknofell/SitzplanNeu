@@ -56,13 +56,17 @@ var Sus = (function () {
     };
     Sus.leererSus = function (gruppeId) {
         if (gruppeId === void 0) { gruppeId = 0; }
-        return new Sus({
+        return new Sus(Sus.leererISus(gruppeId));
+    };
+    Sus.leererISus = function (gruppeId) {
+        if (gruppeId === void 0) { gruppeId = 0; }
+        return {
             id: 0,
             name: "",
             nachname: "",
             gruppe_id: gruppeId,
             aktiv: 1,
-            extras: {} });
+            extras: {} };
     };
     Sus.prototype.istLeer = function () {
         return this.id == 0;

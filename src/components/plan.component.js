@@ -10,7 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require("angular2/core");
 var plan_1 = require("./../Pojo/plan");
-var plan_service_1 = require("../plan.service");
+var plan_service_1 = require("../services/plan.service");
 var cell_component_1 = require("./cell.component");
 var tisch_1 = require("../Pojo/tisch");
 var cell_1 = require("../Pojo/cell");
@@ -36,7 +36,6 @@ var PlanComponent = (function () {
     }
     PlanComponent.prototype.setPlan = function (plan) {
         this.plan = plan;
-        alert(JSON.stringify(plan));
         plan_layout_1.PlanLayout.setIJ(this.plan);
         this.buildComponents();
     };
@@ -90,7 +89,7 @@ var PlanComponent = (function () {
             this.markierung.resetMarkierung();
         }
         else {
-            if (element.typ == element_1.Elem.TYP_TISCH || element.typ == element_1.Elem.TYP_LAGER) {
+            if (element.typ == element_1.Elem.TYP_TISCH_BELEGBAR || element.typ == element_1.Elem.TYP_LAGER) {
                 this.markierung.setzeMarkierung(element);
             }
         }
@@ -103,7 +102,7 @@ var PlanComponent = (function () {
         else if (markiert.typ == element_1.Elem.TYP_LAGER) {
             this.neuerTischNachCheck(element);
         }
-        else if (markiert.typ == element_1.Elem.TYP_TISCH) {
+        else if (markiert.typ == element_1.Elem.TYP_TISCH_BELEGBAR) {
             if (element.typ == element_1.Elem.TYP_LAGER) {
                 this.entferneTischNachCheck(markiert);
             }
@@ -112,8 +111,8 @@ var PlanComponent = (function () {
         }
     };
     PlanComponent.prototype.tauscheNachCheck = function (elem1, elem2) {
-        if ((elem1.typ == element_1.Elem.TYP_LEERERPLATZ || elem1.typ == element_1.Elem.TYP_TISCH) &&
-            (elem1.typ == element_1.Elem.TYP_LEERERPLATZ || elem1.typ == element_1.Elem.TYP_TISCH)) {
+        if ((elem1.typ == element_1.Elem.TYP_LEERERPLATZ || elem1.typ == element_1.Elem.TYP_TISCH_BELEGBAR) &&
+            (elem1.typ == element_1.Elem.TYP_LEERERPLATZ || elem1.typ == element_1.Elem.TYP_TISCH_BELEGBAR)) {
             var cell1 = elem1;
             var cell2 = elem2;
             this.swap(cell1, cell2);
@@ -129,12 +128,12 @@ var PlanComponent = (function () {
         }
     };
     PlanComponent.prototype.clickAufSelbesElement = function (element) {
-        if (element.typ == element_1.Elem.TYP_TISCH) {
+        if (element.typ == element_1.Elem.TYP_TISCH_BELEGBAR) {
             element.toggleBelegbar();
         }
     };
     PlanComponent.prototype.entferneTischNachCheck = function (entferne) {
-        if (entferne.typ != element_1.Elem.TYP_TISCH)
+        if (entferne.typ != element_1.Elem.TYP_TISCH_BELEGBAR)
             return;
         var tisch = entferne;
         if (tisch.istBelegt())
@@ -166,6 +165,10 @@ var PlanComponent = (function () {
     PlanComponent.prototype.deltaY = function (delta) {
         plan_layout_1.PlanLayout.viewHeight = plan_layout_1.PlanLayout.viewHeight + delta;
     };
+    __decorate([
+        core_1.Input(), 
+        __metadata('design:type', Boolean)
+    ], PlanComponent.prototype, "readonly", void 0);
     PlanComponent = __decorate([
         core_1.Component({
             selector: 'plan',
@@ -173,7 +176,7 @@ var PlanComponent = (function () {
             inputs: [],
             directives: [cell_component_1.CellComponent, lager_component_1.LagerComponent,
                 plan_inout_component_1.PlanInout],
-            providers: [plan_service_1.PlanService],
+            providers: [],
         }), 
         __metadata('design:paramtypes', [plan_service_1.PlanService])
     ], PlanComponent);

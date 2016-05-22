@@ -4,13 +4,13 @@
 /**
  * Created by test on 28.12.2015.
  */
-import {Injectable} from 'angular2/core';
-import {Http, Response} from 'angular2/http';
-import {Plan} from "./Pojo/plan";
-import {IPlan, IPlanMetadata, IPlanBeschreibung} from "./Pojo/i_plan";
-import {Sus} from "./Pojo/sus";
-import {PlanAnordnung} from "./plan-anordnung";
-import {PlanManager} from "./plan-manager";
+import {Injectable} from "angular2/core";
+import {Http, Response, Headers, RequestOptions} from "angular2/http";
+import {Plan} from "../Pojo/plan";
+import {IPlan, IPlanBeschreibung} from "../Pojo/i_plan";
+import {Sus} from "../Pojo/sus";
+import {PlanAnordnung} from "../plan-anordnung";
+import {PlanManager} from "../plan-manager";
 import {Observable} from "rxjs/Observable";
 
 
@@ -19,8 +19,10 @@ export class PlanService {
     private baseUrl:string = 'http://geihe.net/sitzplan2/rest/';
     private http:Http;
     private _callbackNewPlan: (plan:Plan) => void;
+    private abc="ABC";
     set callbackNewPlan(value:(plan:Plan)=>void) {
         this._callbackNewPlan = value;
+        this.abc="def";
     }
 
     constructor(http:Http) {
@@ -53,19 +55,24 @@ export class PlanService {
     }
 
     private getMaxNr():number {
-        // let nrs:number[] = this.getPlaeneBeschreibungLocal()
-        //     .map(description=> {
-        //             return description.nr
-        //         }
-        //     );
-        // return Math.max.apply(Math, nrs);
         return 99;
     }
 
     public savePlanVorlage(iPlan:IPlan) {
-        let key:string = "_plan" + iPlan.id;
-        window.localStorage
-            .setItem(key, JSON.stringify(iPlan));
+        let url = this.baseUrl + 'plan';
+        let planSQL:any = iPlan;
+        planSQL.tische.forEach(t => {
+            t.sus_id = t.sus.id;
+            delete t.sus;
+        });
+        let body = JSON.stringify(planSQL);
+
+        let headers = new Headers({'Content-Type': 'application/json'});
+        let options = new RequestOptions({headers: headers});
+
+        return this.http.post(url, body, options)
+            .catch(this.handleError)
+            .subscribe();
     }
 
     public readPlan(plan_id:number):void{
@@ -81,6 +88,7 @@ export class PlanService {
     private extractPlan(res:Response):Plan {
         let planVorlage = res.json();
         planVorlage.extras = JSON.parse(planVorlage.extras);
+        planVorlage.tische.forEach( t => {t.sus = new Sus(t.sus)});
         return new Plan(planVorlage);
     }
 

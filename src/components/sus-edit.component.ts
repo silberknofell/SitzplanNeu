@@ -9,7 +9,7 @@
  */
 import {Component, Input} from 'angular2/core';
 import {Sus} from "../Pojo/sus";
-import {SusService} from "../sus.service";
+import {SusService} from "../services/sus.service";
 
 @Component({
     selector: 'edit-sus',
@@ -41,7 +41,7 @@ export class EditSusComponent {
 
     set sus(value:Sus) {
         this._sus = value || Sus.leererSus();
-        this._sus.gruppe_id = this.gruppe_id
+        this._sus.gruppe_id = this.gruppe_id;
     }
 
     constructor(susService:SusService) {

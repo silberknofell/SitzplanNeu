@@ -2,12 +2,12 @@
  * Created by test on 28.12.2015.
  */
 import {Component} from 'angular2/core';
-import {GroupsService} from "./../groups.service";
+import {GroupsService} from "../services/groups.service";
 import {Gruppe} from "./../Pojo/gruppe";
 import {GroupEditComponent} from "./group-edit.component";
 import {PlanSelectComponent} from "./plan-select.component";
 import {PlanComponent} from "./plan.component";
-import {PlanService} from "../plan.service";
+import {PlanService} from "../services/plan.service";
 @Component({
     selector: 'group-select',
     template: `
@@ -30,7 +30,7 @@ import {PlanService} from "../plan.service";
 
   `],
     directives: [GroupEditComponent, PlanSelectComponent, PlanComponent],
-    providers: [GroupsService, PlanService]
+    providers: [GroupsService]
 })
 
 export class GroupSelectComponent {
@@ -48,5 +48,4 @@ export class GroupSelectComponent {
     select (group:Gruppe) {
         this.selectedGroup = group;
     }
-
 }

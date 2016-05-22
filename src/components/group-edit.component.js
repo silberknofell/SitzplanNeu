@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require("angular2/core");
-var sus_service_1 = require("../sus.service");
+var sus_service_1 = require("../services/sus.service");
 var gruppe_1 = require("../Pojo/gruppe");
 var sus_select_component_1 = require("./sus-select.component");
 var GroupEditComponent = (function () {
@@ -54,7 +54,7 @@ var GroupEditComponent = (function () {
         core_1.Input(), 
         __metadata('design:type', gruppe_1.Gruppe), 
         __metadata('design:paramtypes', [gruppe_1.Gruppe])
-    ], GroupEditComponent.prototype, "gruppeBezeichnung", null);
+    ], GroupEditComponent.prototype, "gruppe", null);
     GroupEditComponent = __decorate([
         core_1.Component({
             selector: 'group-edit',

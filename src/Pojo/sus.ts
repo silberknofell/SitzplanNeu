@@ -1,10 +1,10 @@
 import {ISus} from "./i_sus";
 export class Sus {
-    
+
     set gruppe_id(value:number) {
         this.data.gruppe_id = value;
     }
-    
+
     get name():string {
         return this.data.name;
     }
@@ -20,6 +20,7 @@ export class Sus {
     set nachname(value:string) {
         this.data.nachname = value;
     }
+
     get id():number {
         return this.data.id;
     }
@@ -27,6 +28,7 @@ export class Sus {
     set id(value:number) {
         this.data.id = value;
     }
+
     get susData():ISus {
         return this.data;
     }
@@ -35,23 +37,26 @@ export class Sus {
         this.data = data;
     }
 
-    getShortName():string {
+    public getShortName():string {
         return this.name;
     }
 
-    getLongName():string {
+    public getLongName():string {
         return this.nachname + ", " + this.name;
     }
 
-    static
-    leererSus(gruppeId=0):Sus {
-        return new Sus({
-            id: 0, 
-            name: "", 
-            nachname: "", 
-            gruppe_id: gruppeId, 
+    static leererSus(gruppeId = 0):Sus {
+        return new Sus(Sus.leererISus(gruppeId));
+    }
+
+    static leererISus(gruppeId=0):ISus {
+        return {
+            id: 0,
+            name: "",
+            nachname: "",
+            gruppe_id: gruppeId,
             aktiv: 1,
-            extras:{}});
+            extras:{}};
     }
 
     istLeer():boolean {

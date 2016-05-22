@@ -10,7 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('angular2/core');
 var plan_component_1 = require("./plan.component");
-var plan_service_1 = require("../plan.service");
+var plan_service_1 = require("../services/plan.service");
 var gruppe_1 = require("../Pojo/gruppe");
 var PlanSelectComponent = (function () {
     function PlanSelectComponent(planService) {
@@ -32,6 +32,10 @@ var PlanSelectComponent = (function () {
         var id = description.id;
         this.planService.readPlan(id);
     };
+    PlanSelectComponent.prototype.newClick = function () {
+        var sus;
+        var plan = this.planService.getNewPlan(sus);
+    };
     PlanSelectComponent.prototype.getPlaeneBeschreibung = function () {
         var _this = this;
         if (this._gruppe) {
@@ -50,13 +54,13 @@ var PlanSelectComponent = (function () {
     __decorate([
         core_1.Input(), 
         __metadata('design:type', gruppe_1.Gruppe)
-    ], PlanSelectComponent.prototype, "gruppeBezeichnung", null);
+    ], PlanSelectComponent.prototype, "gruppe", null);
     PlanSelectComponent = __decorate([
         core_1.Component({
             selector: 'plan-select',
-            template: "<div id=\"plan-select\">\n<h1>PlanSelect</h1>\n<ul>\n    <li *ngFor=\"#description of plaeneBeschreibungen\"\n        [ngClass] = \"getCssClass()\"\n        (click)=\"beschreibungClick(description)\">\n        {{description.text}}\n    </li>\n</ul>\n</div>\n\n    ",
+            template: "<div id=\"plan-select\">\n<h1>PlanSelect</h1>\n<ul>\n    <li *ngFor=\"#description of plaeneBeschreibungen\"\n        [ngClass] = \"getCssClass()\"\n        (click)=\"beschreibungClick(description)\">\n        {{description.text}}\n    </li>\n</ul>\n</div>\n<button (click)=\"newClick()\">Neuer Plan</button>\n    ",
             directives: [],
-            providers: [plan_service_1.PlanService]
+            providers: []
         }), 
         __metadata('design:paramtypes', [plan_service_1.PlanService])
     ], PlanSelectComponent);

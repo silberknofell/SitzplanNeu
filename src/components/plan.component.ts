@@ -1,21 +1,18 @@
 /**
  * Created by test on 31.12.2015.
  */
-import {Component} from "angular2/core";
+import {Component, Input} from "angular2/core";
 import {Plan} from "./../Pojo/plan";
-import {PlanService} from "../plan.service";
+import {PlanService} from "../services/plan.service";
 import {CellComponent} from "./cell.component";
 import {Tisch} from "../Pojo/tisch";
 import {Cell} from "../Pojo/cell";
 import {PlanLayout} from "../plan-layout";
-import {ITisch} from "../Pojo/i_cell_tisch";
 import {Markierung} from "../Pojo/markierung";
 import {PlanManager} from "../plan-manager";
 import {Elem} from "../Pojo/element";
 import {LagerComponent} from "./lager.component";
-import {IPlanBeschreibung, IPlan} from "../Pojo/i_plan";
 import {PlanAnordnung} from "../plan-anordnung";
-import {PlanSelectComponent} from "./plan-select.component";
 import {PlanInout} from "./plan-inout.component";
 
 @Component({
@@ -64,12 +61,11 @@ import {PlanInout} from "./plan-inout.component";
     inputs: [],
     directives: [CellComponent, LagerComponent,
                     PlanInout],
-    providers: [PlanService],
+    providers: [],
 })
 
 export class PlanComponent {
-
-    readonly:boolean = false;
+    @Input() readonly:boolean = false;
     private plan:Plan;
     viewWidth = PlanLayout.getViewWidth;
     viewHeight = PlanLayout.getViewHeight;
@@ -79,7 +75,6 @@ export class PlanComponent {
     cells:Cell[] = [];
     markierung:Markierung;
     planService:PlanService;
-    austausch:string;
 
     constructor(planService:PlanService) {
         this.planService = planService;
@@ -89,7 +84,6 @@ export class PlanComponent {
 
     public setPlan(plan:Plan) {
         this.plan = plan;
-        alert(JSON.stringify(plan));
         PlanLayout.setIJ(this.plan);
         this.buildComponents();
     }
@@ -156,7 +150,7 @@ export class PlanComponent {
             this.markierung.resetMarkierung();
         }
         else { //noch nichts markiert
-            if (element.typ == Elem.TYP_TISCH || element.typ == Elem.TYP_LAGER) {
+            if (element.typ == Elem.TYP_TISCH_BELEGBAR || element.typ == Elem.TYP_LAGER) {
                 this.markierung.setzeMarkierung(element);
             }
         }
@@ -168,7 +162,7 @@ export class PlanComponent {
             this.clickAufSelbesElement(element);
         } else if (markiert.typ == Elem.TYP_LAGER) {
             this.neuerTischNachCheck(element)
-        } else if (markiert.typ == Elem.TYP_TISCH) {
+        } else if (markiert.typ == Elem.TYP_TISCH_BELEGBAR) {
             if (element.typ == Elem.TYP_LAGER) {
                 this.entferneTischNachCheck(markiert);
             } else this.tauscheNachCheck(markiert, element);
@@ -177,8 +171,8 @@ export class PlanComponent {
 
     private tauscheNachCheck(elem1:Elem, elem2:Elem):void {
         if (
-            (elem1.typ == Elem.TYP_LEERERPLATZ || elem1.typ == Elem.TYP_TISCH) &&
-            (elem1.typ == Elem.TYP_LEERERPLATZ || elem1.typ == Elem.TYP_TISCH)
+            (elem1.typ == Elem.TYP_LEERERPLATZ || elem1.typ == Elem.TYP_TISCH_BELEGBAR) &&
+            (elem1.typ == Elem.TYP_LEERERPLATZ || elem1.typ == Elem.TYP_TISCH_BELEGBAR)
         ) {
             var cell1:Cell = <Cell>elem1;
             var cell2:Cell = <Cell>elem2;
@@ -197,13 +191,13 @@ export class PlanComponent {
     }
 
     private clickAufSelbesElement(element:Elem):void {
-        if (element.typ == Elem.TYP_TISCH) {
+        if (element.typ == Elem.TYP_TISCH_BELEGBAR) {
             (<Tisch>element).toggleBelegbar();
         }
     }
 
     private entferneTischNachCheck(entferne:Elem):void {
-        if (entferne.typ != Elem.TYP_TISCH) return;
+        if (entferne.typ != Elem.TYP_TISCH_BELEGBAR) return;
         var tisch:Tisch = <Tisch>entferne;
         if (tisch.istBelegt())  return;
         var neuCell:Cell = tisch.toCell();

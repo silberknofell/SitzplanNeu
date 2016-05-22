@@ -51,14 +51,14 @@ export class Plan {
     set stop(stop:string) {
         this.data.stop = stop;
     }
-    
+
     private _tische:Tisch[];
     private data:IPlanMetadata;
 
     constructor(data:IPlan) {
         this.data = data;
         this._tische =
-            data.tische.map(t =>  new Tisch(t));
+            data.tische.map(t => new Tisch(t));
     }
 
     public getBelegbareTischeList():Tisch[] {
@@ -75,8 +75,8 @@ export class Plan {
         return JSON.stringify(this.createVorlage());
     }
 
-    public createVorlage():IPlan {
-        return {
+    public createVorlage():IPlan {        
+         return {
             id: this.data.id,
             gruppe: this.data.gruppe,
             gruppe_id: this.data.gruppe_id,
@@ -84,7 +84,7 @@ export class Plan {
             raum: this.data.raum,
             start: this.data.start,
             stop: this.data.stop,
-            extras: this.data.extras,
+            extras: JSON.stringify(this.data.extras),
             tische: this.tische.map(t=>t.getTischVorlage())
         };
     }
@@ -107,7 +107,7 @@ export class Plan {
         return vorlage;
     }
 
-    public static createEmptyPlan(anzahlTische:number=0):Plan {
+    public static createEmptyPlan(anzahlTische:number = 0):Plan {
         return new Plan(this.createNewVorlage(anzahlTische));
     }
 }

@@ -8,20 +8,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('angular2/core');
-var http_1 = require('angular2/http');
-var plan_1 = require("./Pojo/plan");
-var plan_anordnung_1 = require("./plan-anordnung");
-var plan_manager_1 = require("./plan-manager");
+var core_1 = require("angular2/core");
+var http_1 = require("angular2/http");
+var plan_1 = require("../Pojo/plan");
+var sus_1 = require("../Pojo/sus");
+var plan_anordnung_1 = require("../plan-anordnung");
+var plan_manager_1 = require("../plan-manager");
 var Observable_1 = require("rxjs/Observable");
 var PlanService = (function () {
     function PlanService(http) {
         this.baseUrl = 'http://geihe.net/sitzplan2/rest/';
+        this.abc = "ABC";
         this.http = http;
     }
     Object.defineProperty(PlanService.prototype, "callbackNewPlan", {
         set: function (value) {
             this._callbackNewPlan = value;
+            this.abc = "def";
         },
         enumerable: true,
         configurable: true
@@ -49,9 +52,18 @@ var PlanService = (function () {
         return 99;
     };
     PlanService.prototype.savePlanVorlage = function (iPlan) {
-        var key = "_plan" + iPlan.id;
-        window.localStorage
-            .setItem(key, JSON.stringify(iPlan));
+        var url = this.baseUrl + 'plan';
+        var planSQL = iPlan;
+        planSQL.tische.forEach(function (t) {
+            t.sus_id = t.sus.id;
+            delete t.sus;
+        });
+        var body = JSON.stringify(planSQL);
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        return this.http.post(url, body, options)
+            .catch(this.handleError)
+            .subscribe();
     };
     PlanService.prototype.readPlan = function (plan_id) {
         var _this = this;
@@ -67,6 +79,7 @@ var PlanService = (function () {
     PlanService.prototype.extractPlan = function (res) {
         var planVorlage = res.json();
         planVorlage.extras = JSON.parse(planVorlage.extras);
+        planVorlage.tische.forEach(function (t) { t.sus = new sus_1.Sus(t.sus); });
         return new plan_1.Plan(planVorlage);
     };
     PlanService.prototype.getPlanCopy = function (plan) {

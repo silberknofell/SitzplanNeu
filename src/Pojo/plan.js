@@ -92,7 +92,7 @@ var Plan = (function () {
             raum: this.data.raum,
             start: this.data.start,
             stop: this.data.stop,
-            extras: this.data.extras,
+            extras: JSON.stringify(this.data.extras),
             tische: this.tische.map(function (t) { return t.getTischVorlage(); })
         };
     };

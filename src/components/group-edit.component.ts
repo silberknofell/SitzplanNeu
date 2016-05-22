@@ -2,7 +2,7 @@
  * Created by Michael on 09.05.2016.
  */
 import {Component, Input} from "angular2/core";
-import {SusService} from "../sus.service";
+import {SusService} from "../services/sus.service";
 import {Sus} from "../Pojo/sus";
 import {Gruppe} from "../Pojo/gruppe";
 import {SusSelectComponent} from "./sus-select.component";

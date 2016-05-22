@@ -3,7 +3,7 @@
  */
 import {Injectable} from 'angular2/core';
 import {Http, Response} from 'angular2/http';
-import {Gruppe} from "./Pojo/gruppe";
+import {Gruppe} from "../Pojo/gruppe";
 import {Observable} from "rxjs/Observable";
 
 

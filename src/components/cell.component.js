@@ -31,7 +31,7 @@ var CellComponent = (function () {
     };
     CellComponent.prototype.getCssClass = function () {
         var classes = "";
-        if (this.cell.typ == element_1.Elem.TYP_TISCH) {
+        if (this.cell.typ == element_1.Elem.TYP_TISCH_BELEGBAR) {
             classes += 'tisch';
         }
         else {
