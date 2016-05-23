@@ -15,7 +15,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var cell_1 = require("./cell");
 var sus_1 = require("./sus");
-var core_1 = require("angular2/core");
+var core_1 = require("@angular/core");
 var element_1 = require("./element");
 var Tisch = (function (_super) {
     __extends(Tisch, _super);

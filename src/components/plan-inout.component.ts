@@ -2,7 +2,7 @@
  * Created by Michael on 01.04.2016.
  */
 
-import {Component} from "angular2/core";
+import {Component} from "@angular/core";
 import {PlanService} from "../services/plan.service";
 import {PlanComponent} from "./plan.component";
 import {Plan} from "../Pojo/plan";

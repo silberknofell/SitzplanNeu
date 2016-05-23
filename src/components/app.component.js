@@ -8,26 +8,31 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('angular2/core');
-var router_1 = require('angular2/router');
-var group_select_component_1 = require("./group-select.component");
-var plan_component_1 = require("./plan.component");
+var core_1 = require('@angular/core');
+var router_1 = require('@angular/router');
 require('rxjs/Rx');
+var group_select_container_component_1 = require("./container/group-select-container.component");
+var plan_container_1 = require("./container/plan-container");
+var group_edit_container_1 = require("./container/group-edit-container");
 var AppComponent = (function () {
-    function AppComponent() {
-        this.title = 'Sitzplan-Manager';
+    function AppComponent(router) {
+        this.router = router;
     }
+    AppComponent.prototype.ngOnInit = function () {
+        this.router.navigate(['/group-select']);
+    };
     AppComponent = __decorate([
         core_1.Component({
             selector: 'my-app',
-            template: "\n        <nav>\n        <a [routerLink]=\"['Gruppe']\">Gruppe</a>\n        <a [routerLink]=\"['Plan']\">Plan</a>\n        </nav>\n        <router-outlet></router-outlet>\n  ",
-            directives: [router_1.ROUTER_DIRECTIVES, plan_component_1.PlanComponent],
+            template: "\n        <nav>        \n        <a [routerLink]=\"['/group-select']\">Gruppenauswahl</a>\n        <a [routerLink]=\"['/plan/2']\">Plan</a>\n        <a [routerLink]=\"['/gruppe/2']\">Gruppe editieren</a>\n        </nav>\n        <router-outlet></router-outlet>\n  ",
+            directives: [router_1.ROUTER_DIRECTIVES],
         }),
-        router_1.RouteConfig([
-            { path: '/gruppeBezeichnung', name: 'Gruppe', component: group_select_component_1.GroupSelectComponent },
-            { path: '/plan', name: 'Plan', component: plan_component_1.PlanComponent },
+        router_1.Routes([
+            { path: '/plan/:group_id', component: plan_container_1.PlanContainer },
+            { path: '/gruppe/:id', component: group_edit_container_1.GroupEditContainer },
+            { path: '/group-select', component: group_select_container_component_1.GroupSelectContainer }
         ]), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [router_1.Router])
     ], AppComponent);
     return AppComponent;
 }());

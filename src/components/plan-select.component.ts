@@ -4,7 +4,7 @@
 /**
  * Created by test on 28.02.2016.
  */
-import {Component, Input} from 'angular2/core';
+import {Component, Input} from '@angular/core';
 
 import {PlanComponent} from "./plan.component";
 import {IPlanBeschreibung} from "../Pojo/i_plan";

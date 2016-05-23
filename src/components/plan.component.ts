@@ -1,7 +1,7 @@
 /**
  * Created by test on 31.12.2015.
  */
-import {Component, Input} from "angular2/core";
+import {Component, Input} from "@angular/core";
 import {Plan} from "./../Pojo/plan";
 import {PlanService} from "../services/plan.service";
 import {CellComponent} from "./cell.component";

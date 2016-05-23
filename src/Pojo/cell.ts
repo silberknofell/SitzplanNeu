@@ -1,5 +1,5 @@
 import {ICell} from "./i_cell_tisch";
-import {Injectable} from "angular2/core";
+import {Injectable} from "@angular/core";
 import {Elem} from "./element";
 /**
  * Created by test on 03.01.2016.

@@ -1,7 +1,7 @@
 /**
  * Created by test on 28.12.2015.
  */
-import {Component} from 'angular2/core';
+import {Component} from '@angular/core';
 import {GroupsService} from "../services/groups.service";
 import {Gruppe} from "./../Pojo/gruppe";
 import {GroupEditComponent} from "./group-edit.component";

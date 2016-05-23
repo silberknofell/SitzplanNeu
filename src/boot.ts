@@ -1,7 +1,7 @@
-import {bootstrap} from 'angular2/platform/browser';
+import {bootstrap} from '@angular/platform-browser-dynamic';
 import {AppComponent} from './components/app.component';
-import {ROUTER_PROVIDERS} from 'angular2/router';
-import {HTTP_PROVIDERS} from 'angular2/http';
+import {ROUTER_PROVIDERS} from '@angular/router';
+import {HTTP_PROVIDERS} from '@angular/http';
 import {Rservice} from "./services/R.service";
 import {PlanService} from "./services/plan.service";
 bootstrap(AppComponent, [

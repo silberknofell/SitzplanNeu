@@ -1,30 +1,35 @@
 /**
  * Created by test on 27.12.2015.
  */
-import {Component} from 'angular2/core';
-import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS} from 'angular2/router';
-import {GroupSelectComponent} from "./group-select.component";
-import {PlanComponent} from "./plan.component";
+import {Component,OnInit} from '@angular/core';
+import {Routes,Router, ROUTER_DIRECTIVES} from '@angular/router';
 import 'rxjs/Rx';
+import {GroupSelectContainer} from "./container/group-select-container.component";
+import {PlanContainer} from "./container/plan-container";
+import {GroupEditContainer} from "./container/group-edit-container";
 
 
 @Component({
     selector: 'my-app',
     template: `
-        <nav>
-        <a [routerLink]="['Gruppe']">Gruppe</a>
-        <a [routerLink]="['Plan']">Plan</a>
+        <nav>        
+        <a [routerLink]="['/group-select']">Gruppenauswahl</a>
+        <a [routerLink]="['/plan/2']">Plan</a>
+        <a [routerLink]="['/gruppe/2']">Gruppe editieren</a>
         </nav>
         <router-outlet></router-outlet>
   `,
-    directives: [ROUTER_DIRECTIVES, PlanComponent],
+    directives: [ROUTER_DIRECTIVES],
 })
-@RouteConfig([
-    //{path: '/', redirectTo: ['GroupSelect'] },
-    {path: '/gruppeBezeichnung',   name: 'Gruppe', component: GroupSelectComponent},
-    {path: '/plan',     name: 'Plan',   component: PlanComponent},
-    //{path: '/detail/:id', bezeichnung: 'HeroDetail', component: HeroDetailComponent}
+@Routes([
+    {path: '/plan/:group_id', component: PlanContainer},
+    {path: '/gruppe/:id', component: GroupEditContainer},
+    {path: '/group-select', component: GroupSelectContainer}
 ])
-export class AppComponent {
-    public title = 'Sitzplan-Manager';
+export class AppComponent implements OnInit {
+    constructor(private router: Router) {}
+    
+    ngOnInit() {
+        this.router.navigate(['/group-select']);
+    }
 }
