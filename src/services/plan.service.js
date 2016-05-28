@@ -62,6 +62,11 @@ var PlanService = (function () {
             .map(this.extractPlan)
             .catch(this.handleError);
     };
+    PlanService.prototype.deletePlan = function (plan_id) {
+        var url = this.baseUrl + 'plan/' + plan_id;
+        return this.http.delete(url)
+            .catch(this.handleError);
+    };
     PlanService.prototype.extractPlan = function (res) {
         var planVorlage = res.json();
         planVorlage.extras = JSON.parse(planVorlage.extras);

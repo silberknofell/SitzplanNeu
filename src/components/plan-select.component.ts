@@ -33,6 +33,7 @@ import {SusService} from "../services/sus.service";
     <plan-inout [plan] = "_plan"></plan-inout>
 </div>
 <button (click)="newClick()">Neuer Plan</button>
+<button (click)="delete()" *ngIf = "_plan">Löschen</button>
     `,
     styles: [`
         select {
@@ -86,6 +87,12 @@ export class PlanSelectComponent {
         this._plan = this.planService.getNewPlan(sus);
         this._plan.nr = this.getMaxPlanNr() +1;
         this._plan.gruppe = this._gruppe;
+    }
+
+    public delete() {
+
+        this.planService.deletePlan(this._plan.id)
+            .subscribe(() => alert("Plan gelöscht"));
     }
 
     private getMaxPlanNr() {

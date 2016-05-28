@@ -57,6 +57,10 @@ var PlanSelectComponent = (function () {
         this._plan.nr = this.getMaxPlanNr() + 1;
         this._plan.gruppe = this._gruppe;
     };
+    PlanSelectComponent.prototype.delete = function () {
+        this.planService.deletePlan(this._plan.id)
+            .subscribe(function () { return alert("Plan gelöscht"); });
+    };
     PlanSelectComponent.prototype.getMaxPlanNr = function () {
         var nummern = this.plaeneBeschreibungen
             .map(function (plan) { return plan.nr; });
@@ -85,7 +89,7 @@ var PlanSelectComponent = (function () {
     PlanSelectComponent = __decorate([
         core_1.Component({
             selector: 'plan-select',
-            template: "<div id=\"plan-select\">\n<select [(ngModel)] = \"selectedDescription\">\n    <option *ngFor = \"let description of plaeneBeschreibungen\"\n            [ngValue] = \"description\"\n            >\n    {{description.text}}\n    </option>\n</select>\n\n<plan [plan]=\"_plan\"></plan>\n</div>\n<div>\n    <plan-inout [plan] = \"_plan\"></plan-inout>\n</div>\n<button (click)=\"newClick()\">Neuer Plan</button>\n    ",
+            template: "<div id=\"plan-select\">\n<select [(ngModel)] = \"selectedDescription\">\n    <option *ngFor = \"let description of plaeneBeschreibungen\"\n            [ngValue] = \"description\"\n            >\n    {{description.text}}\n    </option>\n</select>\n\n<plan [plan]=\"_plan\"></plan>\n</div>\n<div>\n    <plan-inout [plan] = \"_plan\"></plan-inout>\n</div>\n<button (click)=\"newClick()\">Neuer Plan</button>\n<button (click)=\"delete()\" *ngIf = \"_plan\">L\u00F6schen</button>\n    ",
             styles: ["\n        select {\n            font-size: 30px;\n        }\n    "],
             directives: [plan_component_1.PlanComponent, plan_inout_component_1.PlanInout],
             providers: [plan_service_1.PlanService, sus_service_1.SusService]

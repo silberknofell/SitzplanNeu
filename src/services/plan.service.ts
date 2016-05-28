@@ -76,6 +76,12 @@ export class PlanService {
             .catch(this.handleError);
     }
 
+    public deletePlan(plan_id:number):Observable<Plan>{
+        let url = this.baseUrl + 'plan/' + plan_id;
+        return this.http.delete(url)
+            .catch(this.handleError);
+    }
+    
     private extractPlan(res:Response):Plan {
         let planVorlage = res.json();
         planVorlage.extras = JSON.parse(planVorlage.extras);
