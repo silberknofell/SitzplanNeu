@@ -18,17 +18,20 @@ import {PlanInout} from "./plan-inout.component";
 @Component({
     selector: 'plan',
     template: `<div *ngIf="plan">
-<button (click)="deltaI(1)">i+1</button>
-<button (click)="deltaI(-1)">i-1</button>
-<button (click)="deltaJ(1)">j+1</button>
-<button (click)="deltaJ(-1)">j-1</button>
-<button (click)="deltaX(50)">x+50</button>
-<button (click)="deltaX(-50)">x-50</button>
-<button (click)="deltaY(50)">y+50</button>
-<button (click)="deltaY(-50)">y-50</button>
+
     <h1> {{plan.gruppeBezeichnung}} Nr. {{plan.nr}} in <input [(ngModel)] = "plan.raum"></h1>
     Von: <input [(ngModel)] = "plan.start">
     Bis: <input [(ngModel)] = "plan.stop">
+    <div>
+        <button (click)="deltaI(1)">i+1</button>
+        <button (click)="deltaI(-1)">i-1</button>
+        <button (click)="deltaJ(1)">j+1</button>
+        <button (click)="deltaJ(-1)">j-1</button>
+        <button (click)="deltaX(50)">x+50</button>
+        <button (click)="deltaX(-50)">x-50</button>
+        <button (click)="deltaY(50)">y+50</button>
+        <button (click)="deltaY(-50)">y-50</button>
+    </div>
     <div class="plan"
          [style.width.px]="viewWidth()"
          [style.height.px]="viewHeight()"
