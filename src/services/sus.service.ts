@@ -46,6 +46,12 @@ export class SusService {
             .catch(this.handleError);
     }
 
+    deleteSus(susId:number):Observable<Sus>{
+        let url = this.baseUrl + 'sus/' + susId;
+        return this.http.delete(url)
+            .catch(this.handleError);
+    }
+
     getSusInListe(liste:number[]):Observable<Sus[]> {
         let url = this.baseUrl + 'suslist';
 

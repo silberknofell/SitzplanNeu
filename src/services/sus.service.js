@@ -40,6 +40,11 @@ var SusService = (function () {
         return this.http.post(url, body, options)
             .catch(this.handleError);
     };
+    SusService.prototype.deleteSus = function (susId) {
+        var url = this.baseUrl + 'sus/' + susId;
+        return this.http.delete(url)
+            .catch(this.handleError);
+    };
     SusService.prototype.getSusInListe = function (liste) {
         var url = this.baseUrl + 'suslist';
         var body = JSON.stringify(liste);

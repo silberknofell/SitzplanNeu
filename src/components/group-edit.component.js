@@ -11,7 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 var sus_service_1 = require("../services/sus.service");
 var gruppe_1 = require("../Pojo/gruppe");
-var sus_select_component_1 = require("./sus-select.component");
 var GroupEditComponent = (function () {
     function GroupEditComponent(susService) {
         this.susService = susService;
@@ -57,9 +56,9 @@ var GroupEditComponent = (function () {
     ], GroupEditComponent.prototype, "gruppe", null);
     GroupEditComponent = __decorate([
         core_1.Component({
-            selector: 'group-edit',
-            template: "<h1>{{getTitle()}}</h1>\n                <sus-select\n                    [susList] = getSusList()\n                    [gruppe_id] = gruppeID()>\n                 </sus-select>\n",
-            styles: ["\n"], directives: [sus_select_component_1.SusSelectComponent],
+            selector: 'sus-edit',
+            template: "<h1>{{getTitle()}}</h1>\n                <sus-select\n                    [susList] = getSusList()\n                    [gruppeId] = gruppeID()>\n                 </sus-select>\n",
+            styles: ["\n"], directives: [SusSelectComponent],
             providers: [sus_service_1.SusService]
         }), 
         __metadata('design:paramtypes', [sus_service_1.SusService])

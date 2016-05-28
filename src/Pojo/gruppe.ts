@@ -8,14 +8,31 @@ export class Gruppe {
         this.data = data;   
     }
 
-    get  bezeichnung():string {
-        return this.data.bezeichnung
+    get extras() {
+        return this.data.extras;
     }
-    
+
+    set extras(value) {
+        this.data.extras = value;
+    }
+
+
+    get bezeichnung():string {
+        return this.data.bezeichnung;
+    }
+
+    set bezeichnung(value:string) {
+        this.data.bezeichnung = value;
+    }
+
     get id():number {
         return this.data.id;
     }
-    
+
+    public getVorlage():IGruppe {
+        return this.data;
+    }
+
     public static leereGruppe():Gruppe {
         return new Gruppe({
             id: 0,

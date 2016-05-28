@@ -2,64 +2,70 @@
  * Created by Michael on 11.05.2016.
  */
 /**
- * Created by Michael on 11.05.2016.
- */
-/**
  * Created by test on 28.12.2015.
  */
 import {Component, Input} from '@angular/core';
-import {Sus} from "../Pojo/sus";
 import {SusService} from "../services/sus.service";
+import {Sus} from "../Pojo/sus";
+import {SusDetailComponent} from "./sus-detail.component";
 
 @Component({
-    selector: 'edit-sus',
+    selector: 'sus-edit',
     template: `
-Name <input type="text" name="name" [(ngModel)]="sus.name" /><br />
-Nachname<input type="text" name="nachname" [(ngModel)]="sus.nachname" /><br />
+<ol>
+    <li *ngFor="let sus of susList" 
+        (click) = "select(sus)">
 
-<button (click)="neu()">Neu</button>
-<button (click)="speichern()">Speichern</button>
-<button (click)="test()">TEST</button>
-
+        {{sus.getLongName()}}
+    </li>
+</ol>
+<p>  
+    <sus-detail
+        [sus] = "selectedSus"
+        [gruppeId] = "gruppeId"
+        ></sus-detail>
+</p>
   `,
     styles: [`
 
   `],
-    directives: [],
-    providers: []
+    directives: [SusDetailComponent],
+    providers: [SusService]
 })
 
-export class EditSusComponent {
-    private susService:SusService;
-    private _sus:Sus=Sus.leererSus();
-    @Input() gruppe_id:number;
-
+export class SusEditComponent {
+    get gruppeId() {
+        return this._gruppeId;
+    }
     @Input()
-    get sus():Sus {
-        return this._sus;
+    set gruppeId(value) {
+        this._gruppeId = value;
+        this.susService.getSusInGruppe(value)
+            .subscribe(
+                susList=> {
+                    this.susList = susList;
+                }
+            )
+    }
+    _susList:Sus[] = [];
+    selectedSus:Sus;
+    private _gruppeId:number = 0;
+
+    get susList():Sus[] {
+        return this._susList;
+    }
+    set susList(value:Sus[]) {
+        this._susList = value;
     }
 
-    set sus(value:Sus) {
-        this._sus = value || Sus.leererSus();
-        this._sus.gruppe_id = this.gruppe_id;
+
+    constructor(private susService:SusService) {
+        
     }
 
-    constructor(susService:SusService) {
-        this.susService = susService;
-    }
 
-    neu() {
-        this.sus = null;
-    }
-    
-    speichern() {
-        this.susService.saveSus(this.sus)
-            .subscribe();
-    }
-
-    test() {
-        this.susService.getSusInListe([1,2,3])
-            .subscribe();
+    select (sus:Sus) {
+        this.selectedSus = sus;
     }
 
 }

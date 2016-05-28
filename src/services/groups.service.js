@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
+var gruppe_1 = require("../Pojo/gruppe");
 var Observable_1 = require("rxjs/Observable");
 var GroupsService = (function () {
     function GroupsService(http) {
@@ -34,8 +35,16 @@ var GroupsService = (function () {
         var url = this.baseUrl + 'gruppe/' + group_id;
         return this.http.get(url)
             .map(function (res) {
-            return res.json();
+            return new gruppe_1.Gruppe(res.json());
         })
+            .catch(this.handleError);
+    };
+    GroupsService.prototype.save = function (gruppe) {
+        var url = this.baseUrl + 'gruppe';
+        var body = JSON.stringify(gruppe.getVorlage());
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        return this.http.post(url, body, options)
             .catch(this.handleError);
     };
     GroupsService = __decorate([

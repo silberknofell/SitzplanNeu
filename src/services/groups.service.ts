@@ -2,7 +2,7 @@
  * Created by test on 28.12.2015.
  */
 import {Injectable} from '@angular/core';
-import {Http, Response} from '@angular/http';
+import {Http, Response, Headers, RequestOptions} from '@angular/http';
 import {Gruppe} from "../Pojo/gruppe";
 import {Observable} from "rxjs/Observable";
 
@@ -35,8 +35,18 @@ export class GroupsService {
         let url=this.baseUrl + 'gruppe/' + group_id;
         return this.http.get(url)
             .map(res => {
-                return res.json();
+                return  new Gruppe(res.json());
             })
+            .catch(this.handleError);
+    }
+
+    save(gruppe:Gruppe) {
+        let url = this.baseUrl + 'gruppe';
+        let body = JSON.stringify(gruppe.getVorlage());
+        let headers = new Headers({'Content-Type': 'application/json'});
+        let options = new RequestOptions({headers: headers});
+
+        return this.http.post(url, body, options)
             .catch(this.handleError);
     }
 }
