@@ -18,12 +18,6 @@ import {Observable} from "rxjs/Observable";
 export class PlanService {
     private baseUrl:string = 'http://geihe.net/sitzplan2/rest/';
     private http:Http;
-    private _callbackNewPlan: (plan:Plan) => void;
-    private abc="ABC";
-    set callbackNewPlan(value:(plan:Plan)=>void) {
-        this._callbackNewPlan = value;
-        this.abc="def";
-    }
 
     constructor(http:Http) {
         this.http = http;
@@ -75,14 +69,11 @@ export class PlanService {
             .subscribe();
     }
 
-    public readPlan(plan_id:number):void{
+    public readPlan(plan_id:number):Observable<Plan>{
         let url = this.baseUrl + 'plan/' + plan_id;
-        this.http.get(url)
+        return this.http.get(url)
             .map(this.extractPlan)
-            .catch(this.handleError)
-            .subscribe(plan => {
-                if (this._callbackNewPlan) this._callbackNewPlan(plan);
-            });
+            .catch(this.handleError);
     }
 
     private extractPlan(res:Response):Plan {
@@ -101,14 +92,14 @@ export class PlanService {
     }
 
     public getNewPlan(sus:Sus[]) {
-        let plan_id:number = 0;
         let anzahlTische:number = sus.length;
         let planVorlage:IPlan = Plan.createNewVorlage(anzahlTische);
         let plan:Plan = new Plan(planVorlage);
-        let pa:PlanAnordnung = new PlanAnordnung({tische: plan.tische});
-        let pm:PlanManager = new PlanManager(plan);
-        pa.setzeU();
-        pm.losen();
+        let planAnordnung:PlanAnordnung = new PlanAnordnung({tische: plan.tische});
+        let planManager:PlanManager = new PlanManager(plan, sus);
+
+        planAnordnung.setzeU();
+        planManager.losen();
         return plan;
     };
 

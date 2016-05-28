@@ -11,8 +11,8 @@ import {Observable} from "rxjs/Observable";
 @Injectable()
 export class GroupsService {
     private baseUrl:string = 'http://geihe.net/sitzplan2/rest/';
-    private http:Http;
-    constructor(http:Http) {
+
+    constructor(private http:Http) {
         this.http = http;
     }
 
@@ -20,7 +20,7 @@ export class GroupsService {
         let url=this.baseUrl + 'gruppen';
         return this.http.get(url)
             .map(res => {
-                return res.json() || { }
+                return res.json() || [];
             })
             .catch(this.handleError);
     }
@@ -31,4 +31,12 @@ export class GroupsService {
         return Observable.throw(errMsg);
     }
 
+    getGroup(group_id:number) {
+        let url=this.baseUrl + 'gruppe/' + group_id;
+        return this.http.get(url)
+            .map(res => {
+                return res.json();
+            })
+            .catch(this.handleError);
+    }
 }

@@ -10,29 +10,27 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var groups_service_1 = require("../services/groups.service");
-var group_edit_component_1 = require("./group-edit.component");
-var plan_select_component_1 = require("./plan-select.component");
-var plan_component_1 = require("./plan.component");
+var router_1 = require('@angular/router');
 var GroupSelectComponent = (function () {
-    function GroupSelectComponent(groupsService) {
+    function GroupSelectComponent(groupsService, router) {
         var _this = this;
         this.groupsService = groupsService;
-        this.title = 'Gruppenauswahl';
+        this.router = router;
         groupsService.getGruppen()
             .subscribe(function (gruppen) { _this.gruppen = gruppen; });
     }
     GroupSelectComponent.prototype.select = function (group) {
-        this.selectedGroup = group;
+        this.router.navigate(['/plaene', group.id]);
     };
     GroupSelectComponent = __decorate([
         core_1.Component({
             selector: 'group-select',
-            template: "\n    <h1>{{title}}</h1>\n        <ul>\n            <li *ngFor=\"#group of gruppen\"\n                   (click) = select(group)>\n                {{group.bezeichnung}}\n            </li>\n        </ul>\n  ",
+            template: "\n        <ul>\n            <li *ngFor=\"let group of gruppen\"\n                   (click) = \"select(group)\">\n                {{group.bezeichnung}}\n            </li>\n        </ul>\n  ",
             styles: ["\n\n  "],
-            directives: [group_edit_component_1.GroupEditComponent, plan_select_component_1.PlanSelectComponent, plan_component_1.PlanComponent],
-            providers: [groups_service_1.GroupsService]
+            directives: [],
+            providers: []
         }), 
-        __metadata('design:paramtypes', [groups_service_1.GroupsService])
+        __metadata('design:paramtypes', [groups_service_1.GroupsService, router_1.Router])
     ], GroupSelectComponent);
     return GroupSelectComponent;
 }());

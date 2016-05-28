@@ -56,10 +56,11 @@ export class Sus {
             nachname: "",
             gruppe_id: gruppeId,
             aktiv: 1,
-            extras:{}};
+            extras: {}
+        };
     }
 
     istLeer():boolean {
-        return this.id == 0;
+        return !this.id;
     }
 }

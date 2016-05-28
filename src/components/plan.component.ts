@@ -17,7 +17,8 @@ import {PlanInout} from "./plan-inout.component";
 
 @Component({
     selector: 'plan',
-    template: `<button (click)="deltaI(1)">i+1</button>
+    template: `<div *ngIf="plan">
+<button (click)="deltaI(1)">i+1</button>
 <button (click)="deltaI(-1)">i-1</button>
 <button (click)="deltaJ(1)">j+1</button>
 <button (click)="deltaJ(-1)">j-1</button>
@@ -25,48 +26,66 @@ import {PlanInout} from "./plan-inout.component";
 <button (click)="deltaX(-50)">x-50</button>
 <button (click)="deltaY(50)">y+50</button>
 <button (click)="deltaY(-50)">y-50</button>
-<h1>Sitzplan</h1>
-<h1>Sitzplan {{plan.gruppe}} {{plan.raum}}</h1>
-<div class="plan"
-     [style.width.px]="viewWidth()"
-     [style.height.px]="viewHeight()"
->
+    <h1> {{plan.gruppeBezeichnung}} Nr. {{plan.nr}} in <input [(ngModel)] = "plan.raum"></h1>
+    Von: <input [(ngModel)] = "plan.start">
+    Bis: <input [(ngModel)] = "plan.stop">
+    <div class="plan"
+         [style.width.px]="viewWidth()"
+         [style.height.px]="viewHeight()"
+    >
 
-    <cell *ngFor="#cell of cells"
-          [cell]="cell"
-          [planComponent]="getPlanComponent()"
-    ></cell>
+        <cell *ngFor="let cell of cells"
+              [cell]="cell"
+              [planComponent]="getPlanComponent()"
+        ></cell>
 
-    <div id="tafel"
-         [style.top.px]="tafelTop()"
-         [style.left.px]="tafelLeft()"
-         (click)="tafelClick()"
-    >Tafel
+        <div id="tafel"
+             [style.top.px]="tafelTop()"
+             [style.left.px]="tafelLeft()"
+             (click)="tafelClick()"
+        >Tafel
+        </div>
     </div>
+
+    <button (click)="reihenClick()">Reihen</button>
+    <button (click)="uClick()">U-Form</button>
+
+
+    <lager
+            [planComponent]="getPlanComponent()"
+    ></lager>
 </div>
-
-
-<button (click)="reihenClick()">Reihen</button>
-<button (click)="uClick()">U-Form</button>
-
-<plan-inout
-        [planComponent]="getPlanComponent()"
-        [plan] = "plan"
-></plan-inout>
-
-<lager
-        [planComponent]="getPlanComponent()"
-></lager>
-  `,
+  
+`,
     inputs: [],
     directives: [CellComponent, LagerComponent,
-                    PlanInout],
+        PlanInout],
     providers: [],
+    styles:  [
+        `input {
+            font-size: 30px;
+            color: red;
+            border: none;
+            }
+        `]
 })
 
 export class PlanComponent {
+    private _plan:Plan;
+    @Input()
+    set plan(plan:Plan) {
+        this._plan = plan;
+        if (plan) {
+            PlanLayout.setIJ(this._plan);
+            this.buildComponents();
+        }
+    }
+
+    get plan():Plan {
+        return this._plan;
+    }
+
     @Input() readonly:boolean = false;
-    private plan:Plan;
     viewWidth = PlanLayout.getViewWidth;
     viewHeight = PlanLayout.getViewHeight;
     tafelLeft = PlanLayout.leftMitte;
@@ -78,15 +97,9 @@ export class PlanComponent {
 
     constructor(planService:PlanService) {
         this.planService = planService;
-        this.setPlan(Plan.createEmptyPlan());
-        planService.callbackNewPlan = ((plan)=>this.setPlan(plan));
+        this.plan = Plan.createEmptyPlan();
     }
 
-    public setPlan(plan:Plan) {
-        this.plan = plan;
-        PlanLayout.setIJ(this.plan);
-        this.buildComponents();
-    }
 
     public getPlanComponent():PlanComponent {
         return this;
@@ -97,33 +110,32 @@ export class PlanComponent {
         for (var index = 0; index < PlanLayout.gridSize(); index++) {
             this.cells[index] = new Cell(PlanLayout.getIJ(index));
         }
-        for (var tisch of this.plan.tische) {
+        for (var tisch of this._plan.tische) {
             var index = PlanLayout.getIndex(tisch);
             this.cells[index] = tisch;
         }
-
         this.markierung = new Markierung();
     }
 
     public tafelClick():void {
-        var planManager:PlanManager = new PlanManager(this.plan);
+        var planManager:PlanManager = new PlanManager(this._plan);
         planManager.losen();
     }
 
     public reihenClick():void {
         let planAnordnung:PlanAnordnung =
-            new PlanAnordnung({tische: this.plan.tische, blockBreite: 4});
+            new PlanAnordnung({tische: this._plan.tische, blockBreite: 4});
         planAnordnung.setzeReihen();
 
-        this.setPlan(this.plan);
+        this.plan = this._plan;
     }
 
     public uClick():void {
         let planAnordnung:PlanAnordnung;
-        planAnordnung = new PlanAnordnung({tische: this.plan.tische, blockBreite: 3});
+        planAnordnung = new PlanAnordnung({tische: this._plan.tische, blockBreite: 3});
         planAnordnung.setzeU();
 
-        this.setPlan(this.plan);
+        this.plan = this._plan;
 
     }
 
@@ -150,7 +162,7 @@ export class PlanComponent {
             this.markierung.resetMarkierung();
         }
         else { //noch nichts markiert
-            if (element.typ == Elem.TYP_TISCH_BELEGBAR || element.typ == Elem.TYP_LAGER) {
+            if (element.isTisch() || element.isLager()) {
                 this.markierung.setzeMarkierung(element);
             }
         }
@@ -160,10 +172,10 @@ export class PlanComponent {
         var markiert:Elem = this.markierung.getMarkiertes();
         if (element == markiert) {
             this.clickAufSelbesElement(element);
-        } else if (markiert.typ == Elem.TYP_LAGER) {
+        } else if (markiert.isLager()) {
             this.neuerTischNachCheck(element)
-        } else if (markiert.typ == Elem.TYP_TISCH_BELEGBAR) {
-            if (element.typ == Elem.TYP_LAGER) {
+        } else if (markiert.isTisch()) {
+            if (element.isLager()) {
                 this.entferneTischNachCheck(markiert);
             } else this.tauscheNachCheck(markiert, element);
         }
@@ -171,8 +183,8 @@ export class PlanComponent {
 
     private tauscheNachCheck(elem1:Elem, elem2:Elem):void {
         if (
-            (elem1.typ == Elem.TYP_LEERERPLATZ || elem1.typ == Elem.TYP_TISCH_BELEGBAR) &&
-            (elem1.typ == Elem.TYP_LEERERPLATZ || elem1.typ == Elem.TYP_TISCH_BELEGBAR)
+            (elem1.typ == Elem.TYP_LEERERPLATZ || elem1.isTisch()) &&
+            (elem2.typ == Elem.TYP_LEERERPLATZ || elem2.isTisch())
         ) {
             var cell1:Cell = <Cell>elem1;
             var cell2:Cell = <Cell>elem2;
@@ -184,25 +196,26 @@ export class PlanComponent {
         if (element.typ == Elem.TYP_LEERERPLATZ) {
             var cell:Cell = <Cell>element;
             var neuerTisch:Tisch = Tisch.leererTisch();
-            neuerTisch.setIJ(cell.getI(), cell.getJ())
-            this.plan.tische.push(neuerTisch);
+            console.log(neuerTisch);
+            neuerTisch.setIJ(cell.getI(), cell.getJ());
+            this._plan.tische.push(neuerTisch);
             this.cells[PlanLayout.getIndex(cell)] = neuerTisch;
         }
     }
 
     private clickAufSelbesElement(element:Elem):void {
-        if (element.typ == Elem.TYP_TISCH_BELEGBAR) {
+        if (element.isTisch()) {
             (<Tisch>element).toggleBelegbar();
         }
     }
 
     private entferneTischNachCheck(entferne:Elem):void {
-        if (entferne.typ != Elem.TYP_TISCH_BELEGBAR) return;
+        if (entferne.isTisch() == false) return;
         var tisch:Tisch = <Tisch>entferne;
         if (tisch.istBelegt())  return;
         var neuCell:Cell = tisch.toCell();
 
-        PlanComponent.remove(this.plan.tische, tisch);
+        PlanComponent.remove(this._plan.tische, tisch);
         this.cells[PlanLayout.getIndex(tisch)] = neuCell;
     }
 

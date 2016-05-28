@@ -21,11 +21,15 @@ export class Plan {
 
     set gruppe(gruppe:Gruppe) {
         this.data.gruppe = gruppe.bezeichnung;
-        this.data.id = gruppe.id;
+        this.data.gruppe_id = gruppe.id;
     }
 
     get nr():number {
         return this.data.nr;
+    }
+    
+    set nr(value:number) {
+        this.data.nr = value;
     }
 
     get raum():string {
@@ -62,10 +66,15 @@ export class Plan {
     }
 
     public getBelegbareTischeList():Tisch[] {
-        return this._tische.filter(t => t.belegbar);
+        return this._tische.filter(t => {
+            return t.belegbar;
+        });
     }
 
     public getSusList():Sus[] {
+        console.log(this.tische
+            .map(tisch => tisch.sus)
+            .filter(sus => sus.istLeer() == false));
         return this.tische
             .map(tisch => tisch.sus)
             .filter(sus => sus.istLeer() == false);
@@ -75,8 +84,8 @@ export class Plan {
         return JSON.stringify(this.createVorlage());
     }
 
-    public createVorlage():IPlan {        
-         return {
+    public createVorlage():IPlan {
+        return {
             id: this.data.id,
             gruppe: this.data.gruppe,
             gruppe_id: this.data.gruppe_id,

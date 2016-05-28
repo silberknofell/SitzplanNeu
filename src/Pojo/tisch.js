@@ -22,7 +22,7 @@ var Tisch = (function (_super) {
     function Tisch(data) {
         _super.call(this, data);
         this._tischData = data;
-        this.typ = element_1.Elem.TYP_TISCH_BELEGBAR;
+        this.typ = data.typ;
     }
     Object.defineProperty(Tisch.prototype, "sus", {
         get: function () {
@@ -36,21 +36,21 @@ var Tisch = (function (_super) {
     });
     Object.defineProperty(Tisch.prototype, "belegbar", {
         get: function () {
-            return this._tischData.typ == Tisch.TYP_TISCH_BELEGBAR;
+            return this.typ == Tisch.TYP_TISCH_BELEGBAR;
         },
         set: function (value) {
             if (this.istBelegt()) {
                 console.log("Tisch" + this._tischData.i + this._tischData.j + " kann Belegbarkeit nicht verlieren, da er bereits belegt ist. Schüler id:" + this._tischData.sus.id);
             }
             else {
-                this._tischData.typ = value ? Tisch.TYP_TISCH_BELEGBAR : Tisch.TYP_TISCH_IMMER_FREI;
+                this.typ = value ? Tisch.TYP_TISCH_BELEGBAR : Tisch.TYP_TISCH_IMMER_FREI;
             }
         },
         enumerable: true,
         configurable: true
     });
     Tisch.prototype.istBelegt = function () {
-        return this.sus.id != 0;
+        return !!this.sus.id;
     };
     Tisch.prototype.istFrei = function () {
         return this.istBelegt() == false;

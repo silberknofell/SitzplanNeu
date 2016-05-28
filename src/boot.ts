@@ -4,9 +4,10 @@ import {ROUTER_PROVIDERS} from '@angular/router';
 import {HTTP_PROVIDERS} from '@angular/http';
 import {Rservice} from "./services/R.service";
 import {PlanService} from "./services/plan.service";
+import {GroupsService} from "./services/groups.service";
 bootstrap(AppComponent, [
     ROUTER_PROVIDERS,
     HTTP_PROVIDERS,
-    PlanService,
+    GroupsService,
     Rservice
 ]);

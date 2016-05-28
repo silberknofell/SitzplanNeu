@@ -3,29 +3,22 @@
  */
 import {OnActivate, Router, RouteSegment} from '@angular/router';
 import {Component} from '@angular/core';
+import {GroupsService} from "../../services/groups.service";
 @Component({
     selector: 'group-edit-container',
     template: `
-        <h1>Gruppe {{id}} editieren</h1>      
-                  <li>
-                  <ul (click) = "gruppenAuswahl()">Gruppenauswahl</ul>
-                  <ul>Plan</ul>
-                  <ul>Gruppe editieren</ul>
+        <h1>Gruppe editieren</h1>      
 </li>
     `
 
 })
 export class GroupEditContainer implements OnActivate{
-    private id;
+    private groupId;
+
+    constructor(private router: Router, private groupService:GroupsService) {}
     routerOnActivate(curr:RouteSegment):void {
-        this.id = +curr.getParam('id');
-    }
-
-
-    constructor(private router: Router) {}
-
-    gruppenAuswahl() {
-        this.router.navigate(['/group-select']);
+        this.groupId = +curr.getParam('id');
+        console.log(curr);
     }
 }
  

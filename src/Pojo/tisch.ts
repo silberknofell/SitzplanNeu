@@ -20,25 +20,25 @@ export class Tisch extends Cell {
     }
 
     get belegbar():boolean {
-        return this._tischData.typ == Tisch.TYP_TISCH_BELEGBAR;
+        return this.typ == Tisch.TYP_TISCH_BELEGBAR;
     }
 
     set belegbar(value:boolean) {
         if (this.istBelegt()) {
             console.log("Tisch" + this._tischData.i + this._tischData.j + " kann Belegbarkeit nicht verlieren, da er bereits belegt ist. Schüler id:" + this._tischData.sus.id);
         } else {
-            this._tischData.typ = value ? Tisch.TYP_TISCH_BELEGBAR : Tisch.TYP_TISCH_IMMER_FREI;
+            this.typ = value ? Tisch.TYP_TISCH_BELEGBAR : Tisch.TYP_TISCH_IMMER_FREI;
         }
     }
 
     constructor(data:ITisch) {
         super(data);
         this._tischData = data;
-        this.typ = Elem.TYP_TISCH_BELEGBAR;
+        this.typ = data.typ;
     }
 
     public istBelegt():boolean {
-        return this.sus.id != 0;
+        return !!this.sus.id;
     }
 
     public istFrei():boolean {

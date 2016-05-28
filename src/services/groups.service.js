@@ -13,6 +13,7 @@ var http_1 = require('@angular/http');
 var Observable_1 = require("rxjs/Observable");
 var GroupsService = (function () {
     function GroupsService(http) {
+        this.http = http;
         this.baseUrl = 'http://geihe.net/sitzplan2/rest/';
         this.http = http;
     }
@@ -20,7 +21,7 @@ var GroupsService = (function () {
         var url = this.baseUrl + 'gruppen';
         return this.http.get(url)
             .map(function (res) {
-            return res.json() || {};
+            return res.json() || [];
         })
             .catch(this.handleError);
     };
@@ -28,6 +29,14 @@ var GroupsService = (function () {
         var errMsg = error.message || 'Server error';
         console.error(errMsg);
         return Observable_1.Observable.throw(errMsg);
+    };
+    GroupsService.prototype.getGroup = function (group_id) {
+        var url = this.baseUrl + 'gruppe/' + group_id;
+        return this.http.get(url)
+            .map(function (res) {
+            return res.json();
+        })
+            .catch(this.handleError);
     };
     GroupsService = __decorate([
         core_1.Injectable(), 

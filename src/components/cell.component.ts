@@ -55,7 +55,7 @@ export class CellComponent {
 
     public getCssClass():string {
         var classes:string="";
-        if (this.cell.typ == Elem.TYP_TISCH_BELEGBAR) {
+        if (this.cell.isTisch()) {
             classes += 'tisch';
         } else {
             classes+='free';

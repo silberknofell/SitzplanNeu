@@ -1,7 +1,7 @@
 "use strict";
 var PlanManager = (function () {
-    function PlanManager(plan) {
-        this.sus = plan.getSusList();
+    function PlanManager(plan, susList) {
+        this.sus = susList || plan.getSusList();
         this.tische = plan.getBelegbareTischeList();
     }
     PlanManager.prototype.losen = function () {
@@ -33,4 +33,5 @@ var PlanManager = (function () {
     return PlanManager;
 }());
 exports.PlanManager = PlanManager;
+;
 //# sourceMappingURL=plan-manager.js.map

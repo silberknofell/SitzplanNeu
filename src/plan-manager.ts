@@ -9,8 +9,8 @@ export class PlanManager {
     tische:Tisch[];
     plan:Plan;
 
-    constructor(plan:Plan) {
-        this.sus = plan.getSusList();
+    constructor(plan:Plan, susList?:Sus[]) {
+        this.sus = susList || plan.getSusList();
         this.tische = plan.getBelegbareTischeList();
     }
 
@@ -45,3 +45,4 @@ export class PlanManager {
         return Math.floor(Math.random() * (i + 1));
     }
 }
+;

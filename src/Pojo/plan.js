@@ -30,7 +30,7 @@ var Plan = (function () {
     Object.defineProperty(Plan.prototype, "gruppe", {
         set: function (gruppe) {
             this.data.gruppe = gruppe.bezeichnung;
-            this.data.id = gruppe.id;
+            this.data.gruppe_id = gruppe.id;
         },
         enumerable: true,
         configurable: true
@@ -38,6 +38,9 @@ var Plan = (function () {
     Object.defineProperty(Plan.prototype, "nr", {
         get: function () {
             return this.data.nr;
+        },
+        set: function (value) {
+            this.data.nr = value;
         },
         enumerable: true,
         configurable: true
@@ -73,9 +76,14 @@ var Plan = (function () {
         configurable: true
     });
     Plan.prototype.getBelegbareTischeList = function () {
-        return this._tische.filter(function (t) { return t.belegbar; });
+        return this._tische.filter(function (t) {
+            return t.belegbar;
+        });
     };
     Plan.prototype.getSusList = function () {
+        console.log(this.tische
+            .map(function (tisch) { return tisch.sus; })
+            .filter(function (sus) { return sus.istLeer() == false; }));
         return this.tische
             .map(function (tisch) { return tisch.sus; })
             .filter(function (sus) { return sus.istLeer() == false; });

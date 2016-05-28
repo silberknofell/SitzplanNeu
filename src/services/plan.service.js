@@ -18,17 +18,8 @@ var Observable_1 = require("rxjs/Observable");
 var PlanService = (function () {
     function PlanService(http) {
         this.baseUrl = 'http://geihe.net/sitzplan2/rest/';
-        this.abc = "ABC";
         this.http = http;
     }
-    Object.defineProperty(PlanService.prototype, "callbackNewPlan", {
-        set: function (value) {
-            this._callbackNewPlan = value;
-            this.abc = "def";
-        },
-        enumerable: true,
-        configurable: true
-    });
     PlanService.prototype.getPlaeneBeschreibung = function (gruppe_id) {
         var url = this.baseUrl + 'plaene/' + gruppe_id;
         return this.http.get(url)
@@ -66,15 +57,10 @@ var PlanService = (function () {
             .subscribe();
     };
     PlanService.prototype.readPlan = function (plan_id) {
-        var _this = this;
         var url = this.baseUrl + 'plan/' + plan_id;
-        this.http.get(url)
+        return this.http.get(url)
             .map(this.extractPlan)
-            .catch(this.handleError)
-            .subscribe(function (plan) {
-            if (_this._callbackNewPlan)
-                _this._callbackNewPlan(plan);
-        });
+            .catch(this.handleError);
     };
     PlanService.prototype.extractPlan = function (res) {
         var planVorlage = res.json();
@@ -89,14 +75,13 @@ var PlanService = (function () {
         return new plan_1.Plan(vorlage);
     };
     PlanService.prototype.getNewPlan = function (sus) {
-        var plan_id = 0;
         var anzahlTische = sus.length;
         var planVorlage = plan_1.Plan.createNewVorlage(anzahlTische);
         var plan = new plan_1.Plan(planVorlage);
-        var pa = new plan_anordnung_1.PlanAnordnung({ tische: plan.tische });
-        var pm = new plan_manager_1.PlanManager(plan);
-        pa.setzeU();
-        pm.losen();
+        var planAnordnung = new plan_anordnung_1.PlanAnordnung({ tische: plan.tische });
+        var planManager = new plan_manager_1.PlanManager(plan, sus);
+        planAnordnung.setzeU();
+        planManager.losen();
         return plan;
     };
     ;

@@ -19,18 +19,18 @@ var AppComponent = (function () {
         this.router = router;
     }
     AppComponent.prototype.ngOnInit = function () {
-        this.router.navigate(['/group-select']);
+        this.router.navigate(['/']);
     };
     AppComponent = __decorate([
         core_1.Component({
             selector: 'my-app',
-            template: "\n        <nav>        \n        <a [routerLink]=\"['/group-select']\">Gruppenauswahl</a>\n        <a [routerLink]=\"['/plan/2']\">Plan</a>\n        <a [routerLink]=\"['/gruppe/2']\">Gruppe editieren</a>\n        </nav>\n        <router-outlet></router-outlet>\n  ",
+            template: "\n        <router-outlet></router-outlet>\n  ",
             directives: [router_1.ROUTER_DIRECTIVES],
         }),
         router_1.Routes([
-            { path: '/plan/:group_id', component: plan_container_1.PlanContainer },
+            { path: '/plaene/:group_id', component: plan_container_1.PlanContainer },
             { path: '/gruppe/:id', component: group_edit_container_1.GroupEditContainer },
-            { path: '/group-select', component: group_select_container_component_1.GroupSelectContainer }
+            { path: '/', component: group_select_container_component_1.GroupSelectContainer }
         ]), 
         __metadata('design:paramtypes', [router_1.Router])
     ], AppComponent);

@@ -66,10 +66,11 @@ var Sus = (function () {
             nachname: "",
             gruppe_id: gruppeId,
             aktiv: 1,
-            extras: {} };
+            extras: {}
+        };
     };
     Sus.prototype.istLeer = function () {
-        return this.id == 0;
+        return !this.id;
     };
     return Sus;
 }());

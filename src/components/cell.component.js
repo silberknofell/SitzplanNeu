@@ -10,7 +10,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var plan_layout_1 = require("../plan-layout");
-var element_1 = require("../Pojo/element");
 var CellComponent = (function () {
     function CellComponent() {
         this.cellWidth = plan_layout_1.PlanLayout.cellWidth;
@@ -31,7 +30,7 @@ var CellComponent = (function () {
     };
     CellComponent.prototype.getCssClass = function () {
         var classes = "";
-        if (this.cell.typ == element_1.Elem.TYP_TISCH_BELEGBAR) {
+        if (this.cell.isTisch()) {
             classes += 'tisch';
         }
         else {
