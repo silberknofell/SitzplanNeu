@@ -31,7 +31,7 @@ import {PlanInout} from "./plan-inout.component";
         <button (click)="deltaX(-50)">x-50</button>
         <button (click)="deltaY(50)">y+50</button>
         <button (click)="deltaY(-50)">y-50</button>
-    </div>
+     </div>
     <div class="plan"
          [style.width.px]="viewWidth()"
          [style.height.px]="viewHeight()"
