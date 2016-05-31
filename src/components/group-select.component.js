@@ -25,7 +25,7 @@ var GroupSelectComponent = (function () {
     GroupSelectComponent = __decorate([
         core_1.Component({
             selector: 'group-select',
-            template: "\n        <ul>\n            <li *ngFor=\"let group of gruppen\"\n                   (click) = \"select(group)\">\n                {{group.bezeichnung}}\n            </li>\n        </ul>\n  ",
+            template: "\n        <div class=\"btn-toolbar\">\n            <span *ngFor=\"let group of gruppen\"\n                class=\"btn btn-success\"\n                (click) = \"select(group)\">\n                {{group.bezeichnung}}\n            </span>\n        </div>\n  ",
             styles: ["\n\n  "],
             directives: [],
             providers: []

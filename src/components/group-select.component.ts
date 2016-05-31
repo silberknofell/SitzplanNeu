@@ -9,12 +9,13 @@ import {Gruppe} from "./../Pojo/gruppe";
 @Component({
     selector: 'group-select',
     template: `
-        <ul>
-            <li *ngFor="let group of gruppen"
-                   (click) = "select(group)">
+        <div class="btn-toolbar">
+            <span *ngFor="let group of gruppen"
+                class="btn btn-success"
+                (click) = "select(group)">
                 {{group.bezeichnung}}
-            </li>
-        </ul>
+            </span>
+        </div>
   `,
     styles: [`
 

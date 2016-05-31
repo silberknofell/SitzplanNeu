@@ -7,8 +7,8 @@ import {GroupSelectComponent} from "../group-select.component";
     selector: 'group-select-container',
     template: `
         <h1>Sitzplanmanager</h1>
-        <p>Bitte Gruppe wählen: <group-select></group-select></p>
-        <p>Kennwort <input type="password" [(ngModel)]="password"></p>        
+        <p><input type="password" placeholder="Kennwort eingeben" [(ngModel)]="password"></p>     
+        <p><group-select></group-select></p>
     `,
     directives: [GroupSelectComponent]
 
