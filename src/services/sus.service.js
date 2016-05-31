@@ -33,6 +33,7 @@ var SusService = (function () {
         return Observable_1.Observable.throw(errMsg);
     };
     SusService.prototype.saveSus = function (sus) {
+        console.log(sus);
         var url = this.baseUrl + 'sus';
         var body = JSON.stringify(sus.susData);
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });

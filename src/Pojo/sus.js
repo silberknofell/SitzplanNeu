@@ -66,13 +66,67 @@ var Sus = (function () {
             nachname: "",
             gruppe_id: gruppeId,
             aktiv: 1,
-            extras: {}
+            extras: "{}"
         };
     };
     Sus.prototype.istLeer = function () {
-        return !this.id;
+        return !!name;
     };
     return Sus;
 }());
 exports.Sus = Sus;
+var SusWrap = (function () {
+    function SusWrap(_sus) {
+        this._sus = _sus;
+        this.changed = _sus.istLeer();
+        this.deleted = false;
+    }
+    Object.defineProperty(SusWrap.prototype, "sus", {
+        get: function () {
+            return this._sus;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SusWrap.prototype, "name", {
+        get: function () {
+            return this._sus.name;
+        },
+        set: function (value) {
+            this._sus.name = value;
+            this.changed = true;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SusWrap.prototype, "nachname", {
+        get: function () {
+            return this._sus.nachname;
+        },
+        set: function (value) {
+            this._sus.nachname = value;
+            this.changed = true;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    SusWrap.prototype.deleteThis = function () {
+        this.deleted = true;
+    };
+    SusWrap.prototype.getLongName = function () {
+        return this.sus.getLongName();
+    };
+    SusWrap.prototype.isDeleted = function () {
+        return this.deleted;
+    };
+    SusWrap.prototype.isChanged = function () {
+        return this.changed;
+    };
+    SusWrap.leererSusWrap = function (gruppeId) {
+        if (gruppeId === void 0) { gruppeId = 0; }
+        return new SusWrap(Sus.leererSus(gruppeId));
+    };
+    return SusWrap;
+}());
+exports.SusWrap = SusWrap;
 //# sourceMappingURL=sus.js.map

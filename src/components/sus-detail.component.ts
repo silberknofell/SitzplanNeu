@@ -7,21 +7,36 @@
 /**
  * Created by test on 28.12.2015.
  */
-import {Component, Input} from '@angular/core';
-import {Sus} from "../Pojo/sus";
+import {Component, Input, Output, EventEmitter} from '@angular/core';
+import {Sus, SusWrap} from "../Pojo/sus";
 import {SusService} from "../services/sus.service";
 
 @Component({
     selector: 'sus-detail',
-    template: `
-Name <input type="text" name="name" [(ngModel)]="sus.name" /><br />
-Nachname<input type="text" name="nachname" [(ngModel)]="sus.nachname" /><br />
+    template: `<form>
+    <div class="form-group">
+        <label for="sus-name">Name (Anzeige)</label>
+        <input type="text" 
+               class="form-control" 
+               id="sus-name" 
+               placeholder="Name"
+               [(ngModel)]="sus.name" 
+               (keyup.enter)="test()">        
+    </div>
+    <div class="form-group">
+        <label for="sus-nachname">Nachname</label>
+        <input type="text" 
+               class="form-control" 
+               id="sus-nachname" 
+               placeholder="Nachname"
+               [(ngModel)]="sus.nachname" 
+               (keyup.enter)="test()"
+               (keyup)="keyUp()">        
+    </div>
+</form>
 
-<button (click)="neu()">Neu</button>
-<button (click)="speichern()">Speichern</button>
-<button (click)="delete()">LÖSCHEN</button>
 
-  `,
+`,
     styles: [`
 
   `],
@@ -30,40 +45,26 @@ Nachname<input type="text" name="nachname" [(ngModel)]="sus.nachname" /><br />
 })
 
 export class SusDetailComponent {
-    private _sus:Sus=Sus.leererSus();
+    private susWrap:SusWrap = SusWrap.leererSusWrap();
     @Input() gruppeId:number;
-
-
-    get sus():Sus {
-        return this._sus;
+    @Output() onKeyUp = new EventEmitter();
+    get sus():SusWrap {
+        return this.susWrap;
     }
     @Input()
-    set sus(value:Sus) {
-        this._sus = value || Sus.leererSus();
-        this._sus.gruppe_id = this.gruppeId;
+    set sus(value:SusWrap) {
+        this.susWrap = value || SusWrap.leererSusWrap(this.gruppeId);
     }
 
-    constructor(private susService:SusService) {
-        this.susService = susService;
+    constructor() {
     }
 
-    neu() {
-        this.sus = null;
-    }
-    
-    speichern() {
-        this.susService.saveSus(this.sus)
-            .subscribe();
-    }
-
-    delete() {
-        this.susService.deleteSus(this.sus.id)
-            .subscribe();
-    }
 
     test() {
-        this.susService.getSusInListe([1,2,3])
-            .subscribe();
+
+    }
+    keyUp() {
+        this.onKeyUp.emit(null);
     }
 
 }

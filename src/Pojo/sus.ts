@@ -49,18 +49,72 @@ export class Sus {
         return new Sus(Sus.leererISus(gruppeId));
     }
 
-    static leererISus(gruppeId=0):ISus {
+    static leererISus(gruppeId = 0):ISus {
         return {
             id: 0,
             name: "",
             nachname: "",
             gruppe_id: gruppeId,
             aktiv: 1,
-            extras: {}
+            extras: "{}"
         };
     }
 
     istLeer():boolean {
-        return !this.id;
+        return !!name;
     }
+}
+
+export class SusWrap {
+    changed:boolean;
+    deleted:boolean;
+
+    constructor(private _sus:Sus) {
+        this.changed = _sus.istLeer();
+        this.deleted = false;
+    }
+
+    get sus():Sus {
+        return this._sus;
+    }
+
+    get name():string {
+        return this._sus.name;
+    }
+
+    set name(value:string) {
+        this._sus.name = value;
+        this.changed = true;
+    }
+
+    get nachname():string {
+        return this._sus.nachname;
+    }
+
+    set nachname(value:string) {
+        this._sus.nachname = value;
+        this.changed = true;
+    }
+    
+    deleteThis() {
+        this.deleted = true;
+    }
+
+    getLongName():string {
+        return this.sus.getLongName();
+    }
+
+    isDeleted():boolean {
+        return this.deleted;
+    }
+    isChanged():boolean {
+        return this.changed;
+    }
+    
+    static leererSusWrap(gruppeId = 0):SusWrap {
+        return new SusWrap(Sus.leererSus(gruppeId));
+    }
+
+    
+    
 }

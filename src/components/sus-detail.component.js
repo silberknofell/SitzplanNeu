@@ -10,56 +10,47 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var sus_1 = require("../Pojo/sus");
-var sus_service_1 = require("../services/sus.service");
 var SusDetailComponent = (function () {
-    function SusDetailComponent(susService) {
-        this.susService = susService;
-        this._sus = sus_1.Sus.leererSus();
-        this.susService = susService;
+    function SusDetailComponent() {
+        this.susWrap = sus_1.SusWrap.leererSusWrap();
+        this.onKeyUp = new core_1.EventEmitter();
     }
     Object.defineProperty(SusDetailComponent.prototype, "sus", {
         get: function () {
-            return this._sus;
+            return this.susWrap;
         },
         set: function (value) {
-            this._sus = value || sus_1.Sus.leererSus();
-            this._sus.gruppe_id = this.gruppeId;
+            this.susWrap = value || sus_1.SusWrap.leererSusWrap(this.gruppeId);
         },
         enumerable: true,
         configurable: true
     });
-    SusDetailComponent.prototype.neu = function () {
-        this.sus = null;
-    };
-    SusDetailComponent.prototype.speichern = function () {
-        this.susService.saveSus(this.sus)
-            .subscribe();
-    };
-    SusDetailComponent.prototype.delete = function () {
-        this.susService.deleteSus(this.sus.id)
-            .subscribe();
-    };
     SusDetailComponent.prototype.test = function () {
-        this.susService.getSusInListe([1, 2, 3])
-            .subscribe();
+    };
+    SusDetailComponent.prototype.keyUp = function () {
+        this.onKeyUp.emit(null);
     };
     __decorate([
         core_1.Input(), 
         __metadata('design:type', Number)
     ], SusDetailComponent.prototype, "gruppeId", void 0);
     __decorate([
+        core_1.Output(), 
+        __metadata('design:type', Object)
+    ], SusDetailComponent.prototype, "onKeyUp", void 0);
+    __decorate([
         core_1.Input(), 
-        __metadata('design:type', sus_1.Sus)
+        __metadata('design:type', sus_1.SusWrap)
     ], SusDetailComponent.prototype, "sus", null);
     SusDetailComponent = __decorate([
         core_1.Component({
             selector: 'sus-detail',
-            template: "\nName <input type=\"text\" name=\"name\" [(ngModel)]=\"sus.name\" /><br />\nNachname<input type=\"text\" name=\"nachname\" [(ngModel)]=\"sus.nachname\" /><br />\n\n<button (click)=\"neu()\">Neu</button>\n<button (click)=\"speichern()\">Speichern</button>\n<button (click)=\"delete()\">L\u00D6SCHEN</button>\n\n  ",
+            template: "<form>\n    <div class=\"form-group\">\n        <label for=\"sus-name\">Name (Anzeige)</label>\n        <input type=\"text\" \n               class=\"form-control\" \n               id=\"sus-name\" \n               placeholder=\"Name\"\n               [(ngModel)]=\"sus.name\" \n               (keyup.enter)=\"test()\">        \n    </div>\n    <div class=\"form-group\">\n        <label for=\"sus-nachname\">Nachname</label>\n        <input type=\"text\" \n               class=\"form-control\" \n               id=\"sus-nachname\" \n               placeholder=\"Nachname\"\n               [(ngModel)]=\"sus.nachname\" \n               (keyup.enter)=\"test()\"\n               (keyup)=\"keyUp()\">        \n    </div>\n</form>\n\n\n",
             styles: ["\n\n  "],
             directives: [],
             providers: []
         }), 
-        __metadata('design:paramtypes', [sus_service_1.SusService])
+        __metadata('design:paramtypes', [])
     ], SusDetailComponent);
     return SusDetailComponent;
 }());

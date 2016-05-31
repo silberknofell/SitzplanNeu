@@ -11,8 +11,9 @@ import {GroupEditContainer} from "./container/group-edit-container";
 
 @Component({
     selector: 'my-app',
-    template: `
+    template: `<div class="container">
         <router-outlet></router-outlet>
+        </div>
   `,
     directives: [ROUTER_DIRECTIVES],
 })

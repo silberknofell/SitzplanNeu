@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var sus_service_1 = require("../services/sus.service");
+var sus_1 = require("../Pojo/sus");
 var sus_detail_component_1 = require("./sus-detail.component");
 var SusEditComponent = (function () {
     function SusEditComponent(susService) {
@@ -26,7 +27,7 @@ var SusEditComponent = (function () {
             this._gruppeId = value;
             this.susService.getSusInGruppe(value)
                 .subscribe(function (susList) {
-                _this.susList = susList;
+                _this.susList = susList.map(function (s) { return new sus_1.SusWrap(s); });
             });
         },
         enumerable: true,
@@ -34,16 +35,36 @@ var SusEditComponent = (function () {
     });
     Object.defineProperty(SusEditComponent.prototype, "susList", {
         get: function () {
+            console.log(this._susList);
             return this._susList;
         },
-        set: function (value) {
-            this._susList = value;
+        set: function (susList) {
+            this._susList = susList;
+            if (susList.length > 0) {
+                this.selectedSus = susList[0];
+            }
         },
         enumerable: true,
         configurable: true
     });
+    SusEditComponent.prototype.onKeyUp = function () {
+        this.sort();
+    };
+    SusEditComponent.prototype.sort = function () {
+        this._susList.sort(function (sus1, sus2) { return sus1.nachname.localeCompare(sus2.nachname); });
+    };
     SusEditComponent.prototype.select = function (sus) {
         this.selectedSus = sus;
+        this.sort();
+    };
+    SusEditComponent.prototype.neu = function () {
+        var sus = sus_1.SusWrap.leererSusWrap(this._gruppeId);
+        this.selectedSus = sus;
+        this.susList.push(sus);
+        this.sort();
+    };
+    SusEditComponent.prototype.deleteSus = function () {
+        this.selectedSus.deleteThis();
     };
     __decorate([
         core_1.Input(), 
@@ -52,10 +73,10 @@ var SusEditComponent = (function () {
     SusEditComponent = __decorate([
         core_1.Component({
             selector: 'sus-edit',
-            template: "\n<ol>\n    <li *ngFor=\"let sus of susList\" \n        (click) = \"select(sus)\">\n\n        {{sus.getLongName()}}\n    </li>\n</ol>\n<p>  \n    <sus-detail\n        [sus] = \"selectedSus\"\n        [gruppeId] = \"gruppeId\"\n        ></sus-detail>\n</p>\n  ",
-            styles: ["\n\n  "],
+            template: "<div class=\"col-xs-3\">\n    <ol class=\"list-group\">\n    <template ngFor let-sus [ngForOf]=\"susList\">\n    <li *ngIf=\"!sus.isDeleted()\"\n        class=\"list-group-item list-group-item-info\"  \n        [class.active]=\"sus === selectedSus\"\n        [class.changed]=\"sus.isChanged()\"\n        (click)=\"select(sus)\">\n            {{sus.getLongName()}}\n        </li>    \n    \n    </template>\n\n\n    </ol>\n</div>\n<div class=\"col-xs-5\">\n\n    <p>\n        <sus-detail\n                [sus]=\"selectedSus\"\n                [gruppeId]=\"gruppeId\"\n                (onKeyUp) = onKeyUp($event)\n        ></sus-detail>\n    </p>\n    <div>\n        <button id=\"btnNeu\" class=\"btn btn-success\" (click)=\"neu()\">Neue(r) Sch\u00FCler(in)</button>\n        <button id=\"btnDelete\" class=\"btn btn-danger\" (click)=\"deleteSus()\">L\u00F6schen</button>\n    </div>\n</div>\n  ",
+            styles: ["\n        li:hover { background-color:#7CCFF8; } \n        .list-group {  list-style: decimal-leading-zero inside; }\n        .list-group-item { display: list-item;}\n        li { padding-top: 3px; padding-bottom: 3px }  \n        li.changed {background-color:#ff8080; }\n        #btnNeu {width: 70%}\n        #btnDelete {width: 25%}\n  "],
             directives: [sus_detail_component_1.SusDetailComponent],
-            providers: [sus_service_1.SusService]
+            providers: []
         }), 
         __metadata('design:paramtypes', [sus_service_1.SusService])
     ], SusEditComponent);

@@ -191,7 +191,7 @@ var PlanComponent = (function () {
                 plan_inout_component_1.PlanInout],
             providers: [],
             styles: [
-                "input {\n            font-size: 30px;\n            color: red;\n            border: none;\n            }\n        "]
+                "\n        "]
         }), 
         __metadata('design:paramtypes', [plan_service_1.PlanService])
     ], PlanComponent);

@@ -30,6 +30,16 @@ var Gruppe = (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(Gruppe.prototype, "label", {
+        get: function () {
+            return this.data.bezeichnung;
+        },
+        set: function (value) {
+            this.data.bezeichnung = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Gruppe.prototype.getVorlage = function () {
         return this.data;
     };

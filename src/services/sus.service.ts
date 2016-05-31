@@ -4,7 +4,7 @@
 import {Injectable} from '@angular/core';
 import {Http, Response, Headers, RequestOptions} from '@angular/http';
 import {Observable} from "rxjs/Observable";
-import {Sus} from "../Pojo/sus";
+import {Sus, SusWrap} from "../Pojo/sus";
 
 
 @Injectable()
@@ -37,6 +37,7 @@ export class SusService {
     }
 
     saveSus(sus:Sus) {
+        console.log(sus);
         let url = this.baseUrl + 'sus';
         let body = JSON.stringify(sus.susData);
         let headers = new Headers({'Content-Type': 'application/json'});

@@ -65,11 +65,7 @@ import {PlanInout} from "./plan-inout.component";
         PlanInout],
     providers: [],
     styles:  [
-        `input {
-            font-size: 30px;
-            color: red;
-            border: none;
-            }
+        `
         `]
 })
 
