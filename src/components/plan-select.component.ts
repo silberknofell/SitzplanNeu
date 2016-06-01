@@ -4,22 +4,19 @@
 /**
  * Created by test on 28.02.2016.
  */
-import {Component, Input} from '@angular/core';
-
-import {PlanComponent} from "./plan.component";
+import {Component, Input, EventEmitter, Output} from "@angular/core";
 import {IPlanBeschreibung} from "../Pojo/i_plan";
 import {PlanService} from "../services/plan.service";
 import {Gruppe} from "../Pojo/gruppe";
 import {Plan} from "../Pojo/plan";
 import {Sus} from "../Pojo/sus";
 import {PlanInout} from "./plan-inout.component";
-import {GroupsService} from "../services/groups.service";
 import {SusService} from "../services/sus.service";
 
 @Component({
     selector: 'plan-select',
     template: `<div id="plan-select">
-<select [(ngModel)] = "selectedDescription">
+<select [(ngModel)] = "selectedDescription" >
     <option *ngFor = "let description of plaeneBeschreibungen"
             [ngValue] = "description"
             >
@@ -27,11 +24,9 @@ import {SusService} from "../services/sus.service";
     </option>
 </select>
 
-<plan [plan]="_plan"></plan>
+
 </div>
-<div>
-    <plan-inout [plan] = "_plan"></plan-inout>
-</div>
+
 <button (click)="newClick()">Neuer Plan</button>
 <button (click)="delete()" *ngIf = "_plan">Löschen</button>
     `,
@@ -40,14 +35,14 @@ import {SusService} from "../services/sus.service";
             font-size: 30px;
         }
     `],
-    directives: [PlanComponent, PlanInout],
+    directives: [PlanInout],
     providers: [PlanService, SusService]
 })
 
 export class PlanSelectComponent {
     private _gruppe:Gruppe;
     private _plan:Plan;
-
+    @Output() onPlanChange = new EventEmitter<Plan>();
     @Input()
     get gruppe():Gruppe {
         return this._gruppe;
@@ -67,7 +62,7 @@ export class PlanSelectComponent {
 
     set selectedDescription(value:IPlanBeschreibung) {
         this.planService.readPlan(value.id)
-            .subscribe(plan => this._plan = plan);
+            .subscribe(plan => this.onPlanChange.emit(plan));
     }
 
     plaeneBeschreibungen:IPlanBeschreibung[] = [];
@@ -84,12 +79,13 @@ export class PlanSelectComponent {
     }
 
     private newPlan(sus:Sus[]) {
-        this._plan = this.planService.getNewPlan(sus);
-        this._plan.nr = this.getMaxPlanNr() +1;
-        this._plan.gruppe = this._gruppe;
+        let plan: Plan = this.planService.getNewPlan(sus);
+        plan.nr = this.getMaxPlanNr() +1;
+        plan.gruppe = this._gruppe;
+        this.onPlanChange.emit(plan);
     }
 
-    public delete() {
+    private delete() {
 
         this.planService.deletePlan(this._plan.id)
             .subscribe(() => alert("Plan gelöscht"));

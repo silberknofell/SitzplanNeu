@@ -8,8 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var plan_component_1 = require("./plan.component");
+var core_1 = require("@angular/core");
 var plan_service_1 = require("../services/plan.service");
 var gruppe_1 = require("../Pojo/gruppe");
 var plan_inout_component_1 = require("./plan-inout.component");
@@ -18,6 +17,7 @@ var PlanSelectComponent = (function () {
     function PlanSelectComponent(planService, susService) {
         this.planService = planService;
         this.susService = susService;
+        this.onPlanChange = new core_1.EventEmitter();
         this.plaeneBeschreibungen = [];
         this.planService = planService;
     }
@@ -42,7 +42,7 @@ var PlanSelectComponent = (function () {
         set: function (value) {
             var _this = this;
             this.planService.readPlan(value.id)
-                .subscribe(function (plan) { return _this._plan = plan; });
+                .subscribe(function (plan) { return _this.onPlanChange.emit(plan); });
         },
         enumerable: true,
         configurable: true
@@ -53,9 +53,10 @@ var PlanSelectComponent = (function () {
             .subscribe(function (sus) { return _this.newPlan(sus); });
     };
     PlanSelectComponent.prototype.newPlan = function (sus) {
-        this._plan = this.planService.getNewPlan(sus);
-        this._plan.nr = this.getMaxPlanNr() + 1;
-        this._plan.gruppe = this._gruppe;
+        var plan = this.planService.getNewPlan(sus);
+        plan.nr = this.getMaxPlanNr() + 1;
+        plan.gruppe = this._gruppe;
+        this.onPlanChange.emit(plan);
     };
     PlanSelectComponent.prototype.delete = function () {
         this.planService.deletePlan(this._plan.id)
@@ -83,15 +84,19 @@ var PlanSelectComponent = (function () {
         return classes;
     };
     __decorate([
+        core_1.Output(), 
+        __metadata('design:type', Object)
+    ], PlanSelectComponent.prototype, "onPlanChange", void 0);
+    __decorate([
         core_1.Input(), 
         __metadata('design:type', gruppe_1.Gruppe)
     ], PlanSelectComponent.prototype, "gruppe", null);
     PlanSelectComponent = __decorate([
         core_1.Component({
             selector: 'plan-select',
-            template: "<div id=\"plan-select\">\n<select [(ngModel)] = \"selectedDescription\">\n    <option *ngFor = \"let description of plaeneBeschreibungen\"\n            [ngValue] = \"description\"\n            >\n    {{description.text}}\n    </option>\n</select>\n\n<plan [plan]=\"_plan\"></plan>\n</div>\n<div>\n    <plan-inout [plan] = \"_plan\"></plan-inout>\n</div>\n<button (click)=\"newClick()\">Neuer Plan</button>\n<button (click)=\"delete()\" *ngIf = \"_plan\">L\u00F6schen</button>\n    ",
+            template: "<div id=\"plan-select\">\n<select [(ngModel)] = \"selectedDescription\" >\n    <option *ngFor = \"let description of plaeneBeschreibungen\"\n            [ngValue] = \"description\"\n            >\n    {{description.text}}\n    </option>\n</select>\n\n\n</div>\n\n<button (click)=\"newClick()\">Neuer Plan</button>\n<button (click)=\"delete()\" *ngIf = \"_plan\">L\u00F6schen</button>\n    ",
             styles: ["\n        select {\n            font-size: 30px;\n        }\n    "],
-            directives: [plan_component_1.PlanComponent, plan_inout_component_1.PlanInout],
+            directives: [plan_inout_component_1.PlanInout],
             providers: [plan_service_1.PlanService, sus_service_1.SusService]
         }), 
         __metadata('design:paramtypes', [plan_service_1.PlanService, sus_service_1.SusService])
