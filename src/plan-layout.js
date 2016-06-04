@@ -36,17 +36,37 @@ var PlanLayout = (function () {
         return PlanLayout.cellHeight() / 2;
     };
     PlanLayout.setIJ = function (plan) {
-        this.maxI = 1;
-        this.maxJ = 1;
+        var result = PlanLayout.getMaxIJFromPlan(plan);
+        this.maxI = result.i;
+        this.maxJ = result.j;
+    };
+    PlanLayout.getMaxIJFromPlan = function (plan) {
+        var maxI = 1;
+        var maxJ = 1;
         for (var _i = 0, _a = plan.tische; _i < _a.length; _i++) {
             var tisch = _a[_i];
-            if (tisch.i > this.maxI) {
-                this.maxI = 1 * tisch.i;
+            if (tisch.i > maxI) {
+                maxI = +tisch.i;
             }
-            ;
-            if (tisch.j > this.maxJ) {
-                this.maxJ = 1 * tisch.j;
+            if (tisch.j > maxJ) {
+                maxJ = +tisch.j;
             }
+        }
+        return { i: maxI, j: maxJ };
+    };
+    PlanLayout.deltaI = function (plan, delta) {
+        var neuI = PlanLayout.maxI + delta;
+        var maxI = PlanLayout.getMaxIJFromPlan(plan).i;
+        console.log(neuI, maxI);
+        if (neuI >= maxI && neuI >= 1) {
+            PlanLayout.maxI = neuI;
+        }
+    };
+    PlanLayout.deltaJ = function (plan, delta) {
+        var neuJ = PlanLayout.maxJ + delta;
+        var maxJ = PlanLayout.getMaxIJFromPlan(plan).j;
+        if (neuJ >= maxJ && neuJ >= 1) {
+            PlanLayout.maxJ = neuJ;
         }
     };
     PlanLayout.getIndex = function (cell) {

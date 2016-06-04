@@ -261,12 +261,12 @@ export class PlanComponent {
     }
 
     public deltaI(delta:number):void {
-        PlanLayout.maxI = PlanLayout.maxI + delta;
+        PlanLayout.deltaI(this.plan, delta);
         this.buildComponents();
     }
 
     public deltaJ(delta:number):void {
-        PlanLayout.maxJ = PlanLayout.maxJ + delta;
+        PlanLayout.deltaJ(this.plan, delta);
         this.buildComponents();
     }
 

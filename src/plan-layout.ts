@@ -9,10 +9,11 @@ export class PlanLayout {
     public static maxI:number = 9;
     public static maxJ:number = 6;
 
-    public static getViewWidth(){
+    public static getViewWidth() {
         return PlanLayout.viewWidth;
     }
-    public static getViewHeight(){
+
+    public static getViewHeight() {
         return PlanLayout.viewHeight;
     }
 
@@ -23,7 +24,7 @@ export class PlanLayout {
     public static getNull():number {
         return 0;
     }
-    
+
     public static cellWidth():number {
         return PlanLayout.viewWidth / PlanLayout.maxI - PlanLayout.rand2();
     }
@@ -47,22 +48,46 @@ export class PlanLayout {
     public static xHalfCell():number {
         return PlanLayout.cellWidth() / 2;
     }
+
     public static yHalfCell():number {
         return PlanLayout.cellHeight() / 2;
     }
 
     static setIJ(plan:Plan):void {
-        this.maxI = 1;
-        this.maxJ = 1;
+        let result = PlanLayout.getMaxIJFromPlan(plan);
+        this.maxI = result.i;
+        this.maxJ = result.j;
+
+    }
+
+    static  getMaxIJFromPlan(plan:Plan) {
+        let maxI = 1;
+        let maxJ = 1;
         for (var tisch of plan.tische) {
-            if (tisch.i > this.maxI) {
-                this.maxI = 1*tisch.i
-            };
-            if (tisch.j > this.maxJ) {
-                this.maxJ = 1*tisch.j
+            if (tisch.i > maxI) {
+                maxI = +tisch.i
+            }
+            if (tisch.j > maxJ) {
+                maxJ = +tisch.j
             }
         }
+        return {i: maxI, j: maxJ};
+    }
 
+    public static deltaI(plan:Plan, delta:number):void {
+        let neuI =  PlanLayout.maxI + delta;
+        let maxI = PlanLayout.getMaxIJFromPlan(plan).i;
+        console.log(neuI, maxI);
+        if (neuI>=maxI && neuI>=1) {
+            PlanLayout.maxI = neuI;
+        }
+    }
+    public static deltaJ(plan:Plan, delta:number):void {
+        let neuJ =  PlanLayout.maxJ+ delta;
+        let maxJ = PlanLayout.getMaxIJFromPlan(plan).j;
+        if (neuJ>=maxJ && neuJ>=1) {
+            PlanLayout.maxJ = neuJ;
+        }
     }
 
     public static getIndex(cell:ICell):number {

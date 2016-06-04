@@ -166,11 +166,11 @@ var PlanComponent = (function () {
         return this.markierung.istMarkiert(element);
     };
     PlanComponent.prototype.deltaI = function (delta) {
-        plan_layout_1.PlanLayout.maxI = plan_layout_1.PlanLayout.maxI + delta;
+        plan_layout_1.PlanLayout.deltaI(this.plan, delta);
         this.buildComponents();
     };
     PlanComponent.prototype.deltaJ = function (delta) {
-        plan_layout_1.PlanLayout.maxJ = plan_layout_1.PlanLayout.maxJ + delta;
+        plan_layout_1.PlanLayout.deltaJ(this.plan, delta);
         this.buildComponents();
     };
     PlanComponent.prototype.deltaX = function (delta) {
