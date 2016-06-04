@@ -5,21 +5,13 @@ body {
 }
 
 input {
-
+    text-align: center;
 }
 
-#tafel {
-    background-color: #AEA;
-    padding: 5px 20px;
-    border: 1px solid blue;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    position: absolute;
+.btn-space {
+    margin: 0px 5px;
 }
-#tafel:hover {
-    background-color: #8fbc8f;
-}
+
 #lager {
     background-color: #ec89ee;
     padding: 5px 20px;
@@ -67,6 +59,30 @@ input {
 }
 
 .plan {
-    background-color: papayawhip;
+    background-color: #99ffce;
+    margin: 30px;
     position: relative;
+}
+
+.label {
+    background-color: #ABCDEF;
+    color: black;
+    padding: 5px 20px;
+    position: absolute;
+    height: 23px;
+}
+.label:hover {
+    background-color: #8fbc8f;
+}
+#links {
+    transform: rotate(90deg);
+}
+#rechts {
+    transform: rotate(-90deg);
+}
+.plan-header {
+    position: absolute;
+}
+.arrows {
+    position: absolute;
 }

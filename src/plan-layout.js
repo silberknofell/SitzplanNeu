@@ -11,6 +11,9 @@ var PlanLayout = (function () {
     PlanLayout.gridSize = function () {
         return PlanLayout.maxI * PlanLayout.maxJ;
     };
+    PlanLayout.getNull = function () {
+        return 0;
+    };
     PlanLayout.cellWidth = function () {
         return PlanLayout.viewWidth / PlanLayout.maxI - PlanLayout.rand2();
     };
@@ -20,11 +23,17 @@ var PlanLayout = (function () {
     PlanLayout.rand2 = function () {
         return 2 * (PlanLayout.border + PlanLayout.margin);
     };
-    PlanLayout.leftMitte = function () {
-        return (PlanLayout.viewWidth - PlanLayout.cellWidth()) / 2;
+    PlanLayout.xMitte = function () {
+        return PlanLayout.viewWidth / 2;
     };
-    PlanLayout.topMitte = function () {
-        return (PlanLayout.viewHeight - PlanLayout.cellHeight()) / 2;
+    PlanLayout.yMitte = function () {
+        return PlanLayout.viewHeight / 2;
+    };
+    PlanLayout.xHalfCell = function () {
+        return PlanLayout.cellWidth() / 2;
+    };
+    PlanLayout.yHalfCell = function () {
+        return PlanLayout.cellHeight() / 2;
     };
     PlanLayout.setIJ = function (plan) {
         this.maxI = 1;

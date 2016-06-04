@@ -33,10 +33,6 @@ export class PlanInout {
         this.planService = planservice;
     }
 
-    public saveClick() {
-        this.planService.updatePlan(this.plan);
-    }
-
     public copyClick() {
         // this.planComponent.plan=this.planService.getPlanCopy(this.plan);
     }

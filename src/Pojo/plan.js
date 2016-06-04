@@ -110,9 +110,9 @@ var Plan = (function () {
             gruppe: 'neue Gruppe',
             gruppe_id: 0,
             nr: 0,
-            raum: 'Raum',
-            start: 'start',
-            stop: 'stop',
+            raum: '',
+            start: '',
+            stop: '',
             extras: {},
             tische: []
         };

@@ -14,9 +14,6 @@ var PlanInout = (function () {
     function PlanInout(planservice) {
         this.planService = planservice;
     }
-    PlanInout.prototype.saveClick = function () {
-        this.planService.updatePlan(this.plan);
-    };
     PlanInout.prototype.copyClick = function () {
     };
     PlanInout.prototype.importClick = function () {

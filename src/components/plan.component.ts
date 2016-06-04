@@ -18,23 +18,14 @@ import {PlanInout} from "./plan-inout.component";
 @Component({
     selector: 'plan',
     template: `<div *ngIf="plan">
+    Von: <input [(ngModel)]="plan.start" placeholder="Start">
+    Bis: <input [(ngModel)]="plan.stop" placeholder="Stop">
+    <div *ngIf="erweitert">
+    </div>
 
-    <h1> {{plan.gruppeBezeichnung}} Nr. {{plan.nr}} in <input [(ngModel)] = "plan.raum"></h1>
-    Von: <input [(ngModel)] = "plan.start">
-    Bis: <input [(ngModel)] = "plan.stop">
-    <div>
-        <button (click)="deltaI(1)">i+1</button>
-        <button (click)="deltaI(-1)">i-1</button>
-        <button (click)="deltaJ(1)">j+1</button>
-        <button (click)="deltaJ(-1)">j-1</button>
-        <button (click)="deltaX(50)">x+50</button>
-        <button (click)="deltaX(-50)">x-50</button>
-        <button (click)="deltaY(50)">y+50</button>
-        <button (click)="deltaY(-50)">y-50</button>
-     </div>
     <div class="plan"
-         [style.width.px]="viewWidth()"
-         [style.height.px]="viewHeight()"
+         [style.width.px]="right()"
+         [style.height.px]="bottom()"
     >
 
         <cell *ngFor="let cell of cells"
@@ -42,20 +33,55 @@ import {PlanInout} from "./plan-inout.component";
               [planComponent]="getPlanComponent()"
         ></cell>
 
-        <div id="tafel"
-             [style.top.px]="tafelTop()"
-             [style.left.px]="tafelLeft()"
-             (click)="tafelClick()"
+        <div id="unten" class="label"
+             [style.top.px]="bottom()"
+             [style.left.px]="xMitte()-xHalfCell()"
         >Tafel
+
         </div>
+        <div id="oben" class="label"
+             [style.top.px]="-23"
+             [style.left.px]="xMitte()-xHalfCell()"
+        >Wand
+        </div>
+        <div id="links" class="label"
+             [style.left.px]="-41"
+             [style.top.px]="yMitte()"
+        >Flur
+        </div>
+        <div id="rechts" class="label"
+             [style.left.px]="right()-26"
+             [style.top.px]="yMitte()"
+        >Fenster
+        </div>
+
+        <div class="arrows"
+             [style.left.px]="right()"
+             [style.top.px]="0"
+        >
+            <button (click)="deltaY(-50)"><span class="fa fa-arrow-up"></span></button>
+            <button (click)="deltaY(50)"><span class="fa fa-arrow-down"></span></button>
+        <button  (click)="deltaI(1)"><span class="fa fa-plus-square-o"></span></button>
+        <button  (click)="deltaI(-1)"><span class="fa fa-minus-square-o"></span></button>
+        </div>
+        <div class="arrows"
+             [style.left.px]="0"
+             [style.top.px]="-23"
+        >
+            <button (click)="deltaX(-50)"><span class="fa fa-arrow-left"></span></button>
+            <button (click)="deltaX(50)"><span class="fa fa-arrow-right"></span></button>
+        <button  (click)="deltaJ(1)"><span class="fa fa-plus-square-o"></span></button>
+        <button  (click)="deltaJ(-1)"><span class="fa fa-minus-square-o"></span></button>
+        </div>
+
     </div>
 
-    <button (click)="reihenClick()">Reihen</button>
-    <button (click)="uClick()">U-Form</button>
-
-
-    <lager
-            [planComponent]="getPlanComponent()"
+    <button class="btn btn-default" *ngIf="erweitert" (click)="reihenClick()">Reihen</button>
+    <button class="btn btn-default" *ngIf="erweitert" (click)="uClick()">U-Form</button>
+    <button class="btn btn-default" (click)="losen()">losen</button>
+    <button class="btn btn-default" (click)="erweitert = !erweitert">{{erweitert ? 'weniger' : 'mehr'}}</button>
+    <lager *ngIf="erweitert"
+           [planComponent]="getPlanComponent()"
     ></lager>
 </div>
   
@@ -85,16 +111,20 @@ export class PlanComponent {
     }
 
     @Input() readonly:boolean = false;
-    viewWidth = PlanLayout.getViewWidth;
-    viewHeight = PlanLayout.getViewHeight;
-    tafelLeft = PlanLayout.leftMitte;
-    tafelTop = PlanLayout.getViewHeight;
+    right = PlanLayout.getViewWidth;
+    bottom = PlanLayout.getViewHeight;
+    xMitte = PlanLayout.xMitte;
+    yMitte = PlanLayout.yMitte;
+    xHalfCell = PlanLayout.xHalfCell;
+    yHalfCell = PlanLayout.yHalfCell;
+    xCell = PlanLayout.cellWidth;
+    yCell = PlanLayout.cellHeight;
 
     cells:Cell[] = [];
     markierung:Markierung;
-    planService:PlanService;
+    erweitert:boolean = false;
 
-    constructor(planService:PlanService) {
+    constructor(private planService:PlanService) {
         this.planService = planService;
         this.plan = Plan.createEmptyPlan();
     }
@@ -116,7 +146,7 @@ export class PlanComponent {
         this.markierung = new Markierung();
     }
 
-    public tafelClick():void {
+    public losen():void {
         var planManager:PlanManager = new PlanManager(this._plan);
         planManager.losen();
     }

@@ -15,8 +15,9 @@ import {SusService} from "../services/sus.service";
 
 @Component({
     selector: 'plan-select',
-    template: `<div id="plan-select">
-<select [(ngModel)] = "selectedDescription" >
+    template: `
+<select [(ngModel)] = "selectedDescription" 
+        *ngIf = "mindestensEinPlan()">
     <option *ngFor = "let description of plaeneBeschreibungen"
             [ngValue] = "description"
             >
@@ -24,16 +25,11 @@ import {SusService} from "../services/sus.service";
     </option>
 </select>
 
-
-</div>
-
-<button (click)="newClick()">Neuer Plan</button>
-<button (click)="delete()" *ngIf = "_plan">Löschen</button>
+<button class="btn btn-warning btn-space"(click)="newClick()">Neuer Plan</button>
     `,
     styles: [`
-        select {
-            font-size: 30px;
-        }
+        select {font-size: 30px;}
+        button {float: right;}
     `],
     directives: [PlanInout],
     providers: [PlanService, SusService]
@@ -41,36 +37,40 @@ import {SusService} from "../services/sus.service";
 
 export class PlanSelectComponent {
     private _gruppe:Gruppe;
-    private _plan:Plan;
-    @Output() onPlanChange = new EventEmitter<Plan>();
-    @Input()
+    @Output() onNewPlanSelect = new EventEmitter<Plan>();
+
     get gruppe():Gruppe {
         return this._gruppe;
     }
 
+    @Input()
     set gruppe(value:Gruppe) {
         this._gruppe = value;
         this.getPlaeneBeschreibung();
     }
 
-    get selectedDescription() {
-        if (this.plaeneBeschreibungen.length >0) {
+    get selectedDescription():IPlanBeschreibung {
+        if (this.mindestensEinPlan()) {
             return this.plaeneBeschreibungen[0];
+        } else {
+            return null;
         }
-        return null;
     }
 
     set selectedDescription(value:IPlanBeschreibung) {
-        this.planService.readPlan(value.id)
-            .subscribe(plan => this.onPlanChange.emit(plan));
+        this.readPlan(value.id);
     }
 
     plaeneBeschreibungen:IPlanBeschreibung[] = [];
 
-    constructor(private planService:PlanService, private susService: SusService) {
+    constructor(private planService:PlanService, private susService:SusService) {
         this.planService = planService;
     }
 
+    readPlan(planId:number) {
+        this.planService.readPlan(planId)
+            .subscribe(plan => this.onNewPlanSelect.emit(plan));
+    }
 
     public newClick() {
         this.susService.getSusInGruppe(this.gruppe.id)
@@ -79,17 +79,12 @@ export class PlanSelectComponent {
     }
 
     private newPlan(sus:Sus[]) {
-        let plan: Plan = this.planService.getNewPlan(sus);
-        plan.nr = this.getMaxPlanNr() +1;
+        let plan:Plan = this.planService.getNewPlan(sus);
+        plan.nr = this.getMaxPlanNr() + 1;
         plan.gruppe = this._gruppe;
-        this.onPlanChange.emit(plan);
+        this.onNewPlanSelect.emit(plan);
     }
 
-    private delete() {
-
-        this.planService.deletePlan(this._plan.id)
-            .subscribe(() => alert("Plan gelöscht"));
-    }
 
     private getMaxPlanNr() {
         let nummern:number[] = this.plaeneBeschreibungen
@@ -99,23 +94,20 @@ export class PlanSelectComponent {
         }
         return 1;
     }
+
     public getPlaeneBeschreibung() {
         if (this._gruppe) {
             this.planService.getPlaeneBeschreibung(this._gruppe.id)
-                .subscribe(b => {
-                    this.plaeneBeschreibungen = b;
+                .subscribe(beschreibung => {
+                    this.plaeneBeschreibungen = beschreibung;
+                    if (this.mindestensEinPlan()) {
+                        this.selectedDescription = beschreibung[0];
+                    }
                 })
         }
     }
 
-
-    public getCssClass():string {
-        var classes:string = "";
-        //TODO
-        // if (this.isMarkiert()) {
-        //     classes += " markiert";
-        // }
-        return classes;
+    private mindestensEinPlan():boolean {
+        return this.plaeneBeschreibungen && this.plaeneBeschreibungen.length > 0;
     }
-
 }

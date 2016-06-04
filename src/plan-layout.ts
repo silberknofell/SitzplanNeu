@@ -20,6 +20,10 @@ export class PlanLayout {
         return PlanLayout.maxI * PlanLayout.maxJ;
     }
 
+    public static getNull():number {
+        return 0;
+    }
+    
     public static cellWidth():number {
         return PlanLayout.viewWidth / PlanLayout.maxI - PlanLayout.rand2();
     }
@@ -32,12 +36,19 @@ export class PlanLayout {
         return 2 * (PlanLayout.border + PlanLayout.margin);
     }
 
-    public static leftMitte():number {
-        return (PlanLayout.viewWidth - PlanLayout.cellWidth()) / 2;
+    public static xMitte():number {
+        return PlanLayout.viewWidth / 2;
     }
 
-    public static topMitte():number {
-        return (PlanLayout.viewHeight - PlanLayout.cellHeight() ) / 2;
+    public static yMitte():number {
+        return PlanLayout.viewHeight / 2;
+    }
+
+    public static xHalfCell():number {
+        return PlanLayout.cellWidth() / 2;
+    }
+    public static yHalfCell():number {
+        return PlanLayout.cellHeight() / 2;
     }
 
     static setIJ(plan:Plan):void {
