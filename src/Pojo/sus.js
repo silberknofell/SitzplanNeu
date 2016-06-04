@@ -70,7 +70,8 @@ var Sus = (function () {
         };
     };
     Sus.prototype.istLeer = function () {
-        return !!name;
+        console.log();
+        return !this.name;
     };
     return Sus;
 }());

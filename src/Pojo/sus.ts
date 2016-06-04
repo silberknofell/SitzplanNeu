@@ -61,7 +61,8 @@ export class Sus {
     }
 
     istLeer():boolean {
-        return !!name;
+        console.log()
+        return !this.name;
     }
 }
 
