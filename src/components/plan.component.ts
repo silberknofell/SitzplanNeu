@@ -19,6 +19,9 @@ import {PlanInout} from "./plan-inout.component";
     selector: 'plan',
     template: `<div *ngIf="plan">
 <div id="start-stop">
+
+    Raum:
+        <input type="text" id="raum" [(ngModel)]="plan.raum" placeholder="Raum" />
     Von:
         <input type="text" id="start" [(ngModel)]="plan.start" placeholder="Start" />
     Bis:
@@ -38,7 +41,7 @@ import {PlanInout} from "./plan-inout.component";
              [style.top.px]="bottom()"
              [style.left.px]="xMitte()-xHalfCell()"
         >
-        <input type="text" [(ngModel)]="plan.extras.unten" />
+        <input type="text" [(ngModel)]="plan.extras.unten" placeholder="Tafel"/>
         
 
         </div>
@@ -46,21 +49,21 @@ import {PlanInout} from "./plan-inout.component";
              [style.top.px]="-23"
              [style.left.px]="xMitte()-xHalfCell()"
         >
-        <input type="text" [(ngModel)]="plan.extras.oben" />
+        <input type="text" [(ngModel)]="plan.extras.oben" placeholder="oben"/>
         
         </div>
         <div id="links" class="label"
              [style.left.px]="-41"
              [style.top.px]="yMitte()"
         >
-        <input type="text" [(ngModel)]="plan.extras.links" />
+        <input type="text" [(ngModel)]="plan.extras.links" placeholder="rechts"/>
         
         </div>
         <div id="rechts" class="label"
              [style.left.px]="right()-26"
              [style.top.px]="yMitte()"
         >
-            <input type="text" [(ngModel)]="plan.extras.rechts" />
+            <input type="text" [(ngModel)]="plan.extras.rechts" placeholder="links"/>
         </div>
 
         <div class="arrows"
