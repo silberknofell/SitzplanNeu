@@ -45,6 +45,16 @@ var Plan = (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(Plan.prototype, "extras", {
+        get: function () {
+            return this.data.extras;
+        },
+        set: function (value) {
+            this.data.extras = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(Plan.prototype, "raum", {
         get: function () {
             return this.data.raum;

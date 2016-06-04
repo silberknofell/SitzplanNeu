@@ -19,6 +19,8 @@ export class Plan {
         return this.data.gruppe;
     }
 
+    
+    
     set gruppe(gruppe:Gruppe) {
         this.data.gruppe = gruppe.bezeichnung;
         this.data.gruppe_id = gruppe.id;
@@ -30,6 +32,14 @@ export class Plan {
     
     set nr(value:number) {
         this.data.nr = value;
+    }
+    
+    get extras():string {
+        return this.data.extras;
+    }
+    
+    set extras(value:string) {
+        this.data.extras = value;
     }
 
     get raum():string {

@@ -18,11 +18,12 @@ import {PlanInout} from "./plan-inout.component";
 @Component({
     selector: 'plan',
     template: `<div *ngIf="plan">
-    Von: <input [(ngModel)]="plan.start" placeholder="Start">
-    Bis: <input [(ngModel)]="plan.stop" placeholder="Stop">
-    <div *ngIf="erweitert">
-    </div>
-
+<div id="start-stop">
+    Von:
+        <input type="text" id="start" [(ngModel)]="plan.start" placeholder="Start" />
+    Bis:
+        <input type="text" id="stop" [(ngModel)]="plan.stop" placeholder="Stop" />
+</div>
     <div class="plan"
          [style.width.px]="right()"
          [style.height.px]="bottom()"
@@ -36,23 +37,30 @@ import {PlanInout} from "./plan-inout.component";
         <div id="unten" class="label"
              [style.top.px]="bottom()"
              [style.left.px]="xMitte()-xHalfCell()"
-        >Tafel
+        >
+        <input type="text" [(ngModel)]="plan.extras.unten" />
+        
 
         </div>
         <div id="oben" class="label"
              [style.top.px]="-23"
              [style.left.px]="xMitte()-xHalfCell()"
-        >Wand
+        >
+        <input type="text" [(ngModel)]="plan.extras.oben" />
+        
         </div>
         <div id="links" class="label"
              [style.left.px]="-41"
              [style.top.px]="yMitte()"
-        >Flur
+        >
+        <input type="text" [(ngModel)]="plan.extras.links" />
+        
         </div>
         <div id="rechts" class="label"
              [style.left.px]="right()-26"
              [style.top.px]="yMitte()"
-        >Fenster
+        >
+            <input type="text" [(ngModel)]="plan.extras.rechts" />
         </div>
 
         <div class="arrows"
@@ -61,8 +69,8 @@ import {PlanInout} from "./plan-inout.component";
         >
             <button (click)="deltaY(-50)"><span class="fa fa-arrow-up"></span></button>
             <button (click)="deltaY(50)"><span class="fa fa-arrow-down"></span></button>
-        <button *ngIf="erweitert" (click)="deltaI(1)"><span class="fa fa-plus-square-o"></span></button>
-        <button *ngIf="erweitert" (click)="deltaI(-1)"><span class="fa fa-minus-square-o"></span></button>
+            <button *ngIf="erweitert" (click)="deltaI(1)"><span class="fa fa-plus-square-o"></span></button>
+            <button *ngIf="erweitert" (click)="deltaI(-1)"><span class="fa fa-minus-square-o"></span></button>
         </div>
         <div class="arrows"
              [style.left.px]="0"
@@ -70,8 +78,8 @@ import {PlanInout} from "./plan-inout.component";
         >
             <button (click)="deltaX(-50)"><span class="fa fa-arrow-left"></span></button>
             <button (click)="deltaX(50)"><span class="fa fa-arrow-right"></span></button>
-        <button *ngIf="erweitert" (click)="deltaJ(1)"><span class="fa fa-plus-square-o"></span></button>
-        <button *ngIf="erweitert" (click)="deltaJ(-1)"><span class="fa fa-minus-square-o"></span></button>
+            <button *ngIf="erweitert" (click)="deltaJ(1)"><span class="fa fa-plus-square-o"></span></button>
+            <button *ngIf="erweitert" (click)="deltaJ(-1)"><span class="fa fa-minus-square-o"></span></button>
         </div>
 
     </div>
@@ -92,6 +100,13 @@ import {PlanInout} from "./plan-inout.component";
     providers: [],
     styles:  [
         `
+input {
+    text-align: center;
+    border:none;
+    margin: 0;
+    font-size:120%;
+    background-color: transparent;
+}
         `]
 })
 
