@@ -61,8 +61,8 @@ import {PlanInout} from "./plan-inout.component";
         >
             <button (click)="deltaY(-50)"><span class="fa fa-arrow-up"></span></button>
             <button (click)="deltaY(50)"><span class="fa fa-arrow-down"></span></button>
-        <button  (click)="deltaI(1)"><span class="fa fa-plus-square-o"></span></button>
-        <button  (click)="deltaI(-1)"><span class="fa fa-minus-square-o"></span></button>
+        <button *ngIf="erweitert" (click)="deltaI(1)"><span class="fa fa-plus-square-o"></span></button>
+        <button *ngIf="erweitert" (click)="deltaI(-1)"><span class="fa fa-minus-square-o"></span></button>
         </div>
         <div class="arrows"
              [style.left.px]="0"
@@ -70,8 +70,8 @@ import {PlanInout} from "./plan-inout.component";
         >
             <button (click)="deltaX(-50)"><span class="fa fa-arrow-left"></span></button>
             <button (click)="deltaX(50)"><span class="fa fa-arrow-right"></span></button>
-        <button  (click)="deltaJ(1)"><span class="fa fa-plus-square-o"></span></button>
-        <button  (click)="deltaJ(-1)"><span class="fa fa-minus-square-o"></span></button>
+        <button *ngIf="erweitert" (click)="deltaJ(1)"><span class="fa fa-plus-square-o"></span></button>
+        <button *ngIf="erweitert" (click)="deltaJ(-1)"><span class="fa fa-minus-square-o"></span></button>
         </div>
 
     </div>
