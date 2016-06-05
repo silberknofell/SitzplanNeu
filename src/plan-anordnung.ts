@@ -70,14 +70,18 @@ export class PlanAnordnung {
         }
     }
 
-    setzeGruppen(anzahlGruppen:number) {
+    setzeGruppen(optionen) {
+        let anzahlGruppen = optionen.anzahlGruppen;
+        if (optionen.gruppenGroesse) {
+            anzahlGruppen = Math.round(optionen.gruppenGroesse / this.anzahlTische);
+        }
         let nr = 0;
         let anzahlTischeRest = this.anzahlTische;
         let anzahlGruppenRest = anzahlGruppen;
         let j:number = 1;
         while (anzahlTischeRest > 0) {
             let reihenLaenge = Math.floor((anzahlTischeRest - 1) / anzahlGruppenRest + 1);
-            for (let i=1; i<=reihenLaenge; i++) {
+            for (let i = 1; i <= reihenLaenge; i++) {
                 this.tische[nr].setIJ(i, j);
                 nr++;
             }

@@ -86,7 +86,7 @@ var PlanComponent = (function () {
     PlanComponent.prototype.gruppenClick = function () {
         var planAnordnung;
         planAnordnung = new plan_anordnung_1.PlanAnordnung({ tische: this._plan.tische, blockBreite: 3 });
-        planAnordnung.setzeGruppen(this.gruppenAnzahl);
+        planAnordnung.setzeGruppen({ gruppenGroesse: this.gruppenAnzahl });
         this.erhoeheGruppenAnzahl();
         this.plan = this._plan;
     };

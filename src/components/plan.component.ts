@@ -233,7 +233,7 @@ export class PlanComponent {
     public gruppenClick():void {
         let planAnordnung:PlanAnordnung;
         planAnordnung = new PlanAnordnung({tische: this._plan.tische, blockBreite: 3});
-        planAnordnung.setzeGruppen(this.gruppenAnzahl);
+        planAnordnung.setzeGruppen({gruppenGroesse: this.gruppenAnzahl});
         this.erhoeheGruppenAnzahl();
         this.plan = this._plan;
 

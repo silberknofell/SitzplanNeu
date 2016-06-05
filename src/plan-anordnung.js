@@ -48,7 +48,11 @@ var PlanAnordnung = (function () {
             this.tische[nr].setIJ(punkt.i, punkt.j);
         }
     };
-    PlanAnordnung.prototype.setzeGruppen = function (anzahlGruppen) {
+    PlanAnordnung.prototype.setzeGruppen = function (optionen) {
+        var anzahlGruppen = optionen.anzahlGruppen;
+        if (optionen.gruppenGroesse) {
+            anzahlGruppen = Math.round(optionen.gruppenGroesse / this.anzahlTische);
+        }
         var nr = 0;
         var anzahlTischeRest = this.anzahlTische;
         var anzahlGruppenRest = anzahlGruppen;
