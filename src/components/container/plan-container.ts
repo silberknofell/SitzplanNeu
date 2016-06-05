@@ -26,18 +26,6 @@ import {PlanService} from "../../services/plan.service";
     </div>
     <plan #planComponent [plan]="_plan"></plan>
 
-    <button 
-            class="btn btn-success btn-space"
-            *ngIf="_planChange"
-            (click)="saveClick(planComponent.plan)">
-        Speichern
-    </button>
-    <button 
-            class="btn btn-danger btn-space"
-            *ngIf="_plan"
-            (click)="deleteClick()">
-        Löschen
-    </button>
 </div>
     `,
     styles: [`
@@ -76,14 +64,5 @@ l
         this._planChange = true; //TODO;
     }
 
-    saveClick(plan:Plan) {
-        this.planService.updatePlan(plan);
-    }
-    deleteClick() {
-        this.planService.deletePlan(this._plan.id)
-            .subscribe(() => {
-                alert("Plan gelöscht");
-                this.router.navigate(['/plaene', this.gruppe.id]);
-            });
-    }
+
 }

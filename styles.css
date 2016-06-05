@@ -5,7 +5,7 @@ body {
 }
 
 .btn-space {
-    margin: 0px 5px;
+    margin: 5px;
 }
 
 #lager {
@@ -24,7 +24,7 @@ body {
     background-color: #BBB;
 }
 #lager-wrap {
-    margin: 8px;
+    margin: 5px;
 }
 .free {
     text-align:center;
@@ -66,13 +66,13 @@ select {
 }
 
 .label {
-    background-color: #ABCDEF;
+    background-color: #8fbc8f;
     color: black;
     padding: 5px 20px;
     height: 23px;
 }
 .label:hover {
-    background-color: #8fbc8f;
+    background-color: #ABCDEF;
 }
 #links {
     transform: translateX(50%) rotate(-90deg) translateY(-50%);
@@ -121,8 +121,9 @@ div#start-stop {
 }
 div.plan-right-buttons {
     margin-left: 50px;
-    width: 50px;
-    align-items: flex-start;
+    width: 150px;
+    align-items: stretch;
+
 }
 .plan-right-buttons button {
     width: 100%;

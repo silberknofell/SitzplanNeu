@@ -2,8 +2,8 @@ import {Plan} from "./Pojo/plan";
 import {Cell} from "./Pojo/cell";
 import {ICell} from "./Pojo/i_cell_tisch";
 export class PlanLayout {
-    public static viewWidth:number = 800;
-    public static viewHeight:number = 500;
+    public static viewWidth:number = 600;
+    public static viewHeight:number = 400;
     public static border:number = 1;
     public static margin:number = 3;
     public static maxI:number = 9;

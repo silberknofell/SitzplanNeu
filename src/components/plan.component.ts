@@ -40,8 +40,10 @@ import {PlanInout} from "./plan-inout.component";
         </div>
 
         <div class="arrows">
-            <button *ngIf="erweitert" class="transparent" (click)="deltaJ(1)"><span class="fa fa-plus-square-o"></span></button>
-            <button *ngIf="erweitert" class="transparent" (click)="deltaJ(-1)"><span class="fa fa-minus-square-o"></span></button>
+            <button *ngIf="erweitert" class="transparent" (click)="deltaJ(1)"><span class="fa fa-plus-square-o"></span>
+            </button>
+            <button *ngIf="erweitert" class="transparent" (click)="deltaJ(-1)"><span
+                    class="fa fa-minus-square-o"></span></button>
         </div>
     </div>
 
@@ -70,16 +72,53 @@ import {PlanInout} from "./plan-inout.component";
 
         <div class="plan-right plan-container plan-column">
             <div class="arrows">
-                <button *ngIf="erweitert" class="transparent" (click)="deltaI(1)"><span class="fa fa-plus-square-o"></span></button>
-                <button *ngIf="erweitert" class="transparent" (click)="deltaI(-1)"><span class="fa fa-minus-square-o"></span></button>
+                <button *ngIf="erweitert" class="transparent" (click)="deltaI(1)"><span
+                        class="fa fa-plus-square-o"></span></button>
+                <button *ngIf="erweitert" class="transparent" (click)="deltaI(-1)"><span
+                        class="fa fa-minus-square-o"></span></button>
             </div>
 
             <div id="rechts" class="label">
                 <input type="text" [(ngModel)]="plan.extras.rechts" placeholder="links"/>
             </div>
 
-            <div id="lager-wrap" 
-            [style.width.px]="xCell()"
+            <div></div>
+        </div>
+
+        <div class="plan-right-buttons plan-container plan-column">
+            <div>
+                <button class="btn btn-info btn-space" (click)="erweitert = !erweitert">{{erweitert ? 'weniger' : 'mehr'}}
+                </button>
+                <button class="btn btn-primary btn-space" *ngIf="erweitert" (click)="reihenClick()">Reihen</button>
+                <button class="btn btn-primary btn-space" *ngIf="erweitert" (click)="uClick()">U-Form</button>
+                <button class="btn btn-primary btn-space" (click)="losen()">losen</button>
+            </div>
+
+            <div>
+                <button
+                        class="btn btn-success btn-space"
+                        (click)="saveClick(planComponent.plan)">
+                    Speichern
+                </button>
+            </div>
+
+            <div>
+
+                <button
+                        class="btn btn-danger btn-space"
+                        *ngIf="_plan"
+                        (click)="deleteClick()">
+                    Löschen
+                </button>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="plan-bottom plan-container plan-row" [style.width.px]="right()">
+        <div>
+            <div id="lager-wrap"
+                 [style.width.px]="xCell()"
                  [style.line-height.px]="yCell()"
                  [style.height.px]="yCell()">
                 <lager *ngIf="erweitert"
@@ -88,25 +127,6 @@ import {PlanInout} from "./plan-inout.component";
                 ></lager>
             </div>
         </div>
-
-        <div class="plan-right-buttons plan-container plan-column">
-            <div>
-                <button class="btn btn-default" (click)="erweitert = !erweitert">{{erweitert ? 'weniger' : 'mehr'}}</button>
-                <button class="btn btn-default" *ngIf="erweitert" (click)="reihenClick()">Reihen</button>
-                <button class="btn btn-default" *ngIf="erweitert" (click)="uClick()">U-Form</button>
-                <button class="btn btn-default" (click)="losen()">losen</button>
-            </div>
-
-            <div>
-            </div>
-
-            <div>
-            </div>
-        </div>
-    </div>
-
-    <div class="plan-bottom plan-container plan-row" [style.width.px]="right()">
-        <div></div>
 
         <div id="unten" class="label">
             <input type="text" [(ngModel)]="plan.extras.unten" placeholder="Tafel"/>
@@ -317,5 +337,16 @@ export class PlanComponent {
         PlanLayout.viewHeight = PlanLayout.viewHeight + delta;
     }
 
+    saveClick(plan:Plan) {
+        this.planService.updatePlan(plan);
+    }
+
+    deleteClick() {
+        this.planService.deletePlan(this._plan.id)
+            .subscribe(() => {
+                alert("Plan gelöscht");
+                this.router.navigate(['/plaene', this.gruppe.id]);
+            });
+    }
 
 }

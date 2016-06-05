@@ -77,8 +77,8 @@ var PlanLayout = (function () {
         var j = Math.floor(index / PlanLayout.maxI) + 1;
         return { 'i': i, 'j': j };
     };
-    PlanLayout.viewWidth = 800;
-    PlanLayout.viewHeight = 500;
+    PlanLayout.viewWidth = 600;
+    PlanLayout.viewHeight = 400;
     PlanLayout.border = 1;
     PlanLayout.margin = 3;
     PlanLayout.maxI = 9;
