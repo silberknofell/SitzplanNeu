@@ -48,6 +48,22 @@ var PlanAnordnung = (function () {
             this.tische[nr].setIJ(punkt.i, punkt.j);
         }
     };
+    PlanAnordnung.prototype.setzeGruppen = function (anzahlGruppen) {
+        var nr = 0;
+        var anzahlTischeRest = this.anzahlTische;
+        var anzahlGruppenRest = anzahlGruppen;
+        var j = 1;
+        while (anzahlTischeRest > 0) {
+            var reihenLaenge = Math.floor((anzahlTischeRest - 1) / anzahlGruppenRest + 1);
+            for (var i = 1; i <= reihenLaenge; i++) {
+                this.tische[nr].setIJ(i, j);
+                nr++;
+            }
+            j += 2;
+            anzahlGruppenRest--;
+            anzahlTischeRest -= reihenLaenge;
+        }
+    };
     return PlanAnordnung;
 }());
 exports.PlanAnordnung = PlanAnordnung;
