@@ -10,12 +10,12 @@ body {
 
 #lager {
     background-color: #ec89ee;
-    padding: 5px 20px;
+    padding: 4px;
+    text-align: center;
     border: 1px solid blue;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
-    position: absolute;
 }
 #lager.markiert {
     background-color: #ABCDEF;
@@ -23,7 +23,9 @@ body {
 #lager:hover {
     background-color: #BBB;
 }
-
+#lager-wrap {
+    margin: 8px;
+}
 .free {
     text-align:center;
     position: absolute;
@@ -56,34 +58,78 @@ body {
 
 .plan {
     background-color: #99ffce;
-    margin: 30px;
     position: relative;
+}
+
+select {
+    background-color: #99ffce;
 }
 
 .label {
     background-color: #ABCDEF;
     color: black;
     padding: 5px 20px;
-    position: absolute;
     height: 23px;
 }
 .label:hover {
     background-color: #8fbc8f;
 }
 #links {
-    transform: rotate(90deg);
+    transform: translateX(50%) rotate(-90deg) translateY(-50%);
 }
 #rechts {
-    transform: rotate(-90deg);
+    transform: translateX(-50%) rotate(90deg) translateY(-50%);
 }
 
-.plan-header {
-    position: absolute;
-}
-.arrows {
-    position: absolute;
-}
 div#start-stop {
-    text-align: center;
+    margin-left: 30px;
     margin-bottom: 20px;
+}
+
+.plan-middle-row {
+    display: -webkit-flex;
+    display: flex;
+    align-items: stretch;
+}
+.plan-left {
+    width: 30px;
+    align-items: flex-end;
+}
+.plan-container {
+    display: flex;
+    align-content: space-around;
+}
+.plan-container button {
+    background: rgba(255, 255, 255, 0.2);
+}
+.plan-container button:hover {
+    background: rgba(255, 255, 255, 0.7);
+}
+.plan-column {
+    flex-direction: column;
+    justify-content: space-between;
+}
+.plan-row {
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0px 30px;
+}
+.plan-right {
+    width: 30px;
+    align-items: flex-start;
+}
+.plan-top {
+    height: 30px;
+    align-items: flex-end;
+}
+.plan-center {
+    text-align: center;
+}
+.plan-bottom {
+    height: 30px;
+    align-items: flex-start;
+}
+#start-stop input[type="text"] {
+    font-size: 200%;
+    width: 7em;
 }

@@ -27,13 +27,13 @@ import {PlanService} from "../../services/plan.service";
     <plan #planComponent [plan]="_plan"></plan>
 
     <button 
-            class="btn btn-default"
+            class="btn btn-success btn-space"
             *ngIf="_planChange"
             (click)="saveClick(planComponent.plan)">
         Speichern
     </button>
     <button 
-            class="btn btn-default"
+            class="btn btn-danger btn-space"
             *ngIf="_plan"
             (click)="deleteClick()">
         Löschen
@@ -44,7 +44,7 @@ import {PlanService} from "../../services/plan.service";
                 h1 {display: inline;}
                 plan-select { margin: 100px;} 
                 button {float: right;}   
-                .group-header {margin-bottom: 20px}
+                div.group-header {margin-bottom: 20px}
             `],
     directives: [PlanComponent, PlanSelectComponent],
     providers: [PlanService]
@@ -53,7 +53,6 @@ import {PlanService} from "../../services/plan.service";
 export class PlanContainer  implements OnActivate{
     private gruppe:Gruppe;
     private _plan:Plan;
-    private _planChange:boolean;
     set plan(value:Plan) {
         this._plan = value;
     }
@@ -61,7 +60,7 @@ export class PlanContainer  implements OnActivate{
     constructor(private router: Router,
                 private groupService:GroupsService,
                 private planService:PlanService) {}
-
+l
     routerOnActivate(curr:RouteSegment):void {
         let groupId = +curr.getParam('group_id');
         this.groupService.getGroup(groupId)
@@ -77,10 +76,6 @@ export class PlanContainer  implements OnActivate{
         this._planChange = true; //TODO;
     }
 
-    onPlanChange() {
-        this._planChange = true;
-    }
-
     saveClick(plan:Plan) {
         this.planService.updatePlan(plan);
     }
@@ -88,7 +83,7 @@ export class PlanContainer  implements OnActivate{
         this.planService.deletePlan(this._plan.id)
             .subscribe(() => {
                 alert("Plan gelöscht");
-                this.getPlaeneBeschreibung();
+                this.router.navigate(['/plaene', this.gruppe.id]);
             });
     }
 }

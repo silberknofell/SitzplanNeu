@@ -18,82 +18,94 @@ import {PlanInout} from "./plan-inout.component";
 @Component({
     selector: 'plan',
     template: `<div *ngIf="plan">
-<div id="start-stop">
+    <div id="start-stop">
 
-    Raum:
-        <input type="text" id="raum" [(ngModel)]="plan.raum" placeholder="Raum" />
-    Von:
-        <input type="text" id="start" [(ngModel)]="plan.start" placeholder="Start" />
-    Bis:
-        <input type="text" id="stop" [(ngModel)]="plan.stop" placeholder="Stop" />
-</div>
-    <div class="plan"
-         [style.width.px]="right()"
-         [style.height.px]="bottom()"
-    >
+        Raum:
+        <input type="text" id="raum" [(ngModel)]="plan.raum" placeholder="Raum"/>
+        Ab:
+        <input type="text" id="start" [(ngModel)]="plan.start" placeholder="Start"/>
+        Bis:
+        <input type="text" id="stop" [(ngModel)]="plan.stop" placeholder="Stop"/>
+    </div>
 
-        <cell *ngFor="let cell of cells"
-              [cell]="cell"
-              [planComponent]="getPlanComponent()"
-        ></cell>
 
-        <div id="unten" class="label"
-             [style.top.px]="bottom()"
-             [style.left.px]="xMitte()-xHalfCell()"
-        >
-        <input type="text" [(ngModel)]="plan.extras.unten" placeholder="Tafel"/>
-        
-
-        </div>
-        <div id="oben" class="label"
-             [style.top.px]="-23"
-             [style.left.px]="xMitte()-xHalfCell()"
-        >
-        <input type="text" [(ngModel)]="plan.extras.oben" placeholder="oben"/>
-        
-        </div>
-        <div id="links" class="label"
-             [style.left.px]="-41"
-             [style.top.px]="yMitte()"
-        >
-        <input type="text" [(ngModel)]="plan.extras.links" placeholder="rechts"/>
-        
-        </div>
-        <div id="rechts" class="label"
-             [style.left.px]="right()-26"
-             [style.top.px]="yMitte()"
-        >
-            <input type="text" [(ngModel)]="plan.extras.rechts" placeholder="links"/>
-        </div>
-
-        <div class="arrows"
-             [style.left.px]="right()"
-             [style.top.px]="0"
-        >
+    <div class="plan-top plan-container plan-row" [style.width.px]="right()">
+        <div>
             <button (click)="deltaY(-50)"><span class="fa fa-arrow-up"></span></button>
             <button (click)="deltaY(50)"><span class="fa fa-arrow-down"></span></button>
-            <button *ngIf="erweitert" (click)="deltaI(1)"><span class="fa fa-plus-square-o"></span></button>
-            <button *ngIf="erweitert" (click)="deltaI(-1)"><span class="fa fa-minus-square-o"></span></button>
         </div>
-        <div class="arrows"
-             [style.left.px]="0"
-             [style.top.px]="-23"
-        >
-            <button (click)="deltaX(-50)"><span class="fa fa-arrow-left"></span></button>
-            <button (click)="deltaX(50)"><span class="fa fa-arrow-right"></span></button>
+
+        <div id="oben" class="label">
+            <input type="text" [(ngModel)]="plan.extras.oben" placeholder="oben"/>
+        </div>
+
+        <div class="arrows">
             <button *ngIf="erweitert" (click)="deltaJ(1)"><span class="fa fa-plus-square-o"></span></button>
             <button *ngIf="erweitert" (click)="deltaJ(-1)"><span class="fa fa-minus-square-o"></span></button>
         </div>
-
     </div>
 
+    <div class="plan-middle-row">
+        <div class="plan-left plan-container plan-column">
+            <div>
+                <button (click)="deltaX(-50)"><span class="fa fa-arrow-left"></span></button>
+                <button (click)="deltaX(50)"><span class="fa fa-arrow-right"></span></button>
+            </div>
+
+            <div id="links" class="label">
+                <input type="text" [(ngModel)]="plan.extras.links" placeholder="rechts"/>
+            </div>
+
+            <div></div>
+        </div>
+
+        <div class="plan-center plan"
+             [style.width.px]="right()"
+             [style.height.px]="bottom()">
+            <cell *ngFor="let cell of cells"
+                  [cell]="cell"
+                  [planComponent]="getPlanComponent()"
+            ></cell>
+        </div>
+
+        <div class="plan-right plan-container plan-column">
+            <div class="arrows">
+                <button *ngIf="erweitert" (click)="deltaI(1)"><span class="fa fa-plus-square-o"></span></button>
+                <button *ngIf="erweitert" (click)="deltaI(-1)"><span class="fa fa-minus-square-o"></span></button>
+            </div>
+
+            <div id="rechts" class="label">
+                <input type="text" [(ngModel)]="plan.extras.rechts" placeholder="links"/>
+            </div>
+
+            <div id="lager-wrap" 
+            [style.width.px]="xCell()"
+                 [style.line-height.px]="yCell()"
+                 [style.height.px]="yCell()">
+                <lager *ngIf="erweitert"
+                       [planComponent]="getPlanComponent()"
+
+                ></lager>
+            </div>
+        </div>
+    </div>
+
+    <div class="plan-bottom plan-container plan-row" [style.width.px]="right()">
+        <div></div>
+
+        <div id="unten" class="label">
+            <input type="text" [(ngModel)]="plan.extras.unten" placeholder="Tafel"/>
+        </div>
+
+        <div>
+
+        </div>
+    </div>
+
+    <button class="btn btn-default" (click)="erweitert = !erweitert">{{erweitert ? 'weniger' : 'mehr'}}</button>
     <button class="btn btn-default" *ngIf="erweitert" (click)="reihenClick()">Reihen</button>
     <button class="btn btn-default" *ngIf="erweitert" (click)="uClick()">U-Form</button>
     <button class="btn btn-default" (click)="losen()">losen</button>
-    <button class="btn btn-default" (click)="erweitert = !erweitert">{{erweitert ? 'weniger' : 'mehr'}}</button>
-    <lager *ngIf="erweitert"
-           [planComponent]="getPlanComponent()"
-    ></lager>
 </div>
   
 `,
@@ -101,13 +113,12 @@ import {PlanInout} from "./plan-inout.component";
     directives: [CellComponent, LagerComponent,
         PlanInout],
     providers: [],
-    styles:  [
+    styles: [
         `
 input {
     text-align: center;
     border:none;
     margin: 0;
-    font-size:120%;
     background-color: transparent;
 }
         `]
