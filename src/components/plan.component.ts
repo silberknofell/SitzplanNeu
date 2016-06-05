@@ -91,7 +91,7 @@ import {PlanInout} from "./plan-inout.component";
                 </button>
                 <button class="btn btn-primary btn-space" *ngIf="erweitert" (click)="reihenClick()">Reihen</button>
                 <button class="btn btn-primary btn-space" *ngIf="erweitert" (click)="uClick()">U-Form</button>
-                <button class="btn btn-primary btn-space" *ngIf="erweitert" (click)="gruppenClick()">Gruppen</button>
+                <button class="btn btn-primary btn-space" *ngIf="erweitert" (click)="gruppenClick()">{{gruppenAnzahl}} Gruppen</button>
                 <button class="btn btn-primary btn-space" (click)="losen()">losen</button>
             </div>
 
@@ -183,10 +183,13 @@ export class PlanComponent {
     cells:Cell[] = [];
     markierung:Markierung;
     erweitert:boolean = false;
+    
+    gruppenAnzahl:number;
 
     constructor(private planService:PlanService) {
         this.planService = planService;
         this.plan = Plan.createEmptyPlan();
+        this.resetGruppenAzahl();
     }
 
 
@@ -230,8 +233,8 @@ export class PlanComponent {
     public gruppenClick():void {
         let planAnordnung:PlanAnordnung;
         planAnordnung = new PlanAnordnung({tische: this._plan.tische, blockBreite: 3});
-        planAnordnung.setzeGruppen(5);
-
+        planAnordnung.setzeGruppen(this.gruppenAnzahl);
+        this.erhoeheGruppenAnzahl();
         this.plan = this._plan;
 
     }
@@ -358,4 +361,10 @@ export class PlanComponent {
             });
     }
 
+    private resetGruppenAzahl() {
+        this.gruppenAnzahl = 2;
+    }
+    private erhoeheGruppenAnzahl() {
+        this.gruppenAnzahl = (this.gruppenAnzahl -1) % 10 + 2;
+    }
 }
