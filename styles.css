@@ -99,12 +99,13 @@ div#start-stop {
     display: flex;
     align-content: space-around;
 }
-.plan-container button {
+ button.transparent{
     background: rgba(255, 255, 255, 0.2);
 }
-.plan-container button:hover {
+ button.transparent:hover {
     background: rgba(255, 255, 255, 0.7);
 }
+
 .plan-column {
     flex-direction: column;
     justify-content: space-between;
@@ -117,6 +118,14 @@ div#start-stop {
 .plan-right {
     width: 30px;
     align-items: flex-start;
+}
+div.plan-right-buttons {
+    margin-left: 50px;
+    width: 50px;
+    align-items: flex-start;
+}
+.plan-right-buttons button {
+    width: 100%;
 }
 .plan-top {
     height: 30px;

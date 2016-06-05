@@ -31,8 +31,8 @@ import {PlanInout} from "./plan-inout.component";
 
     <div class="plan-top plan-container plan-row" [style.width.px]="right()">
         <div>
-            <button (click)="deltaY(-50)"><span class="fa fa-arrow-up"></span></button>
-            <button (click)="deltaY(50)"><span class="fa fa-arrow-down"></span></button>
+            <button class="transparent" (click)="deltaY(-50)"><span class="fa fa-arrow-up"></span></button>
+            <button class="transparent" (click)="deltaY(50)"><span class="fa fa-arrow-down"></span></button>
         </div>
 
         <div id="oben" class="label">
@@ -40,16 +40,16 @@ import {PlanInout} from "./plan-inout.component";
         </div>
 
         <div class="arrows">
-            <button *ngIf="erweitert" (click)="deltaJ(1)"><span class="fa fa-plus-square-o"></span></button>
-            <button *ngIf="erweitert" (click)="deltaJ(-1)"><span class="fa fa-minus-square-o"></span></button>
+            <button *ngIf="erweitert" class="transparent" (click)="deltaJ(1)"><span class="fa fa-plus-square-o"></span></button>
+            <button *ngIf="erweitert" class="transparent" (click)="deltaJ(-1)"><span class="fa fa-minus-square-o"></span></button>
         </div>
     </div>
 
     <div class="plan-middle-row">
         <div class="plan-left plan-container plan-column">
             <div>
-                <button (click)="deltaX(-50)"><span class="fa fa-arrow-left"></span></button>
-                <button (click)="deltaX(50)"><span class="fa fa-arrow-right"></span></button>
+                <button class="transparent" (click)="deltaX(-50)"><span class="fa fa-arrow-left"></span></button>
+                <button class="transparent" (click)="deltaX(50)"><span class="fa fa-arrow-right"></span></button>
             </div>
 
             <div id="links" class="label">
@@ -70,8 +70,8 @@ import {PlanInout} from "./plan-inout.component";
 
         <div class="plan-right plan-container plan-column">
             <div class="arrows">
-                <button *ngIf="erweitert" (click)="deltaI(1)"><span class="fa fa-plus-square-o"></span></button>
-                <button *ngIf="erweitert" (click)="deltaI(-1)"><span class="fa fa-minus-square-o"></span></button>
+                <button *ngIf="erweitert" class="transparent" (click)="deltaI(1)"><span class="fa fa-plus-square-o"></span></button>
+                <button *ngIf="erweitert" class="transparent" (click)="deltaI(-1)"><span class="fa fa-minus-square-o"></span></button>
             </div>
 
             <div id="rechts" class="label">
@@ -88,6 +88,21 @@ import {PlanInout} from "./plan-inout.component";
                 ></lager>
             </div>
         </div>
+
+        <div class="plan-right-buttons plan-container plan-column">
+            <div>
+                <button class="btn btn-default" (click)="erweitert = !erweitert">{{erweitert ? 'weniger' : 'mehr'}}</button>
+                <button class="btn btn-default" *ngIf="erweitert" (click)="reihenClick()">Reihen</button>
+                <button class="btn btn-default" *ngIf="erweitert" (click)="uClick()">U-Form</button>
+                <button class="btn btn-default" (click)="losen()">losen</button>
+            </div>
+
+            <div>
+            </div>
+
+            <div>
+            </div>
+        </div>
     </div>
 
     <div class="plan-bottom plan-container plan-row" [style.width.px]="right()">
@@ -101,11 +116,6 @@ import {PlanInout} from "./plan-inout.component";
 
         </div>
     </div>
-
-    <button class="btn btn-default" (click)="erweitert = !erweitert">{{erweitert ? 'weniger' : 'mehr'}}</button>
-    <button class="btn btn-default" *ngIf="erweitert" (click)="reihenClick()">Reihen</button>
-    <button class="btn btn-default" *ngIf="erweitert" (click)="uClick()">U-Form</button>
-    <button class="btn btn-default" (click)="losen()">losen</button>
 </div>
   
 `,
