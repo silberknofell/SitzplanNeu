@@ -44,11 +44,11 @@ export class PlanAnordnung {
         return {"i": i + 1, "j": j + 1};
     }
 
-    private getIJ_Reihen(nr0:number):IPunkt { 
+    private getIJ_Reihen(nr0:number):IPunkt {
         this.anzahlImBlock = this.blockBreite;
         this.anzahlInBlockReihe = this.anzahlImBlock * 2;
         let i = nr0 % (this.anzahlInBlockReihe);
-        if (i>=this.blockBreite) {
+        if (i >= this.blockBreite) {
             i++;
         }
         let j = Math.floor(nr0 / this.anzahlInBlockReihe) * 2;
@@ -67,6 +67,23 @@ export class PlanAnordnung {
         for (let nr = 0; nr < this.anzahlTische; nr++) {
             let punkt:IPunkt = this.getIJ_U(nr);
             this.tische[nr].setIJ(punkt.i, punkt.j);
+        }
+    }
+
+    setzeGruppen(anzahlGruppen:number) {
+        let nr = 0;
+        let anzahlTischeRest = this.anzahlTische;
+        let anzahlGruppenRest = anzahlGruppen;
+        let j:number = 1;
+        while (anzahlTischeRest > 0) {
+            let reihenLaenge = Math.floor((anzahlTischeRest - 1) / anzahlGruppenRest + 1);
+            for (let i=1; i<=reihenLaenge; i++) {
+                this.tische[nr].setIJ(i, j);
+                nr++;
+            }
+            j += 2;
+            anzahlGruppenRest--;
+            anzahlTischeRest -= reihenLaenge;
         }
     }
 }

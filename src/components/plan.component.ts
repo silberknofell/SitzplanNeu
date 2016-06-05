@@ -91,6 +91,7 @@ import {PlanInout} from "./plan-inout.component";
                 </button>
                 <button class="btn btn-primary btn-space" *ngIf="erweitert" (click)="reihenClick()">Reihen</button>
                 <button class="btn btn-primary btn-space" *ngIf="erweitert" (click)="uClick()">U-Form</button>
+                <button class="btn btn-primary btn-space" *ngIf="erweitert" (click)="gruppenClick()">Gruppen</button>
                 <button class="btn btn-primary btn-space" (click)="losen()">losen</button>
             </div>
 
@@ -222,6 +223,14 @@ export class PlanComponent {
         let planAnordnung:PlanAnordnung;
         planAnordnung = new PlanAnordnung({tische: this._plan.tische, blockBreite: 3});
         planAnordnung.setzeU();
+
+        this.plan = this._plan;
+
+    }
+    public gruppenClick():void {
+        let planAnordnung:PlanAnordnung;
+        planAnordnung = new PlanAnordnung({tische: this._plan.tische, blockBreite: 3});
+        planAnordnung.setzeGruppen(5);
 
         this.plan = this._plan;
 
