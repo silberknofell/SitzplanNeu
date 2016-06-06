@@ -13,7 +13,7 @@ import {PlanManager} from "../plan-manager";
 import {Elem} from "../Pojo/element";
 import {LagerComponent} from "./lager.component";
 import {PlanAnordnung} from "../plan-anordnung";
-import {PlanInout} from "./plan-inout.component";
+import {GruppenErstellenComponent} from "./gruppen-erstellen.component";
 
 @Component({
     selector: 'plan',
@@ -91,7 +91,10 @@ import {PlanInout} from "./plan-inout.component";
                 </button>
                 <button class="btn btn-primary btn-space" *ngIf="erweitert" (click)="reihenClick()">Reihen</button>
                 <button class="btn btn-primary btn-space" *ngIf="erweitert" (click)="uClick()">U-Form</button>
-                <button class="btn btn-primary btn-space" *ngIf="erweitert" (click)="gruppenClick()">{{gruppenAnzahl}} Gruppen</button>
+                <gruppen-erstellen  *ngIf="erweitert" 
+                                    [plan]="plan"
+                                    (onPlanChange)="onPlanChange($event)"                        
+                ></gruppen-erstellen>
                 <button class="btn btn-primary btn-space" (click)="losen()">losen</button>
             </div>
 
@@ -141,8 +144,7 @@ import {PlanInout} from "./plan-inout.component";
   
 `,
     inputs: [],
-    directives: [CellComponent, LagerComponent,
-        PlanInout],
+    directives: [CellComponent, LagerComponent, GruppenErstellenComponent],
     providers: [],
     styles: [
         `
@@ -158,19 +160,24 @@ input {
 export class PlanComponent {
     private _plan:Plan;
     @Input()
+    get plan():Plan {
+        return this._plan;
+    }
+
     set plan(plan:Plan) {
         this._plan = plan;
+        this.onPlanChange(plan);
+    }
+
+    onPlanChange(plan:Plan) {
         if (plan) {
             PlanLayout.setIJ(this._plan);
             this.buildComponents();
         }
     }
 
-    get plan():Plan {
-        return this._plan;
-    }
-
-    @Input() readonly:boolean = false;
+    @Input()
+    readonly:boolean = false;
     right = PlanLayout.getViewWidth;
     bottom = PlanLayout.getViewHeight;
     xMitte = PlanLayout.xMitte;
@@ -183,13 +190,11 @@ export class PlanComponent {
     cells:Cell[] = [];
     markierung:Markierung;
     erweitert:boolean = false;
-    
-    gruppenAnzahl:number;
+
 
     constructor(private planService:PlanService) {
         this.planService = planService;
         this.plan = Plan.createEmptyPlan();
-        this.resetGruppenAzahl();
     }
 
 
@@ -227,14 +232,6 @@ export class PlanComponent {
         planAnordnung = new PlanAnordnung({tische: this._plan.tische, blockBreite: 3});
         planAnordnung.setzeU();
 
-        this.plan = this._plan;
-
-    }
-    public gruppenClick():void {
-        let planAnordnung:PlanAnordnung;
-        planAnordnung = new PlanAnordnung({tische: this._plan.tische, blockBreite: 3});
-        planAnordnung.setzeGruppen({gruppenGroesse: this.gruppenAnzahl});
-        this.erhoeheGruppenAnzahl();
         this.plan = this._plan;
 
     }
@@ -293,7 +290,8 @@ export class PlanComponent {
     }
 
     private neuerTischNachCheck(element:Elem):void {
-        if (element.typ == Elem.TYP_LEERERPLATZ) {
+        if (element.typ == Elem.TYP_LEERERPLATZ
+        ) {
             var cell:Cell = <Cell>element;
             var neuerTisch:Tisch = Tisch.leererTisch();
             console.log(neuerTisch);
@@ -304,13 +302,16 @@ export class PlanComponent {
     }
 
     private clickAufSelbesElement(element:Elem):void {
-        if (element.isTisch()) {
+        if (element.isTisch()
+        ) {
             (<Tisch>element).toggleBelegbar();
         }
     }
 
     private entferneTischNachCheck(entferne:Elem):void {
-        if (entferne.isTisch() == false) return;
+        if (entferne.isTisch() == false
+        )
+            return;
         var tisch:Tisch = <Tisch>entferne;
         if (tisch.istBelegt())  return;
         var neuCell:Cell = tisch.toCell();
@@ -361,10 +362,5 @@ export class PlanComponent {
             });
     }
 
-    private resetGruppenAzahl() {
-        this.gruppenAnzahl = 2;
-    }
-    private erhoeheGruppenAnzahl() {
-        this.gruppenAnzahl = (this.gruppenAnzahl -1) % 10 + 2;
-    }
+
 }

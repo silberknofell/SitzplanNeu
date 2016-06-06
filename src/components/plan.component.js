@@ -20,7 +20,7 @@ var plan_manager_1 = require("../plan-manager");
 var element_1 = require("../Pojo/element");
 var lager_component_1 = require("./lager.component");
 var plan_anordnung_1 = require("../plan-anordnung");
-var plan_inout_component_1 = require("./plan-inout.component");
+var gruppen_erstellen_component_1 = require("./gruppen-erstellen.component");
 var PlanComponent = (function () {
     function PlanComponent(planService) {
         this.planService = planService;
@@ -37,7 +37,6 @@ var PlanComponent = (function () {
         this.erweitert = false;
         this.planService = planService;
         this.plan = plan_1.Plan.createEmptyPlan();
-        this.resetGruppenAzahl();
     }
     Object.defineProperty(PlanComponent.prototype, "plan", {
         get: function () {
@@ -45,14 +44,17 @@ var PlanComponent = (function () {
         },
         set: function (plan) {
             this._plan = plan;
-            if (plan) {
-                plan_layout_1.PlanLayout.setIJ(this._plan);
-                this.buildComponents();
-            }
+            this.onPlanChange(plan);
         },
         enumerable: true,
         configurable: true
     });
+    PlanComponent.prototype.onPlanChange = function (plan) {
+        if (plan) {
+            plan_layout_1.PlanLayout.setIJ(this._plan);
+            this.buildComponents();
+        }
+    };
     PlanComponent.prototype.getPlanComponent = function () {
         return this;
     };
@@ -81,13 +83,6 @@ var PlanComponent = (function () {
         var planAnordnung;
         planAnordnung = new plan_anordnung_1.PlanAnordnung({ tische: this._plan.tische, blockBreite: 3 });
         planAnordnung.setzeU();
-        this.plan = this._plan;
-    };
-    PlanComponent.prototype.gruppenClick = function () {
-        var planAnordnung;
-        planAnordnung = new plan_anordnung_1.PlanAnordnung({ tische: this._plan.tische, blockBreite: 3 });
-        planAnordnung.setzeGruppen({ gruppenGroesse: this.gruppenAnzahl });
-        this.erhoeheGruppenAnzahl();
         this.plan = this._plan;
     };
     PlanComponent.prototype.swap = function (cell1, cell2) {
@@ -198,16 +193,9 @@ var PlanComponent = (function () {
             _this.router.navigate(['/plaene', _this.gruppe.id]);
         });
     };
-    PlanComponent.prototype.resetGruppenAzahl = function () {
-        this.gruppenAnzahl = 2;
-    };
-    PlanComponent.prototype.erhoeheGruppenAnzahl = function () {
-        this.gruppenAnzahl = (this.gruppenAnzahl - 1) % 10 + 2;
-    };
     __decorate([
         core_1.Input(), 
-        __metadata('design:type', plan_1.Plan), 
-        __metadata('design:paramtypes', [plan_1.Plan])
+        __metadata('design:type', plan_1.Plan)
     ], PlanComponent.prototype, "plan", null);
     __decorate([
         core_1.Input(), 
@@ -216,10 +204,9 @@ var PlanComponent = (function () {
     PlanComponent = __decorate([
         core_1.Component({
             selector: 'plan',
-            template: "<div *ngIf=\"plan\">\n    <div id=\"start-stop\">\n\n        Raum:\n        <input type=\"text\" id=\"raum\" [(ngModel)]=\"plan.raum\" placeholder=\"Raum\"/>\n        Ab:\n        <input type=\"text\" id=\"start\" [(ngModel)]=\"plan.start\" placeholder=\"Start\"/>\n        Bis:\n        <input type=\"text\" id=\"stop\" [(ngModel)]=\"plan.stop\" placeholder=\"Stop\"/>\n    </div>\n\n\n    <div class=\"plan-top plan-container plan-row\" [style.width.px]=\"right()\">\n        <div>\n            <button class=\"transparent\" (click)=\"deltaY(-50)\"><span class=\"fa fa-arrow-up\"></span></button>\n            <button class=\"transparent\" (click)=\"deltaY(50)\"><span class=\"fa fa-arrow-down\"></span></button>\n        </div>\n\n        <div id=\"oben\" class=\"label\">\n            <input type=\"text\" [(ngModel)]=\"plan.extras.oben\" placeholder=\"oben\"/>\n        </div>\n\n        <div class=\"arrows\">\n            <button *ngIf=\"erweitert\" class=\"transparent\" (click)=\"deltaJ(1)\"><span class=\"fa fa-plus-square-o\"></span>\n            </button>\n            <button *ngIf=\"erweitert\" class=\"transparent\" (click)=\"deltaJ(-1)\"><span\n                    class=\"fa fa-minus-square-o\"></span></button>\n        </div>\n    </div>\n\n    <div class=\"plan-middle-row\">\n        <div class=\"plan-left plan-container plan-column\">\n            <div>\n                <button class=\"transparent\" (click)=\"deltaX(-50)\"><span class=\"fa fa-arrow-left\"></span></button>\n                <button class=\"transparent\" (click)=\"deltaX(50)\"><span class=\"fa fa-arrow-right\"></span></button>\n            </div>\n\n            <div id=\"links\" class=\"label\">\n                <input type=\"text\" [(ngModel)]=\"plan.extras.links\" placeholder=\"rechts\"/>\n            </div>\n\n            <div></div>\n        </div>\n\n        <div class=\"plan-center plan\"\n             [style.width.px]=\"right()\"\n             [style.height.px]=\"bottom()\">\n            <cell *ngFor=\"let cell of cells\"\n                  [cell]=\"cell\"\n                  [planComponent]=\"getPlanComponent()\"\n            ></cell>\n        </div>\n\n        <div class=\"plan-right plan-container plan-column\">\n            <div class=\"arrows\">\n                <button *ngIf=\"erweitert\" class=\"transparent\" (click)=\"deltaI(1)\"><span\n                        class=\"fa fa-plus-square-o\"></span></button>\n                <button *ngIf=\"erweitert\" class=\"transparent\" (click)=\"deltaI(-1)\"><span\n                        class=\"fa fa-minus-square-o\"></span></button>\n            </div>\n\n            <div id=\"rechts\" class=\"label\">\n                <input type=\"text\" [(ngModel)]=\"plan.extras.rechts\" placeholder=\"links\"/>\n            </div>\n\n            <div></div>\n        </div>\n\n        <div class=\"plan-right-buttons plan-container plan-column\">\n            <div>\n                <button class=\"btn btn-info btn-space\" (click)=\"erweitert = !erweitert\">{{erweitert ? 'weniger' : 'mehr'}}\n                </button>\n                <button class=\"btn btn-primary btn-space\" *ngIf=\"erweitert\" (click)=\"reihenClick()\">Reihen</button>\n                <button class=\"btn btn-primary btn-space\" *ngIf=\"erweitert\" (click)=\"uClick()\">U-Form</button>\n                <button class=\"btn btn-primary btn-space\" *ngIf=\"erweitert\" (click)=\"gruppenClick()\">{{gruppenAnzahl}} Gruppen</button>\n                <button class=\"btn btn-primary btn-space\" (click)=\"losen()\">losen</button>\n            </div>\n\n            <div>\n                <button\n                        class=\"btn btn-success btn-space\"\n                        (click)=\"saveClick(planComponent.plan)\">\n                    Speichern\n                </button>\n            </div>\n\n            <div>\n\n                <button\n                        class=\"btn btn-danger btn-space\"\n                        *ngIf=\"_plan\"\n                        (click)=\"deleteClick()\">\n                    L\u00F6schen\n                </button>\n\n            </div>\n        </div>\n    </div>\n\n    <div class=\"plan-bottom plan-container plan-row\" [style.width.px]=\"right()\">\n        <div>\n            <div id=\"lager-wrap\"\n                 [style.width.px]=\"xCell()\"\n                 [style.line-height.px]=\"yCell()\"\n                 [style.height.px]=\"yCell()\">\n                <lager *ngIf=\"erweitert\"\n                       [planComponent]=\"getPlanComponent()\"\n\n                ></lager>\n            </div>\n        </div>\n\n        <div id=\"unten\" class=\"label\">\n            <input type=\"text\" [(ngModel)]=\"plan.extras.unten\" placeholder=\"Tafel\"/>\n        </div>\n\n        <div>\n\n        </div>\n    </div>\n</div>\n  \n",
+            template: "<div *ngIf=\"plan\">\n    <div id=\"start-stop\">\n\n        Raum:\n        <input type=\"text\" id=\"raum\" [(ngModel)]=\"plan.raum\" placeholder=\"Raum\"/>\n        Ab:\n        <input type=\"text\" id=\"start\" [(ngModel)]=\"plan.start\" placeholder=\"Start\"/>\n        Bis:\n        <input type=\"text\" id=\"stop\" [(ngModel)]=\"plan.stop\" placeholder=\"Stop\"/>\n    </div>\n\n\n    <div class=\"plan-top plan-container plan-row\" [style.width.px]=\"right()\">\n        <div>\n            <button class=\"transparent\" (click)=\"deltaY(-50)\"><span class=\"fa fa-arrow-up\"></span></button>\n            <button class=\"transparent\" (click)=\"deltaY(50)\"><span class=\"fa fa-arrow-down\"></span></button>\n        </div>\n\n        <div id=\"oben\" class=\"label\">\n            <input type=\"text\" [(ngModel)]=\"plan.extras.oben\" placeholder=\"oben\"/>\n        </div>\n\n        <div class=\"arrows\">\n            <button *ngIf=\"erweitert\" class=\"transparent\" (click)=\"deltaJ(1)\"><span class=\"fa fa-plus-square-o\"></span>\n            </button>\n            <button *ngIf=\"erweitert\" class=\"transparent\" (click)=\"deltaJ(-1)\"><span\n                    class=\"fa fa-minus-square-o\"></span></button>\n        </div>\n    </div>\n\n    <div class=\"plan-middle-row\">\n        <div class=\"plan-left plan-container plan-column\">\n            <div>\n                <button class=\"transparent\" (click)=\"deltaX(-50)\"><span class=\"fa fa-arrow-left\"></span></button>\n                <button class=\"transparent\" (click)=\"deltaX(50)\"><span class=\"fa fa-arrow-right\"></span></button>\n            </div>\n\n            <div id=\"links\" class=\"label\">\n                <input type=\"text\" [(ngModel)]=\"plan.extras.links\" placeholder=\"rechts\"/>\n            </div>\n\n            <div></div>\n        </div>\n\n        <div class=\"plan-center plan\"\n             [style.width.px]=\"right()\"\n             [style.height.px]=\"bottom()\">\n            <cell *ngFor=\"let cell of cells\"\n                  [cell]=\"cell\"\n                  [planComponent]=\"getPlanComponent()\"\n            ></cell>\n        </div>\n\n        <div class=\"plan-right plan-container plan-column\">\n            <div class=\"arrows\">\n                <button *ngIf=\"erweitert\" class=\"transparent\" (click)=\"deltaI(1)\"><span\n                        class=\"fa fa-plus-square-o\"></span></button>\n                <button *ngIf=\"erweitert\" class=\"transparent\" (click)=\"deltaI(-1)\"><span\n                        class=\"fa fa-minus-square-o\"></span></button>\n            </div>\n\n            <div id=\"rechts\" class=\"label\">\n                <input type=\"text\" [(ngModel)]=\"plan.extras.rechts\" placeholder=\"links\"/>\n            </div>\n\n            <div></div>\n        </div>\n\n        <div class=\"plan-right-buttons plan-container plan-column\">\n            <div>\n                <button class=\"btn btn-info btn-space\" (click)=\"erweitert = !erweitert\">{{erweitert ? 'weniger' : 'mehr'}}\n                </button>\n                <button class=\"btn btn-primary btn-space\" *ngIf=\"erweitert\" (click)=\"reihenClick()\">Reihen</button>\n                <button class=\"btn btn-primary btn-space\" *ngIf=\"erweitert\" (click)=\"uClick()\">U-Form</button>\n                <gruppen-erstellen  *ngIf=\"erweitert\" \n                                    [plan]=\"plan\"\n                                    (onPlanChange)=\"onPlanChange($event)\"                        \n                ></gruppen-erstellen>\n                <button class=\"btn btn-primary btn-space\" (click)=\"losen()\">losen</button>\n            </div>\n\n            <div>\n                <button\n                        class=\"btn btn-success btn-space\"\n                        (click)=\"saveClick(planComponent.plan)\">\n                    Speichern\n                </button>\n            </div>\n\n            <div>\n\n                <button\n                        class=\"btn btn-danger btn-space\"\n                        *ngIf=\"_plan\"\n                        (click)=\"deleteClick()\">\n                    L\u00F6schen\n                </button>\n\n            </div>\n        </div>\n    </div>\n\n    <div class=\"plan-bottom plan-container plan-row\" [style.width.px]=\"right()\">\n        <div>\n            <div id=\"lager-wrap\"\n                 [style.width.px]=\"xCell()\"\n                 [style.line-height.px]=\"yCell()\"\n                 [style.height.px]=\"yCell()\">\n                <lager *ngIf=\"erweitert\"\n                       [planComponent]=\"getPlanComponent()\"\n\n                ></lager>\n            </div>\n        </div>\n\n        <div id=\"unten\" class=\"label\">\n            <input type=\"text\" [(ngModel)]=\"plan.extras.unten\" placeholder=\"Tafel\"/>\n        </div>\n\n        <div>\n\n        </div>\n    </div>\n</div>\n  \n",
             inputs: [],
-            directives: [cell_component_1.CellComponent, lager_component_1.LagerComponent,
-                plan_inout_component_1.PlanInout],
+            directives: [cell_component_1.CellComponent, lager_component_1.LagerComponent, gruppen_erstellen_component_1.GruppenErstellenComponent],
             providers: [],
             styles: [
                 "\ninput {\n    text-align: center;\n    border:none;\n    margin: 0;\n    background-color: transparent;\n}\n        "]

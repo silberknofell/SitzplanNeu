@@ -61,7 +61,6 @@ l
 
     onNewPlanSelect(plan:Plan) {
         this.plan=plan;
-        this._planChange = true; //TODO;
     }
 
 

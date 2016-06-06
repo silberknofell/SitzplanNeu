@@ -51,7 +51,7 @@ var PlanAnordnung = (function () {
     PlanAnordnung.prototype.setzeGruppen = function (optionen) {
         var anzahlGruppen = optionen.anzahlGruppen;
         if (optionen.gruppenGroesse) {
-            anzahlGruppen = Math.round(optionen.gruppenGroesse / this.anzahlTische);
+            anzahlGruppen = Math.round(this.anzahlTische / optionen.gruppenGroesse);
         }
         var nr = 0;
         var anzahlTischeRest = this.anzahlTische;

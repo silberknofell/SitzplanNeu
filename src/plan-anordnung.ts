@@ -73,7 +73,7 @@ export class PlanAnordnung {
     setzeGruppen(optionen) {
         let anzahlGruppen = optionen.anzahlGruppen;
         if (optionen.gruppenGroesse) {
-            anzahlGruppen = Math.round(optionen.gruppenGroesse / this.anzahlTische);
+            anzahlGruppen = Math.round(this.anzahlTische / optionen.gruppenGroesse);
         }
         let nr = 0;
         let anzahlTischeRest = this.anzahlTische;
