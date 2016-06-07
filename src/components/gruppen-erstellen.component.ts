@@ -46,7 +46,7 @@ export class GruppenErstellenComponent {
     gruppenClick():void {
         this.selectAnzahlMode = true;
     }
-    
+
     getListe():number[] {
         if (this.anzahlListe) {
             return this.anzahlListe.liste;
@@ -66,12 +66,15 @@ export class GruppenErstellenComponent {
 export class AnzahlListe {
     private _liste:number[];
     private _anzahlSus;
+
     get liste():number[] {
         return this._liste;
     }
+
     get anzahlSus():number {
         return this._anzahlSus;
     }
+
     pointer:number;
 
     constructor(anzahlSus:number) {
@@ -99,8 +102,13 @@ export class AnzahlListe {
 
     private fillListe(n:number) {
         this._liste = [];
-        for (let i = 2; i * i < n; i++) {
+        const min = 10;
+        let grenze1 = Math.min(n, min);
+        for (let i = 2; i <= grenze1; i++) {
             this._liste.push(i);
+        }
+        for (let i = 2; i * i < n; i++) {
+            this._liste.push(+i);
             this._liste.push(Math.round(n / i));
         }
         this._liste = this._liste.sort().filter(function (item, pos, ary) {
