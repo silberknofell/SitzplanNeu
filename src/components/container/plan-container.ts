@@ -21,7 +21,6 @@ import {PlanService} from "../../services/plan.service";
 
         <plan-select [gruppe]="gruppe"
                      (onNewPlanSelect)="onNewPlanSelect($event)"
-                     (onPlanChange)="_planChange==true"
         ></plan-select>
     </div>
     <plan #planComponent [plan]="_plan"></plan>
